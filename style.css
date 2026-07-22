@@ -83,3 +83,48 @@ body{
   font-size:20px;
   font-weight:700;
 }
+.stats-section{
+  margin:60px 25px;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  position:relative;
+}
+
+.stats-section::before{
+  content:"";
+  position:absolute;
+  top:0;
+  bottom:0;
+  left:50%;
+  width:1px;
+  background:#d9d9d9;
+}
+
+.stats-section::after{
+  content:"";
+  position:absolute;
+  left:0;
+  right:0;
+  top:50%;
+  height:1px;
+  background:#d9d9d9;
+}
+
+.stat-box{
+  padding:70px 15px;
+  text-align:center;
+}
+
+.stat-box h2{
+  color:#4a8f00;
+  font-size:52px;
+  font-weight:800;
+  margin-bottom:18px;
+}
+
+.stat-box p{
+  color:#8b8b8b;
+  font-size:16px;
+  line-height:1.5;
+  letter-spacing:1px;
+}
