@@ -641,9 +641,19 @@ body.dark{
   color:#fff;
 }
 .mobile-menu{
+    display:none;
+    position:fixed;
+    top:0;
+    left:0;
     width:100%;
-    min-height:100vh;
+    height:100vh;
     background:#f7f7f7;
+    z-index:9999;
+    overflow-y:auto;
+}
+
+.mobile-menu.active{
+    display:block;
 }
 
 .menu-header{
