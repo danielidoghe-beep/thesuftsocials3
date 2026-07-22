@@ -360,3 +360,51 @@ body{
   text-decoration:none;
   font-weight:600;
 }
+.testimonials{
+  padding:80px 20px;
+}
+
+.testimonial-header{
+  text-align:center;
+  margin-bottom:50px;
+}
+
+.testimonial-header span{
+  color:#4a8f00;
+  font-size:14px;
+  font-weight:700;
+  letter-spacing:2px;
+}
+
+.testimonial-header h2{
+  margin-top:15px;
+  font-size:52px;
+  line-height:1.1;
+  font-weight:800;
+}
+
+.testimonial-card{
+  background:#f8f8f8;
+  border:1px solid #e8e8e8;
+  border-radius:24px;
+  padding:35px;
+  margin-bottom:24px;
+}
+
+.quote{
+  font-size:18px;
+  line-height:1.8;
+  color:#333;
+  margin-bottom:30px;
+}
+
+.testimonial-card h4{
+  font-size:20px;
+  font-weight:700;
+  margin-bottom:5px;
+}
+
+.testimonial-card small{
+  color:#999;
+  font-size:16px;
+}
