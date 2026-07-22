@@ -128,3 +128,28 @@ body{
   line-height:1.5;
   letter-spacing:1px;
 }
+.ticker{
+  background:#4a8f00;
+  overflow:hidden;
+  white-space:nowrap;
+  padding:22px 0;
+}
+
+.ticker-track{
+  display:inline-block;
+  color:white;
+  font-size:22px;
+  font-weight:700;
+  letter-spacing:1px;
+  animation:scrollTicker 20s linear infinite;
+}
+
+@keyframes scrollTicker{
+  from{
+    transform:translateX(0);
+  }
+
+  to{
+    transform:translateX(-50%);
+  }
+}
