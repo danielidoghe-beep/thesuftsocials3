@@ -153,3 +153,80 @@ body{
     transform:translateX(-50%);
   }
 }
+.services{
+  padding:60px 20px;
+}
+
+.section-title span{
+  color:#4a8f00;
+  font-size:12px;
+  font-weight:700;
+  letter-spacing:2px;
+}
+
+.section-title h2{
+  font-size:42px;
+  margin-top:10px;
+  line-height:1.1;
+}
+
+.section-title p{
+  color:#666;
+  margin-top:20px;
+  line-height:1.6;
+}
+
+.service-card{
+  position:relative;
+  padding:40px 0;
+  border-bottom:1px solid #e8e8e8;
+}
+
+.service-number{
+  font-size:56px;
+  color:#e5e5e5;
+  font-weight:800;
+  margin-bottom:20px;
+}
+
+.service-card h3{
+  font-size:32px;
+  margin-bottom:15px;
+}
+
+.service-card p{
+  color:#666;
+  line-height:1.8;
+}
+
+.tags{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  margin:20px 0;
+}
+
+.tags span{
+  background:#f2f2f2;
+  padding:8px 12px;
+  border-radius:20px;
+  font-size:12px;
+}
+
+.service-card a{
+  color:#4a8f00;
+  text-decoration:none;
+  font-weight:600;
+}
+
+.coming-soon{
+  position:absolute;
+  top:20px;
+  right:0;
+  background:#eef5e8;
+  color:#4a8f00;
+  padding:6px 12px;
+  border-radius:20px;
+  font-size:11px;
+  font-weight:700;
+}
