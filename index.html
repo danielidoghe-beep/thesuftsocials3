@@ -12,7 +12,12 @@
   <div class="brand">TheSuftSocials</div>
 
   <div class="header-icons">
-    <button class="theme-btn">☼</button>
+    <button
+  className="theme-toggle"
+  onClick={() => setDarkMode(!darkMode)}
+>
+  {darkMode ? "☀" : "☾"}
+</button>
     <button class="menu-btn">☰</button>
   </div>
 </header>
