@@ -630,3 +630,13 @@ body.dark .faq-question{
   cursor:pointer;
   font-size:24px;
 }
+body{
+  background:#fff;
+  color:#111;
+  transition:0.3s ease;
+}
+
+body.dark{
+  background:#0f1115;
+  color:#fff;
+}
