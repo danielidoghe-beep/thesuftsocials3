@@ -306,3 +306,53 @@ body{
   width:24px;
   height:24px;
 }
+.login-page{
+    max-width:390px;
+    margin:0 auto;
+    padding:24px;
+}
+
+.login-title{
+    font-size:30px;
+    font-weight:700;
+    line-height:1.1;
+    margin-bottom:10px;
+}
+
+.login-subtitle{
+    font-size:16px;
+    color:#8a8a8a;
+    margin-bottom:32px;
+}
+
+.google-btn,
+.signin-btn,
+.form-group input{
+    height:56px;
+}
+
+.google-btn{
+    font-size:16px;
+    gap:10px;
+}
+
+.google-icon{
+    width:20px;
+    height:20px;
+}
+
+.form-group label{
+    font-size:16px;
+}
+
+.form-group input{
+    font-size:16px;
+}
+
+.signin-btn{
+    font-size:16px;
+}
+
+.bottom-text{
+    font-size:16px;
+}
