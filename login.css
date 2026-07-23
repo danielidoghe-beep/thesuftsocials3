@@ -248,3 +248,61 @@ body{
   text-decoration:none;
   font-weight:600;
 }
+.login-page{
+  max-width:380px;
+  margin:0 auto;
+  padding:20px;
+}
+
+.logo{
+  font-size:22px;
+  font-weight:700;
+  color:#4d8600;
+  margin-bottom:90px;
+}
+
+.login-title{
+  font-size:28px;
+  font-weight:700;
+  margin-bottom:8px;
+}
+
+.login-subtitle{
+  font-size:16px;
+  color:#808080;
+  margin-bottom:30px;
+}
+
+.google-btn{
+  height:56px;
+  font-size:16px;
+  border:1px solid #ddd;
+  border-radius:14px;
+}
+
+.form-group input{
+  height:56px;
+  font-size:16px;
+}
+
+.signin-btn{
+  height:56px;
+  font-size:16px;
+}
+
+.bottom-text{
+  font-size:16px;
+}
+.google-btn{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:12px;
+  width:100%;
+  background:#fff;
+}
+
+.google-icon{
+  width:24px;
+  height:24px;
+}
