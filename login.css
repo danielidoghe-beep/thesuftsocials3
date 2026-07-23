@@ -356,3 +356,85 @@ body{
 .bottom-text{
     font-size:16px;
 }
+.login-container{
+    padding:30px;
+}
+
+.logo{
+    font-size:18px;
+    font-weight:700;
+    color:#4d8f00;
+    margin-bottom:80px;
+}
+
+.login-title{
+    font-size:38px;
+    line-height:0.95;
+    font-weight:700;
+    color:#111;
+    margin-bottom:12px;
+}
+
+.login-subtitle{
+    font-size:16px;
+    color:#7b7b7b;
+    line-height:1.4;
+    margin-bottom:35px;
+}
+
+.google-btn{
+    height:56px;
+    border:1px solid #ddd;
+    border-radius:16px;
+    font-size:14px;
+    font-weight:500;
+}
+
+.google-btn img{
+    width:22px;
+    height:22px;
+}
+
+.divider{
+    margin:28px 0;
+    font-size:14px;
+    color:#999;
+}
+
+.form-group label{
+    font-size:16px;
+    font-weight:500;
+    margin-bottom:10px;
+}
+
+.form-group input{
+    height:56px;
+    font-size:16px;
+    border-radius:16px;
+}
+
+.password-row{
+    margin-bottom:10px;
+}
+
+.forgot-link{
+    font-size:14px;
+}
+
+.login-btn{
+    height:58px;
+    border-radius:16px;
+    font-size:16px;
+    font-weight:500;
+    margin-top:12px;
+}
+
+.signup-text{
+    margin-top:40px;
+    font-size:16px;
+}
+
+.signup-text a{
+    font-size:16px;
+    font-weight:600;
+}
