@@ -10,11 +10,6 @@ body{
   color:#111;
 }
 
-.login-container{
-  max-width:430px;
-  margin:0 auto;
-  padding:50px 30px;
-}
 
 .logo-text{
   color:#5a9600;
@@ -195,4 +190,63 @@ body{
   .signin-btn{
     height:70px;
   }
+}
+.logo-text {
+  font-size: 18px;
+  font-weight: 700;
+  color: #4b8f00;
+}
+
+h1 {
+  font-size: 34px;
+  font-weight: 700;
+  line-height: 1.1;
+  margin-bottom: 12px;
+  white-space: nowrap;
+}
+
+.subtitle {
+  font-size: 18px;
+  color: #777;
+  line-height: 1.4;
+}
+
+label {
+  font-size: 16px;
+  font-weight: 500;
+  color: #111;
+}
+
+input {
+  height: 58px;
+  font-size: 16px;
+  padding: 0 20px;
+}
+
+.google-btn {
+  height: 58px;
+  font-size: 16px;
+}
+
+.google-btn img {
+  width: 22px;
+  height: 22px;
+}
+
+.signin-btn {
+  height: 58px;
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.or-divider span {
+  font-size: 14px;
+}
+
+.bottom-text {
+  font-size: 16px;
+}
+
+.forgot-password {
+  font-size: 14px;
 }
