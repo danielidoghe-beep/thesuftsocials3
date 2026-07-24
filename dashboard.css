@@ -344,3 +344,94 @@ body{
     border-radius:18px;
   }
 }
+.dashboard-header{
+  padding:0 22px;
+}
+
+.topbar{
+  height:60px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  border-bottom:1px solid #ececec;
+  margin-bottom:24px;
+}
+
+.topbar-right{
+  display:flex;
+  align-items:center;
+  gap:16px;
+}
+
+.wallet-pill{
+  background:#f3f7ec;
+  color:#4f8900;
+  padding:4px 10px;
+  border-radius:20px;
+  font-size:12px;
+  font-weight:600;
+}
+
+.dashboard-header h1{
+  font-size:26px;
+  font-weight:700;
+  margin-bottom:6px;
+}
+
+.dashboard-header .subtitle{
+  font-size:15px;
+  color:#777;
+  margin-bottom:30px;
+}
+
+.stats-card p:first-child{
+  color:#777;
+  font-size:15px;
+  margin-bottom:10px;
+}
+
+.stats-card h2{
+  font-size:22px;
+  font-weight:700;
+  margin-bottom:12px;
+}
+
+.stats-card a{
+  text-decoration:none;
+  color:#777;
+  font-size:15px;
+}
+
+.empty-orders{
+  border:1px solid #e7e7e7;
+  border-radius:18px;
+  height:210px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  text-align:center;
+}
+
+.order-icon{
+  color:#d0d0d0;
+  margin-bottom:12px;
+}
+
+.soon-card{
+  border:1px solid #ededed;
+  border-radius:18px;
+  padding:18px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:14px;
+}
+
+.soon-card span:last-child{
+  background:#f7f7f7;
+  padding:4px 10px;
+  border-radius:20px;
+  font-size:13px;
+  color:#777;
+}
