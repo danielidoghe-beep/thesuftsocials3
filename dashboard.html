@@ -6,6 +6,8 @@
 <title>Dashboard - TheSuftSocials</title>
 
 <link rel="stylesheet" href="dashboard.css">
+
+<script src="https://unpkg.com/lucide@latest"></script>
 </head>
 <body>
 
@@ -15,12 +17,24 @@
 
 <div class="header-top">
 
-<button class="menu-btn">☰</button>
+<button class="menu-btn">
+<i data-lucide="menu"></i>
+</button>
 
 <div class="header-right">
-<button class="theme-btn">☀</button>
-<button class="bell-btn">🔔</button>
-<div id="profileInitials" class="avatar">DD</div>
+
+<button class="theme-btn">
+<i data-lucide="sun"></i>
+</button>
+
+<button class="bell-btn">
+<i data-lucide="bell"></i>
+</button>
+
+<div id="profileInitials" class="avatar">
+DD
+</div>
+
 </div>
 
 </div>
@@ -66,10 +80,10 @@ View orders →
 
 <p>Available inventory</p>
 
-<h2 id="inventory">0</h2>
+<h2 id="inventory">302</h2>
 
 <span id="inventoryDetails">
-0 logs · 0 tools
+113 logs · 189 tools
 </span>
 
 </div>
@@ -82,7 +96,9 @@ Quick actions
 
 <a href="logs.html" class="action-card">
 
-<div class="icon blue"></div>
+<div class="icon blue">
+<i data-lucide="package"></i>
+</div>
 
 <div>
 <h4>Buy Logs</h4>
@@ -94,7 +110,9 @@ Quick actions
 
 <a href="tools.html" class="action-card">
 
-<div class="icon purple"></div>
+<div class="icon purple">
+<i data-lucide="wrench"></i>
+</div>
 
 <div>
 <h4>Buy Tools</h4>
@@ -106,7 +124,9 @@ Quick actions
 
 <a href="wallet.html" class="action-card">
 
-<div class="icon green"></div>
+<div class="icon green">
+<i data-lucide="wallet"></i>
+</div>
 
 <div>
 <h4>Top Up Wallet</h4>
@@ -118,7 +138,9 @@ Quick actions
 
 <a href="support.html" class="action-card">
 
-<div class="icon orange"></div>
+<div class="icon orange">
+<i data-lucide="headphones"></i>
+</div>
 
 <div>
 <h4>Get Support</h4>
@@ -132,14 +154,18 @@ Quick actions
 
 <h3>Recent orders</h3>
 
-<a href="orders.html">View all</a>
+<a href="orders.html">
+View all
+</a>
 
 </div>
 
 
 <div class="empty-orders">
 
-<div class="order-icon"></div>
+<div class="order-icon">
+<i data-lucide="shopping-bag"></i>
+</div>
 
 <h4>No orders yet</h4>
 
@@ -154,13 +180,26 @@ Coming soon
 
 
 <div class="soon-card">
-SMS Numbers
-<span>Soon</span>
+
+<div class="soon-left">
+<i data-lucide="message-square"></i>
+<span>SMS Numbers</span>
 </div>
 
-<div class="soon-card">
-SME Boosting
 <span>Soon</span>
+
+</div>
+
+
+<div class="soon-card">
+
+<div class="soon-left">
+<i data-lucide="zap"></i>
+<span>SME Boosting</span>
+</div>
+
+<span>Soon</span>
+
 </div>
 
 
@@ -177,6 +216,7 @@ href="https://wa.me/2349117412352"
 class="whatsapp-btn"
 target="_blank"
 >
+<i data-lucide="message-circle"></i>
 Chat on WhatsApp
 </a>
 
@@ -185,6 +225,7 @@ href="https://t.me/+Xbt-w6-TwsozYjY0"
 class="telegram-btn"
 target="_blank"
 >
+<i data-lucide="send"></i>
 Open Telegram
 </a>
 
@@ -192,9 +233,19 @@ Open Telegram
 href="mailto:support@thesuftsocials.com"
 class="email-link"
 >
+<i data-lucide="mail"></i>
 support@thesuftsocials.com
 </a>
 
 </div>
 
 </div>
+
+<script type="module" src="dashboard.js"></script>
+
+<script>
+lucide.createIcons();
+</script>
+
+</body>
+</html>
