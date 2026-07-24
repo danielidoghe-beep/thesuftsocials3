@@ -10,12 +10,104 @@
 <script src="https://unpkg.com/lucide@latest"></script>
 </head>
 <body>
+<div id="sidebarOverlay" class="sidebar-overlay"></div>
 
+<div id="sidebar" class="sidebar">
+
+<div class="sidebar-content">
+
+<div class="menu-section">
+
+<div class="section-title">Main</div>
+
+<a href="dashboard.html" class="menu-item active">
+<i data-lucide="layout-dashboard"></i>
+Dashboard
+</a>
+
+<a href="wallet.html" class="menu-item">
+<i data-lucide="wallet"></i>
+Wallet
+</a>
+
+<a href="orders.html" class="menu-item">
+<i data-lucide="shopping-bag"></i>
+Orders
+</a>
+
+<a href="transactions.html" class="menu-item">
+<i data-lucide="arrow-left-right"></i>
+Transactions
+</a>
+
+</div>
+
+<div class="menu-section">
+
+<div class="section-title">Store</div>
+
+<a href="logs.html" class="menu-item">
+<i data-lucide="package"></i>
+Logs Store
+</a>
+
+<a href="tools.html" class="menu-item">
+<i data-lucide="wrench"></i>
+Tools Store
+</a>
+
+<a href="#" class="menu-item disabled">
+<i data-lucide="message-square"></i>
+SMS Numbers
+<span class="soon-tag">Soon</span>
+</a>
+
+<a href="#" class="menu-item disabled">
+<i data-lucide="zap"></i>
+SME Boosting
+<span class="soon-tag">Soon</span>
+</a>
+
+</div>
+
+<div class="menu-section">
+
+<div class="section-title">Account</div>
+
+<a href="support.html" class="menu-item">
+<i data-lucide="headphones"></i>
+Support
+</a>
+
+<a href="notifications.html" class="menu-item">
+<i data-lucide="bell"></i>
+Notifications
+</a>
+
+<a href="profile.html" class="menu-item">
+<i data-lucide="user"></i>
+Profile
+</a>
+
+</div>
+
+</div>
+
+<div class="sidebar-footer">
+
+<button id="logoutBtn" class="logout-btn">
+<i data-lucide="log-out"></i>
+Sign out
+</button>
+
+</div>
+
+</div>
 <div class="topbar">
 
-<div class="topbar-left">
+<button class="menu-btn">
 <i data-lucide="panel-left"></i>
-</div>
+</button>
 
 <div class="topbar-right">
 
