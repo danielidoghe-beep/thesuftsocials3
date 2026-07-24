@@ -435,3 +435,42 @@ body{
   font-size:13px;
   color:#777;
 }
+a{
+  text-decoration:none;
+}
+
+.stats-card a{
+  color:#6d6d6d;
+  font-size:14px;
+}
+
+.stats-card h2{
+  margin-bottom:12px;
+}
+
+.dashboard{
+  max-width:380px;
+}
+
+.content{
+  padding:20px;
+}
+
+.section-title{
+  margin-top:32px;
+}
+
+.empty-card{
+  border:1px solid #ececec;
+  border-radius:18px;
+  min-height:210px;
+}
+
+.coming-card{
+  height:100px;
+}
+
+.coming-card span{
+  background:#f5f5f5;
+  border:1px solid #ececec;
+}
