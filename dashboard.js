@@ -5,32 +5,73 @@ import {
   signOut
 } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-auth.js";
 
-onAuthStateChanged(auth, (user) => {
+import {
+  getFirestore,
+  doc,
+  getDoc
+} from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
+
+const db = getFirestore();
+
+onAuthStateChanged(auth, async (user) => {
 
   if (!user) {
+    window.location.href = "login.html";
+    return;
+  }
 
-    window.location.href =
-      "login.html";
+  try {
+
+    const userRef = doc(db, "users", user.uid);
+
+    const userSnap = await getDoc(userRef);
+
+    if (userSnap.exists()) {
+
+      const data = userSnap.data();
+
+      document.getElementById("welcomeText").textContent =
+        `Welcome back, ${data.firstName || "User"}`;
+
+      document.getElementById("balance").textContent =
+        `₦${(data.balance || 0).toLocaleString()}`;
+
+      document.getElementById("purchases").textContent =
+        data.purchases || 0;
+
+      document.getElementById("inventory").textContent =
+        data.inventory || 0;
+
+      document.getElementById("inventoryDetails").textContent =
+        `${data.logs || 0} logs • ${data.tools || 0} tools`;
+
+      const initials =
+        (data.firstName?.charAt(0) || "") +
+        (data.lastName?.charAt(0) || "");
+
+      document.getElementById("profileInitials").textContent =
+        initials.toUpperCase();
+
+    }
+
+  } catch (error) {
+
+    console.error("Dashboard Error:", error);
 
   }
 
 });
 
-const logoutBtn =
-  document.querySelector(".logout-btn");
+const logoutBtn = document.querySelector(".logout-btn");
 
 if (logoutBtn) {
 
-  logoutBtn.addEventListener(
-    "click",
-    async () => {
+  logoutBtn.addEventListener("click", async () => {
 
-      await signOut(auth);
+    await signOut(auth);
 
-      window.location.href =
-        "login.html";
+    window.location.href = "login.html";
 
-    }
-  );
+  });
 
 }
