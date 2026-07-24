@@ -9,67 +9,192 @@
 </head>
 <body>
 
-<div class="container">
+<div class="dashboard">
 
-    <header class="topbar">
-        <div class="menu">☰</div>
+<header class="dashboard-header">
 
-        <div class="profile" id="profileInitials">
-            DD
-        </div>
-    </header>
+<div class="header-top">
 
-    <h1 id="welcomeText">
-        Welcome back 👋
-    </h1>
+<button class="menu-btn">☰</button>
 
-    <p class="subtitle">
-        Here's what's going on with your account
-    </p>
-
-    <div class="card">
-        <p>Wallet balance</p>
-        <h2 id="balance">₦0</h2>
-        <span>View history →</span>
-    </div>
-
-    <div class="card">
-        <p>Total purchases</p>
-        <h2 id="purchases">0</h2>
-        <span>View orders →</span>
-    </div>
-
-    <div class="card">
-        <p>Available inventory</p>
-        <h2 id="inventory">0</h2>
-        <span id="inventoryDetails">
-            0 logs • 0 tools
-        </span>
-    </div>
-
-    <h3 class="section-title">
-        Quick actions
-    </h3>
-
-    <div class="action-card" onclick="location.href='logs.html'">
-        Buy Logs
-    </div>
-
-    <div class="action-card" onclick="location.href='tools.html'">
-        Buy Tools
-    </div>
-
-    <div class="action-card" onclick="location.href='wallet.html'">
-        Top Up Wallet
-    </div>
-
-    <div class="action-card" onclick="location.href='support.html'">
-        Get Support
-    </div>
+<div class="header-right">
+<button class="theme-btn">☀</button>
+<button class="bell-btn">🔔</button>
+<div id="profileInitials" class="avatar">DD</div>
+</div>
 
 </div>
 
-<script type="module" src="dashboard.js"></script>
+<h1 id="welcomeText">
+Welcome back 👋
+</h1>
 
-</body>
-</html>
+<p class="subtitle">
+Here's what's going on with your account
+</p>
+
+</header>
+
+
+<div class="stats-card">
+
+<p>Wallet balance</p>
+
+<h2 id="balance">₦0</h2>
+
+<a href="wallet.html">
+View history →
+</a>
+
+</div>
+
+
+<div class="stats-card">
+
+<p>Total purchases</p>
+
+<h2 id="purchases">0</h2>
+
+<a href="orders.html">
+View orders →
+</a>
+
+</div>
+
+
+<div class="stats-card">
+
+<p>Available inventory</p>
+
+<h2 id="inventory">0</h2>
+
+<span id="inventoryDetails">
+0 logs · 0 tools
+</span>
+
+</div>
+
+
+<h3 class="section-title">
+Quick actions
+</h3>
+
+
+<a href="logs.html" class="action-card">
+
+<div class="icon blue"></div>
+
+<div>
+<h4>Buy Logs</h4>
+<p>Social media accounts, VPNs, proxies, etc.</p>
+</div>
+
+</a>
+
+
+<a href="tools.html" class="action-card">
+
+<div class="icon purple"></div>
+
+<div>
+<h4>Buy Tools</h4>
+<p>Updates & pictures</p>
+</div>
+
+</a>
+
+
+<a href="wallet.html" class="action-card">
+
+<div class="icon green"></div>
+
+<div>
+<h4>Top Up Wallet</h4>
+<p>Add funds to your balance</p>
+</div>
+
+</a>
+
+
+<a href="support.html" class="action-card">
+
+<div class="icon orange"></div>
+
+<div>
+<h4>Get Support</h4>
+<p>Open a support ticket</p>
+</div>
+
+</a>
+
+
+<div class="section-row">
+
+<h3>Recent orders</h3>
+
+<a href="orders.html">View all</a>
+
+</div>
+
+
+<div class="empty-orders">
+
+<div class="order-icon"></div>
+
+<h4>No orders yet</h4>
+
+<p>Your purchases will appear here</p>
+
+</div>
+
+
+<h3 class="section-title">
+Coming soon
+</h3>
+
+
+<div class="soon-card">
+SMS Numbers
+<span>Soon</span>
+</div>
+
+<div class="soon-card">
+SME Boosting
+<span>Soon</span>
+</div>
+
+
+<div class="support-box">
+
+<h3>Need quick help?</h3>
+
+<p>
+Reach support directly if you want a faster response outside tickets.
+</p>
+
+<a
+href="https://wa.me/2349117412352"
+class="whatsapp-btn"
+target="_blank"
+>
+Chat on WhatsApp
+</a>
+
+<a
+href="https://t.me/+Xbt-w6-TwsozYjY0"
+class="telegram-btn"
+target="_blank"
+>
+Open Telegram
+</a>
+
+<a
+href="mailto:support@thesuftsocials.com"
+class="email-link"
+>
+support@thesuftsocials.com
+</a>
+
+</div>
+
+</div>
