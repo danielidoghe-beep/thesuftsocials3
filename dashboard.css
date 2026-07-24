@@ -2,27 +2,34 @@
 margin:0;
 padding:0;
 box-sizing:border-box;
-font-family:Arial, sans-serif;
+font-family:Arial,Helvetica,sans-serif;
 }
 
 body{
 background:#fff;
+color:#111;
 }
 
-.container{
+.dashboard{
 max-width:430px;
 margin:auto;
-padding:20px;
+padding:22px;
 }
 
-.topbar{
+.header-top{
 display:flex;
 justify-content:space-between;
 align-items:center;
-margin-bottom:30px;
+margin-bottom:24px;
 }
 
-.profile{
+.header-right{
+display:flex;
+align-items:center;
+gap:12px;
+}
+
+.avatar{
 width:42px;
 height:42px;
 border-radius:50%;
@@ -35,49 +42,192 @@ font-weight:700;
 }
 
 h1{
-font-size:38px;
-font-weight:700;
+font-size:34px;
+line-height:1.15;
 margin-bottom:8px;
+font-weight:700;
 }
 
 .subtitle{
+font-size:15px;
 color:#777;
-margin-bottom:30px;
+margin-bottom:24px;
 }
 
-.card{
-border:1px solid #e5e5e5;
+.stats-card{
+border:1px solid #ececec;
 border-radius:18px;
 padding:22px;
 margin-bottom:16px;
 }
 
-.card p{
+.stats-card p{
 color:#777;
+font-size:14px;
 margin-bottom:10px;
 }
 
-.card h2{
-font-size:40px;
+.stats-card h2{
+font-size:42px;
+font-weight:700;
 margin-bottom:10px;
 }
 
-.card span{
-color:#666;
+#balance{
+color:#4f8900;
+}
+
+.stats-card a{
+color:#4f8900;
+text-decoration:none;
+font-size:14px;
 }
 
 .section-title{
-margin-top:30px;
-margin-bottom:20px;
 font-size:24px;
+font-weight:700;
+margin:30px 0 18px;
 }
 
 .action-card{
-border:1px solid #e5e5e5;
+display:flex;
+gap:14px;
+align-items:center;
+border:1px solid #ececec;
 border-radius:18px;
-padding:24px;
-margin-bottom:16px;
-cursor:pointer;
+padding:18px;
+margin-bottom:14px;
+text-decoration:none;
+color:#111;
+}
+
+.icon{
+width:50px;
+height:50px;
+border-radius:14px;
+}
+
+.blue{
+background:#e7f0ff;
+}
+
+.purple{
+background:#f2e9ff;
+}
+
+.green{
+background:#e7ffe7;
+}
+
+.orange{
+background:#fff0e7;
+}
+
+.action-card h4{
+font-size:17px;
+margin-bottom:4px;
+}
+
+.action-card p{
+font-size:13px;
+color:#777;
+}
+
+.section-row{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin:30px 0 18px;
+}
+
+.section-row a{
+text-decoration:none;
+color:#4f8900;
+}
+
+.empty-orders{
+border:1px solid #ececec;
+border-radius:18px;
+padding:35px 20px;
+text-align:center;
+}
+
+.empty-orders h4{
+margin:14px 0 8px;
 font-size:18px;
-font-weight:600;
+}
+
+.empty-orders p{
+color:#777;
+font-size:14px;
+}
+
+.order-icon{
+width:56px;
+height:56px;
+background:#f3f3f3;
+border-radius:14px;
+margin:auto;
+}
+
+.soon-card{
+border:1px solid #ececec;
+border-radius:18px;
+padding:18px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:12px;
+}
+
+.soon-card span{
+background:#f2f2f2;
+padding:6px 10px;
+border-radius:999px;
+font-size:12px;
+}
+
+.support-box{
+margin-top:30px;
+padding-bottom:30px;
+}
+
+.support-box h3{
+font-size:26px;
+margin-bottom:10px;
+}
+
+.support-box p{
+color:#777;
+line-height:1.5;
+margin-bottom:18px;
+}
+
+.whatsapp-btn,
+.telegram-btn{
+display:block;
+width:100%;
+text-align:center;
+padding:16px;
+border-radius:16px;
+text-decoration:none;
+margin-bottom:12px;
+}
+
+.whatsapp-btn{
+background:#4f8900;
+color:#fff;
+}
+
+.telegram-btn{
+border:1px solid #ececec;
+color:#111;
+}
+
+.email-link{
+display:block;
+text-align:center;
+margin-top:18px;
+text-decoration:none;
+color:#4f8900;
 }
