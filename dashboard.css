@@ -302,3 +302,37 @@ body{
     border-radius:16px;
   }
 }
+.icon{
+    width:42px;
+    height:42px;
+    border-radius:12px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+.icon svg{
+    width:20px;
+    height:20px;
+}
+
+.order-icon svg{
+    width:40px;
+    height:40px;
+    color:#d0d0d0;
+}
+
+.soon-left{
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+.whatsapp-btn,
+.telegram-btn,
+.email-link{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:10px;
+}
