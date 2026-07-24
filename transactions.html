@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Transactions</title>
+
+<link rel="stylesheet" href="transactions.css">
+<script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+
+<div class="topbar">
+
+<a href="dashboard.html">
+<i data-lucide="panel-left"></i>
+</a>
+
+<div class="topbar-right">
+
+<div class="wallet-pill">₦0</div>
+
+<i data-lucide="sun"></i>
+
+<a href="notifications.html">
+<i data-lucide="bell"></i>
+</a>
+
+<div class="avatar">DD</div>
+
+</div>
+
+</div>
+
+<div class="page">
+
+<h1>Transactions</h1>
+
+<p class="subtitle">
+Your complete transaction history
+</p>
+
+<div class="search-box">
+
+<i data-lucide="search"></i>
+
+<input
+type="text"
+placeholder="Search by reference, type, or ID..."
+>
+
+</div>
+
+<div id="emptyTransactions" class="empty-card">
+
+<div class="empty-content">
+
+<i data-lucide="arrow-up-right"></i>
+
+<h3>No transactions yet</h3>
+
+<p>Your transactions will appear here</p>
+
+</div>
+
+</div>
+
+<div id="transactionList"></div>
+
+</div>
+
+<script>
+lucide.createIcons();
+</script>
+
+<script src="transactions.js"></script>
+
+</body>
+</html>
