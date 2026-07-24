@@ -75,3 +75,24 @@ if (logoutBtn) {
   });
 
 }
+const badge =
+document.getElementById(
+"notificationBadge"
+);
+
+const count =
+parseInt(
+localStorage.getItem(
+"notificationCount"
+)
+) || 0;
+
+if(count > 0){
+
+badge.textContent = count;
+
+}else{
+
+badge.style.display = "none";
+
+}
