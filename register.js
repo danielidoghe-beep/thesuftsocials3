@@ -1,10 +1,15 @@
-import { auth, googleProvider } from "./firebase.js";
+import { auth, googleProvider, db } from "./firebase.js";
 
 import {
   createUserWithEmailAndPassword,
   updateProfile,
   signInWithPopup
 } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-auth.js";
+
+import {
+  doc,
+  setDoc
+} from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
 
 const form = document.querySelector("form");
 
@@ -13,16 +18,16 @@ form.addEventListener("submit", async (e) => {
   e.preventDefault();
 
   const firstName =
-    document.querySelector("#firstName").value;
+    document.getElementById("firstName").value.trim();
 
   const lastName =
-    document.querySelector("#lastName").value;
+    document.getElementById("lastName").value.trim();
 
   const email =
-    document.querySelector('input[type="email"]').value;
+    document.getElementById("email").value.trim();
 
   const password =
-    document.querySelector('input[type="password"]').value;
+    document.getElementById("password").value;
 
   try {
 
@@ -33,40 +38,25 @@ form.addEventListener("submit", async (e) => {
         password
       );
 
-    await updateProfile(
-      userCredential.user,
-      {
-        displayName:
-          `${firstName} ${lastName}`
-      }
-    );
+    const user = userCredential.user;
 
-    alert("Account created");
+    await updateProfile(user, {
+      displayName: `${firstName} ${lastName}`
+    });
 
-    window.location.href =
-      "dashboard.html";
+    await setDoc(doc(db, "users", user.uid), {
+      firstName,
+      lastName,
+      email,
+      balance: 0,
+      purchases: 0,
+      inventory: 0,
+      logs: 0,
+      tools: 0,
+      createdAt: Date.now()
+    });
 
-  } catch (error) {
-
-    alert(error.message);
-
-  }
-
-});
-
-document
-.querySelector(".google-btn")
-.addEventListener("click", async () => {
-
-  try {
-
-    await signInWithPopup(
-      auth,
-      googleProvider
-    );
-
-    window.location.href =
-      "dashboard.html";
+    window.location.href = "dashboard.html";
 
   } catch (error) {
 
@@ -75,3 +65,50 @@ document
   }
 
 });
+
+const googleBtn = document.querySelector(".google-btn");
+
+if (googleBtn) {
+
+  googleBtn.addEventListener("click", async () => {
+
+    try {
+
+      const result =
+        await signInWithPopup(
+          auth,
+          googleProvider
+        );
+
+      const user = result.user;
+
+      await setDoc(
+        doc(db, "users", user.uid),
+        {
+          firstName:
+            user.displayName?.split(" ")[0] || "",
+          lastName:
+            user.displayName?.split(" ").slice(1).join(" ") || "",
+          email: user.email,
+          balance: 0,
+          purchases: 0,
+          inventory: 0,
+          logs: 0,
+          tools: 0,
+          createdAt: Date.now()
+        },
+        { merge: true }
+      );
+
+      window.location.href =
+        "dashboard.html";
+
+    } catch (error) {
+
+      alert(error.message);
+
+    }
+
+  });
+
+}
