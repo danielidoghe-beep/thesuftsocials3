@@ -96,3 +96,16 @@ badge.textContent = count;
 badge.style.display = "none";
 
 }
+const menuBtn = document.querySelector(".menu-btn");
+const sidebar = document.getElementById("sidebar");
+const overlay = document.getElementById("sidebarOverlay");
+
+menuBtn.addEventListener("click", () => {
+  sidebar.classList.add("show");
+  overlay.classList.add("show");
+});
+
+overlay.addEventListener("click", () => {
+  sidebar.classList.remove("show");
+  overlay.classList.remove("show");
+});
