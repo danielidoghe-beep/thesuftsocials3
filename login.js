@@ -26,7 +26,33 @@ form.addEventListener("submit", async (e) => {
     );
 
     alert("Login successful");
+const notifications =
+JSON.parse(
+localStorage.getItem("notifications")
+) || [];
 
+notifications.push({
+
+title:"Login Successful",
+
+message:"You logged into your account."
+
+});
+
+localStorage.setItem(
+"notifications",
+JSON.stringify(notifications)
+);
+
+const currentCount =
+parseInt(
+localStorage.getItem("notificationCount")
+) || 0;
+
+localStorage.setItem(
+"notificationCount",
+currentCount + 1
+);
     window.location.href = "dashboard.html";
 
   } catch (error) {
