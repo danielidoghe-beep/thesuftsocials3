@@ -43,7 +43,28 @@ form.addEventListener("submit", async (e) => {
     await updateProfile(user, {
       displayName: `${firstName} ${lastName}`
     });
+const notifications =
+JSON.parse(
+localStorage.getItem("notifications")
+) || [];
 
+notifications.push({
+
+title:"Account Created",
+
+message:"Your account was created successfully."
+
+});
+
+localStorage.setItem(
+"notifications",
+JSON.stringify(notifications)
+);
+
+localStorage.setItem(
+"notificationCount",
+1
+);
     await setDoc(doc(db, "users", user.uid), {
       firstName,
       lastName,
