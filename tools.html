@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tools Store</title>
+
+<link rel="stylesheet" href="tools.css">
+
+<script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+
+<div class="page">
+
+<h1>Tools Store</h1>
+
+<p class="subtitle">
+Updates, picture sets, and more
+</p>
+
+<div class="search-box">
+
+<i data-lucide="search"></i>
+
+<input
+type="text"
+placeholder="Search tools..."
+>
+
+</div>
+
+<h3>
+<span id="totalTools">0</span>
+tools available
+</h3>
+
+<div class="filters">
+
+<button class="active">
+All
+</button>
+
+<button>
+Working Pictures
+<span>0</span>
+</button>
+
+<button>
+Working Tools
+<span>0</span>
+</button>
+
+</div>
+
+<div id="toolsContainer">
+
+<div class="empty-tools">
+
+<i data-lucide="package-search"></i>
+
+<h2>No tools available yet</h2>
+
+<p>
+Tools uploaded from the admin panel
+will appear here.
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+<script src="tools.js"></script>
+
+<script>
+lucide.createIcons();
+</script>
+
+</body>
+</html>
