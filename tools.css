@@ -1,0 +1,81 @@
+body{
+margin:0;
+font-family:sans-serif;
+background:#f7f7f7;
+}
+
+.page{
+padding:24px;
+}
+
+h1{
+font-size:42px;
+margin-bottom:10px;
+}
+
+.subtitle{
+font-size:20px;
+color:#777;
+margin-bottom:30px;
+}
+
+.search-box{
+display:flex;
+align-items:center;
+gap:10px;
+background:#fff;
+padding:18px;
+border-radius:18px;
+border:1px solid #ddd;
+margin-bottom:25px;
+}
+
+.search-box input{
+border:none;
+outline:none;
+width:100%;
+font-size:18px;
+}
+
+.filters{
+display:flex;
+gap:12px;
+flex-wrap:wrap;
+margin:20px 0;
+}
+
+.filters button{
+border:none;
+padding:15px 20px;
+border-radius:15px;
+background:#fff;
+font-size:16px;
+}
+
+.filters .active{
+background:#4f8900;
+color:#fff;
+}
+
+.empty-tools{
+background:#fff;
+border-radius:24px;
+padding:60px 20px;
+text-align:center;
+border:1px solid #ddd;
+margin-top:20px;
+}
+
+.empty-tools i{
+width:60px;
+height:60px;
+color:#bbb;
+}
+
+.empty-tools h2{
+margin-top:15px;
+}
+
+.empty-tools p{
+color:#777;
+}
