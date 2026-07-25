@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Upload Tool</title>
+
+<link rel="stylesheet" href="admin-tools.css">
+</head>
+<body>
+
+<div class="container">
+
+<h1>Upload Tool</h1>
+
+<p class="subtitle">
+Add tools and working pictures
+</p>
+
+<form id="toolForm">
+
+<label>Title</label>
+<input
+type="text"
+id="title"
+required
+placeholder="Tool title"
+>
+
+<label>Description</label>
+<textarea
+id="description"
+required
+placeholder="Tool description"
+></textarea>
+
+<label>Price (₦)</label>
+<input
+type="number"
+id="price"
+required
+placeholder="5000"
+>
+
+<label>Image URL</label>
+<input
+type="text"
+id="image"
+required
+placeholder="https://..."
+>
+
+<label>Category</label>
+
+<select id="category">
+
+<option value="working-tools">
+Working Tools
+</option>
+
+<option value="working-pictures">
+Working Pictures
+</option>
+
+</select>
+
+<button type="submit">
+Upload Tool
+</button>
+
+</form>
+
+</div>
+
+<script type="module" src="admin-tools.js"></script>
+
+</body>
+</html>
