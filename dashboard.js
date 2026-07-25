@@ -19,7 +19,17 @@ onAuthStateChanged(auth, async (user) => {
     window.location.href = "login.html";
     return;
   }
+const adminLink =
+document.getElementById("adminLink");
 
+if (
+user.email ===
+"danielidoghe@gmail.com"
+) {
+
+adminLink.style.display = "flex";
+
+}
   try {
 
     const userRef = doc(db, "users", user.uid);
