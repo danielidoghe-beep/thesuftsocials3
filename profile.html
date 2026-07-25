@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Profile</title>
+
+<link rel="stylesheet" href="profile.css">
+<script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+
+<div class="page">
+
+<h1>Profile</h1>
+<p class="subtitle">Manage your account details</p>
+
+<div class="card">
+
+<h2>Account</h2>
+<p class="card-subtitle">Your public profile information</p>
+
+<div class="profile-top">
+
+<div class="avatar-wrap">
+
+<div class="avatar" id="profileInitials">
+DD
+</div>
+
+<label class="camera-btn">
+<i data-lucide="camera"></i>
+<input type="file" hidden>
+</label>
+
+</div>
+
+<h3 id="profileName">
+Daniellll Davidll
+</h3>
+
+<p id="profileEmail">
+danielidoghe@gmail.com
+</p>
+
+<span class="photo-note">
+Click the camera to change your photo
+</span>
+
+</div>
+
+<hr>
+
+<label>First name</label>
+<input type="text" id="firstName">
+
+<label>Last name</label>
+<input type="text" id="lastName">
+
+<label>Email</label>
+<input type="email" id="email" readonly>
+
+<p class="small-text">
+Email cannot be changed
+</p>
+
+<div class="btn-row">
+<button class="green-btn">
+Save changes
+</button>
+</div>
+
+</div>
+
+<div class="card">
+
+<h2>Password</h2>
+<p class="card-subtitle">
+Change your login password
+</p>
+
+<label>Current password</label>
+
+<div class="password-box">
+<input type="password">
+<i data-lucide="eye"></i>
+</div>
+
+<label>New password</label>
+
+<div class="password-box">
+<input type="password">
+<i data-lucide="eye"></i>
+</div>
+
+<label>Confirm new password</label>
+
+<div class="password-box">
+<input type="password">
+<i data-lucide="eye"></i>
+</div>
+
+<div class="btn-row">
+<button class="green-btn">
+Update password
+</button>
+</div>
+
+</div>
+
+</div>
+
+<script>
+lucide.createIcons();
+</script>
+
+</body>
+</html>
