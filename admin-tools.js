@@ -31,7 +31,8 @@ document.getElementById("price").value
 
 image:
 document.getElementById("image").value,
-
+toolLink:
+document.getElementById("toolLink").value,
 category:
 document.getElementById("category").value,
 
