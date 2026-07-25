@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Dashboard</title>
+
+<link rel="stylesheet" href="admin.css">
+
+<script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+
+<div class="container">
+
+<h1>Admin Dashboard</h1>
+
+<p class="subtitle">
+Manage users, tools, orders and transactions
+</p>
+
+<div class="grid">
+
+<a href="admin-users.html" class="card">
+<i data-lucide="users"></i>
+<h3>Users</h3>
+<p>View all registered users</p>
+</a>
+
+<a href="admin-tools.html" class="card">
+<i data-lucide="package"></i>
+<h3>Upload Tools</h3>
+<p>Add tools and pictures</p>
+</a>
+
+<a href="admin-orders.html" class="card">
+<i data-lucide="shopping-bag"></i>
+<h3>Orders</h3>
+<p>Manage purchases</p>
+</a>
+
+<a href="admin-transactions.html" class="card">
+<i data-lucide="receipt"></i>
+<h3>Transactions</h3>
+<p>View all transactions</p>
+</a>
+
+<a href="admin-balance.html" class="card">
+<i data-lucide="wallet"></i>
+<h3>Credit Balance</h3>
+<p>Add funds to users</p>
+</a>
+
+<a href="admin-notifications.html" class="card">
+<i data-lucide="bell"></i>
+<h3>Notifications</h3>
+<p>Send notifications</p>
+</a>
+
+</div>
+
+</div>
+
+<script>
+lucide.createIcons();
+</script>
+
+<script type="module" src="admin.js"></script>
+
+</body>
+</html>
