@@ -15,33 +15,40 @@
 <h1>Profile</h1>
 <p class="subtitle">Manage your account details</p>
 
+<!-- ACCOUNT CARD -->
+
 <div class="card">
 
 <h2>Account</h2>
-<p class="card-subtitle">Your public profile information</p>
+
+<p class="card-subtitle">
+Your public profile information
+</p>
 
 <div class="profile-top">
 
 <div class="avatar-wrap">
 
 <div class="avatar" id="profileInitials">
-DD
 </div>
 
 <label class="camera-btn">
+
 <i data-lucide="camera"></i>
-<input type="file" hidden>
+
+<input
+type="file"
+id="profilePhoto"
+hidden
+>
+
 </label>
 
 </div>
 
-<h3 id="profileName">
-Daniellll Davidll
-</h3>
+<h3 id="profileName"></h3>
 
-<p id="profileEmail">
-danielidoghe@gmail.com
-</p>
+<p id="profileEmail"></p>
 
 <span class="photo-note">
 Click the camera to change your photo
@@ -51,64 +58,122 @@ Click the camera to change your photo
 
 <hr>
 
-<label>First name</label>
-<input type="text" id="firstName">
+<label for="firstName">
+First name
+</label>
 
-<label>Last name</label>
-<input type="text" id="lastName">
+<input
+type="text"
+id="firstName"
+>
 
-<label>Email</label>
-<input type="email" id="email" readonly>
+<label for="lastName">
+Last name
+</label>
+
+<input
+type="text"
+id="lastName"
+>
+
+<label for="email">
+Email
+</label>
+
+<input
+type="email"
+id="email"
+readonly
+>
 
 <p class="small-text">
 Email cannot be changed
 </p>
 
 <div class="btn-row">
-<button class="green-btn">
+
+<button
+id="saveProfile"
+class="green-btn"
+>
 Save changes
 </button>
+
 </div>
 
 </div>
+
+<!-- PASSWORD CARD -->
 
 <div class="card">
 
 <h2>Password</h2>
+
 <p class="card-subtitle">
 Change your login password
 </p>
 
-<label>Current password</label>
+<label>
+Current password
+</label>
 
 <div class="password-box">
-<input type="password">
+
+<input
+type="password"
+id="currentPassword"
+>
+
 <i data-lucide="eye"></i>
+
 </div>
 
-<label>New password</label>
+<label>
+New password
+</label>
 
 <div class="password-box">
-<input type="password">
+
+<input
+type="password"
+id="newPassword"
+>
+
 <i data-lucide="eye"></i>
+
 </div>
 
-<label>Confirm new password</label>
+<label>
+Confirm new password
+</label>
 
 <div class="password-box">
-<input type="password">
+
+<input
+type="password"
+id="confirmPassword"
+>
+
 <i data-lucide="eye"></i>
+
 </div>
 
 <div class="btn-row">
-<button class="green-btn">
+
+<button
+id="updatePassword"
+class="green-btn"
+>
 Update password
 </button>
-</div>
 
 </div>
 
 </div>
+
+</div>
+
+<script type="module" src="profile.js"></script>
 
 <script>
 lucide.createIcons();
