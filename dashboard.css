@@ -637,3 +637,15 @@ border-bottom:1px solid #333;
 body.dark a{
 color:#6dbb00;
 }
+.sidebar-link{
+  text-decoration:none;
+  color:#111;
+}
+
+.sidebar-link:visited{
+  color:#111;
+}
+
+.sidebar-link:hover{
+  color:#111;
+}
