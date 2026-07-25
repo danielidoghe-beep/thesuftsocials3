@@ -31,8 +31,10 @@ document.getElementById("price").value
 
 image:
 document.getElementById("image").value,
+
 toolLink:
-document.getElementById("toolLink").value,
+document.getElementById("toolLink")?.value || "",
+
 category:
 document.getElementById("category").value,
 
@@ -41,13 +43,13 @@ Date.now()
 }
 );
 
-alert(
-"Tool uploaded successfully"
-);
+alert("Tool uploaded successfully");
 
 form.reset();
 
 }catch(error){
+
+console.error(error);
 
 alert(error.message);
 
