@@ -1,693 +1,766 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard | thesuftsocials</title>
 
-    <!-- Remix Icons -->
-    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css" rel="stylesheet">
+<meta charset="UTF-8">
 
-    <!-- CSS -->
-    <link rel="stylesheet" href="dashboard.css">
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>Dashboard | thesuftsocials</title>
+
+<!-- Remix Icons -->
+
+<link
+href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css"
+rel="stylesheet">
+
+<!-- CSS -->
+
+<link
+rel="stylesheet"
+href="dashboard.css">
+
 </head>
 
 <body>
 
 <div class="dashboard">
 
-    <!-- ===========================
-         SIDEBAR
-    ============================ -->
-    <aside class="sidebar" id="sidebar">
+<!-- ==========================
+SIDEBAR
+========================== -->
 
-        <!-- Logo -->
-        <div class="logo-area">
+<aside
+class="sidebar"
+id="sidebar">
 
-            <div class="logo-icon">
-                <i class="ri-flashlight-fill"></i>
-            </div>
+<div class="sidebar-top">
 
-            <div class="logo-text">
-                <h2>thesuftsocials</h2>
-                <span>Premium Dashboard</span>
-            </div>
+<div class="logo">
 
-        </div>
+<div class="logo-icon">
 
-        <!-- Navigation -->
-        <nav class="sidebar-menu">
-
-            <a href="dashboard.html" class="menu-item active">
-                <i class="ri-dashboard-fill"></i>
-                <span>Dashboard</span>
-            </a>
-
-            <a href="wallet.html" class="menu-item">
-                <i class="ri-wallet-3-fill"></i>
-                <span>Wallet</span>
-            </a>
-
-            <a href="#" class="menu-item" id="depositMenu">
-                <i class="ri-bank-card-fill"></i>
-                <span>Deposit</span>
-            </a>
-
-            <a href="#" class="menu-item" id="withdrawMenu">
-                <i class="ri-bank-fill"></i>
-                <span>Withdraw</span>
-            </a>
-
-            <a href="orders.html" class="menu-item">
-                <i class="ri-shopping-bag-3-fill"></i>
-                <span>Orders</span>
-            </a>
-
-            <a href="services.html" class="menu-item">
-                <i class="ri-apps-2-fill"></i>
-                <span>Services</span>
-            </a>
-
-            <a href="history.html" class="menu-item">
-                <i class="ri-history-fill"></i>
-                <span>Transactions</span>
-            </a>
-
-            <a href="referrals.html" class="menu-item">
-                <i class="ri-user-star-fill"></i>
-                <span>Referrals</span>
-            </a>
-
-            <a href="support.html" class="menu-item">
-                <i class="ri-customer-service-2-fill"></i>
-                <span>Support</span>
-            </a>
-
-            <a href="settings.html" class="menu-item">
-                <i class="ri-settings-4-fill"></i>
-                <span>Settings</span>
-            </a>
-
-        </nav>
-
-        <!-- Upgrade Card -->
-        <div class="upgrade-card">
-
-            <div class="upgrade-icon">
-                <i class="ri-vip-crown-2-fill"></i>
-            </div>
-
-            <h3>Premium Access</h3>
-
-            <p>
-                Enjoy faster services, priority support and exclusive features.
-            </p>
-
-            <button id="upgradeBtn">
-                Upgrade
-            </button>
-
-        </div>
-
-        <!-- User Footer -->
-        <div class="sidebar-footer">
-
-            <div class="user-box">
-
-                <img
-                    src=""
-                    alt="Profile"
-                    id="profileImage"
-                >
-
-                <div class="user-info">
-
-                    <h4 id="username">
-                        Loading...
-                    </h4>
-
-                    <span id="accountStatus">
-                        Loading...
-                    </span>
-
-                </div>
-
-            </div>
-
-            <button id="logoutBtn" class="logout-btn">
-                <i class="ri-logout-circle-r-line"></i>
-                Logout
-            </button>
-
-        </div>
-
-    </aside>
-
-    <!-- ===========================
-         MAIN CONTENT STARTS HERE
-         (Continue with Part 2)
-    ============================ -->
-    <main class="main-content" id="mainContent">
-              <!-- ===========================
-             TOP NAVBAR
-        ============================ -->
-
-        <header class="topbar">
-
-            <div class="topbar-left">
-
-                <button class="menu-toggle" id="menuToggle">
-                    <i class="ri-menu-3-line"></i>
-                </button>
-
-                <div class="welcome-text">
-                    <h2>
-                        Welcome back,
-                        <span id="welcomeName">Loading...</span>
-                    </h2>
-
-                    <p>
-                        Here's what's happening with your account today.
-                    </p>
-                </div>
-
-            </div>
-
-            <div class="topbar-right">
-
-                <!-- Theme -->
-                <button class="top-icon" id="themeToggle">
-                    <i class="ri-moon-clear-fill"></i>
-                </button>
-
-                <!-- Notifications -->
-                <button class="top-icon notification-btn" id="notificationBtn">
-
-                    <i class="ri-notification-3-fill"></i>
-
-                    <span class="notification-count"
-                          id="notificationCount">
-                        0
-                    </span>
-
-                </button>
-
-                <!-- Profile -->
-                <div class="profile-box" id="profileBox">
-
-                    <img src=""
-                         id="topProfileImage"
-                         alt="Profile">
-
-                    <div class="profile-details">
-
-                        <h4 id="topUsername">
-                            Loading...
-                        </h4>
-
-                        <span id="topEmail">
-                            Loading...
-                        </span>
-
-                    </div>
-
-                    <i class="ri-arrow-down-s-line"></i>
-
-                </div>
-
-            </div>
-
-        </header>
-
-
-
-
-        <!-- ===========================
-             OVERVIEW
-        ============================ -->
-
-        <section class="overview-section">
-
-            <div class="overview-left">
-
-                <h1>
-                    Dashboard Overview
-                </h1>
-
-                <p>
-                    Monitor your wallet, orders and transactions
-                    in real time.
-                </p>
-
-            </div>
-
-            <div class="overview-right">
-
-                <button id="refreshDashboard">
-
-                    <i class="ri-refresh-line"></i>
-
-                    Refresh
-
-                </button>
-
-            </div>
-
-        </section>
-
-
-
-
-
-        <!-- ===========================
-             STATISTICS CARDS
-        ============================ -->
-
-        <section class="stats-grid">
-
-            <!-- Wallet Balance -->
-
-            <div class="stat-card">
-
-                <div class="stat-top">
-
-                    <span>Wallet Balance</span>
-
-                    <div class="card-icon wallet-icon">
-                        <i class="ri-wallet-3-fill"></i>
-                    </div>
-
-                </div>
-
-                <h2 id="walletBalance">
-                    ₦0.00
-                </h2>
-
-                <small>
-                    Available Balance
-                </small>
-
-            </div>
-
-
-
-            <!-- Total Orders -->
-
-            <div class="stat-card">
-
-                <div class="stat-top">
-
-                    <span>Total Orders</span>
-
-                    <div class="card-icon order-icon">
-                        <i class="ri-shopping-bag-3-fill"></i>
-                    </div>
-
-                </div>
-
-                <h2 id="totalOrders">
-                    0
-                </h2>
-
-                <small>
-                    Completed & Pending
-                </small>
-
-            </div>
-
-
-
-            <!-- Total Spent -->
-
-            <div class="stat-card">
-
-                <div class="stat-top">
-
-                    <span>Total Spent</span>
-
-                    <div class="card-icon spent-icon">
-                        <i class="ri-exchange-dollar-fill"></i>
-                    </div>
-
-                </div>
-
-                <h2 id="totalSpent">
-                    ₦0.00
-                </h2>
-
-                <small>
-                    All Time Spending
-                </small>
-
-            </div>
-
-
-
-            <!-- Account Status -->
-
-            <div class="stat-card">
-
-                <div class="stat-top">
-
-                    <span>Account Status</span>
-
-                    <div class="card-icon status-icon">
-                        <i class="ri-shield-check-fill"></i>
-                    </div>
-
-                </div>
-
-                <h2 id="accountBadge">
-                    Active
-                </h2>
-
-                <small id="accountLevel">
-                    Verified User
-                </small>
-
-            </div>
-
-        </section>
-
-
-
-        <!-- ===========================
-             QUICK ACTIONS START HERE
-             (Continue in Part 3)
-        ============================ -->
-              <!-- ===========================
-             QUICK ACTIONS
-        ============================ -->
-
-        <section class="quick-actions">
-
-            <div class="section-title">
-                <h2>Quick Actions</h2>
-                <p>Access the most used features instantly.</p>
-            </div>
-
-            <div class="action-grid">
-
-                <button class="action-card" id="depositBtn">
-
-                    <div class="action-icon deposit">
-                        <i class="ri-bank-card-fill"></i>
-                    </div>
-
-                    <h3>Deposit</h3>
-
-                    <p>Add money to your wallet</p>
-
-                </button>
-
-                <button class="action-card" id="withdrawBtn">
-
-                    <div class="action-icon withdraw">
-                        <i class="ri-bank-fill"></i>
-                    </div>
-
-                    <h3>Withdraw</h3>
-
-                    <p>Transfer money out</p>
-
-                </button>
-
-                <button class="action-card" id="newOrderBtn">
-
-                    <div class="action-icon order">
-                        <i class="ri-shopping-cart-fill"></i>
-                    </div>
-
-                    <h3>New Order</h3>
-
-                    <p>Purchase a service</p>
-
-                </button>
-
-                <button class="action-card" id="referralBtn">
-
-                    <div class="action-icon referral">
-                        <i class="ri-user-star-fill"></i>
-                    </div>
-
-                    <h3>Referrals</h3>
-
-                    <p>Invite friends & earn</p>
-
-                </button>
-
-                <button class="action-card" id="supportBtn">
-
-                    <div class="action-icon support">
-                        <i class="ri-customer-service-2-fill"></i>
-                    </div>
-
-                    <h3>Support</h3>
-
-                    <p>Need help?</p>
-
-                </button>
-
-            </div>
-
-        </section>
-
-
-
-
-
-        <!-- ===========================
-             RECENT ORDERS
-        ============================ -->
-
-        <section class="dashboard-card">
-
-            <div class="card-header">
-
-                <h2>Recent Orders</h2>
-
-                <a href="orders.html">
-                    View All
-                </a>
-
-            </div>
-
-            <div id="recentOrders" class="orders-list">
-
-                <!-- Firebase Orders Here -->
-
-            </div>
-
-        </section>
-
-
-
-
-
-        <!-- ===========================
-             WALLET OVERVIEW
-        ============================ -->
-
-        <section class="dashboard-card">
-
-            <div class="card-header">
-
-                <h2>Wallet Overview</h2>
-
-            </div>
-
-            <div class="wallet-overview">
-
-                <div class="wallet-item">
-
-                    <span>Available Balance</span>
-
-                    <h3 id="availableBalance">
-                        ₦0.00
-                    </h3>
-
-                </div>
-
-                <div class="wallet-item">
-
-                    <span>Total Deposits</span>
-
-                    <h3 id="totalDeposits">
-                        ₦0.00
-                    </h3>
-
-                </div>
-
-                <div class="wallet-item">
-
-                    <span>Total Withdrawals</span>
-
-                    <h3 id="totalWithdrawals">
-                        ₦0.00
-                    </h3>
-
-                </div>
-
-            </div>
-
-        </section>
-
-
-
-
-
-        <!-- ===========================
-             RECENT TRANSACTIONS
-        ============================ -->
-
-        <section class="dashboard-card">
-
-            <div class="card-header">
-
-                <h2>Recent Transactions</h2>
-
-                <a href="history.html">
-                    View All
-                </a>
-
-            </div>
-
-            <div class="table-wrapper">
-
-                <table class="transaction-table">
-
-                    <thead>
-
-                        <tr>
-
-                            <th>Type</th>
-
-                            <th>Description</th>
-
-                            <th>Amount</th>
-
-                            <th>Status</th>
-
-                            <th>Date</th>
-
-                        </tr>
-
-                    </thead>
-
-                    <tbody id="recentTransactions">
-
-                        <!-- Firebase Transactions -->
-
-                    </tbody>
-
-                </table>
-
-            </div>
-
-        </section>
-                <!-- ===========================
-             NOTIFICATION PANEL
-        ============================ -->
-
-        <div class="notification-panel" id="notificationPanel">
-
-            <div class="panel-header">
-                <h3>Notifications</h3>
-
-                <button id="closeNotifications">
-                    <i class="ri-close-line"></i>
-                </button>
-            </div>
-
-            <div id="notificationList">
-
-                <!-- Firebase Notifications -->
-
-            </div>
-
-        </div>
-
-
-
-        <!-- ===========================
-             PROFILE DROPDOWN
-        ============================ -->
-
-        <div class="profile-dropdown" id="profileDropdown">
-
-            <div class="profile-header">
-
-                <img
-                    src=""
-                    id="dropdownProfileImage"
-                    alt="Profile">
-
-                <div>
-
-                    <h4 id="dropdownUsername">
-                        Loading...
-                    </h4>
-
-                    <p id="dropdownEmail">
-                        Loading...
-                    </p>
-
-                </div>
-
-            </div>
-
-            <hr>
-
-            <a href="profile.html">
-                <i class="ri-user-3-line"></i>
-                My Profile
-            </a>
-
-            <a href="wallet.html">
-                <i class="ri-wallet-3-line"></i>
-                Wallet
-            </a>
-
-            <a href="settings.html">
-                <i class="ri-settings-3-line"></i>
-                Settings
-            </a>
-
-            <button id="logoutDropdown">
-
-                <i class="ri-logout-circle-r-line"></i>
-
-                Logout
-
-            </button>
-
-        </div>
-
-
-
-        <!-- ===========================
-             LOADING SCREEN
-        ============================ -->
-
-        <div class="loading-screen" id="loadingScreen">
-
-            <div class="loader"></div>
-
-            <h3>Loading Dashboard...</h3>
-
-        </div>
-
-    </main>
+<i class="ri-flashlight-fill"></i>
 
 </div>
 
-<!-- ===========================
-     JAVASCRIPT
-=========================== -->
+<div>
+
+<h2>thesuftsocials</h2>
+
+<p>Premium Dashboard</p>
+
+</div>
+
+</div>
+
+</div>
+
+
+
+<!-- MENU -->
+
+<nav class="sidebar-menu">
+
+<a
+href="dashboard.html"
+class="active">
+
+<i class="ri-dashboard-fill"></i>
+
+<span>Dashboard</span>
+
+</a>
+
+<a href="wallet.html">
+
+<i class="ri-wallet-3-fill"></i>
+
+<span>Wallet</span>
+
+</a>
+
+<a href="orders.html">
+
+<i class="ri-shopping-bag-fill"></i>
+
+<span>Orders</span>
+
+</a>
+
+<a href="services.html">
+
+<i class="ri-apps-fill"></i>
+
+<span>Services</span>
+
+</a>
+
+<a href="history.html">
+
+<i class="ri-history-fill"></i>
+
+<span>History</span>
+
+</a>
+
+<a href="referrals.html">
+
+<i class="ri-user-star-fill"></i>
+
+<span>Referrals</span>
+
+</a>
+
+<a href="support.html">
+
+<i class="ri-customer-service-2-fill"></i>
+
+<span>Support</span>
+
+</a>
+
+<a href="settings.html">
+
+<i class="ri-settings-4-fill"></i>
+
+<span>Settings</span>
+
+</a>
+
+</nav>
+
+
+
+<!-- USER -->
+
+<div class="sidebar-user">
+
+<img
+id="profileImage"
+src=""
+alt="Profile">
+
+<div>
+
+<h3 id="username">
+
+Loading...
+
+</h3>
+
+<p id="accountStatus">
+
+Verified
+
+</p>
+
+</div>
+
+</div>
+
+
+
+<button
+id="logoutBtn"
+class="logout-btn">
+
+<i class="ri-logout-circle-r-line"></i>
+
+Logout
+
+</button>
+
+</aside>
+
+
+
+<!-- ==========================
+MAIN
+========================== -->
+
+<main class="main-content">
+
+<!-- HEADER -->
+
+<header class="topbar">
+
+<div class="top-left">
+
+<button
+id="menuToggle"
+class="menu-btn">
+
+<i class="ri-menu-line"></i>
+
+</button>
+
+<div>
+
+<h2>
+
+Welcome,
+
+<span id="welcomeName">
+
+Loading...
+
+</span>
+
+</h2>
+
+<p>
+
+Manage your account easily.
+
+</p>
+
+</div>
+
+</div>
+
+
+
+<div class="top-right">
+
+<button
+id="themeToggle"
+class="icon-btn">
+
+<i class="ri-moon-fill"></i>
+
+</button>
+
+<button
+id="notificationBtn"
+class="icon-btn">
+
+<i class="ri-notification-3-fill"></i>
+
+<span
+id="notificationCount">
+
+0
+
+</span>
+
+</button>
+
+<div
+id="profileBox"
+class="profile-box">
+
+<img
+id="topProfileImage"
+src=""
+alt="Profile">
+
+<div>
+
+<h4 id="topUsername">
+
+Loading...
+
+</h4>
+
+<p id="topEmail">
+
+Loading...
+
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+</header>
+<!-- ==========================================
+DASHBOARD OVERVIEW
+========================================== -->
+
+<section class="overview-section">
+
+    <div class="overview-left">
+
+        <h1>Dashboard Overview</h1>
+
+        <p>
+            View your wallet, transactions and account activity in one place.
+        </p>
+
+    </div>
+
+    <div class="overview-right">
+
+        <button id="refreshDashboard" class="refresh-btn">
+
+            <i class="ri-refresh-line"></i>
+
+            Refresh
+
+        </button>
+
+    </div>
+
+</section>
+
+
+
+<!-- ==========================================
+STATISTICS
+========================================== -->
+
+<section class="stats-grid">
+
+    <!-- Wallet -->
+
+    <div class="stat-card">
+
+        <div class="stat-header">
+
+            <span>Wallet Balance</span>
+
+            <div class="stat-icon wallet">
+
+                <i class="ri-wallet-3-fill"></i>
+
+            </div>
+
+        </div>
+
+        <h2 id="walletBalance">₦0.00</h2>
+
+        <small>Available Balance</small>
+
+    </div>
+
+
+
+    <!-- Orders -->
+
+    <div class="stat-card">
+
+        <div class="stat-header">
+
+            <span>Total Orders</span>
+
+            <div class="stat-icon orders">
+
+                <i class="ri-shopping-bag-3-fill"></i>
+
+            </div>
+
+        </div>
+
+        <h2 id="totalOrders">0</h2>
+
+        <small>Completed Orders</small>
+
+    </div>
+
+
+
+    <!-- Spent -->
+
+    <div class="stat-card">
+
+        <div class="stat-header">
+
+            <span>Total Spent</span>
+
+            <div class="stat-icon spent">
+
+                <i class="ri-exchange-dollar-fill"></i>
+
+            </div>
+
+        </div>
+
+        <h2 id="totalSpent">₦0.00</h2>
+
+        <small>Total Spending</small>
+
+    </div>
+
+
+
+    <!-- Status -->
+
+    <div class="stat-card">
+
+        <div class="stat-header">
+
+            <span>Account Status</span>
+
+            <div class="stat-icon verified">
+
+                <i class="ri-shield-check-fill"></i>
+
+            </div>
+
+        </div>
+
+        <h2 id="accountBadge">Active</h2>
+
+        <small id="accountLevel">
+
+            Premium User
+
+        </small>
+
+    </div>
+
+</section>
+
+
+
+
+<!-- ==========================================
+QUICK ACTIONS
+========================================== -->
+
+<section class="quick-actions">
+
+    <div class="section-title">
+
+        <h2>Quick Actions</h2>
+
+    </div>
+
+    <div class="action-grid">
+
+        <button
+        class="action-card"
+        id="depositBtn">
+
+            <i class="ri-bank-card-fill"></i>
+
+            <span>Deposit</span>
+
+        </button>
+
+
+
+        <button
+        class="action-card"
+        id="withdrawBtn">
+
+            <i class="ri-bank-fill"></i>
+
+            <span>Withdraw</span>
+
+        </button>
+
+
+
+        <button
+        class="action-card"
+        id="newOrderBtn">
+
+            <i class="ri-shopping-cart-fill"></i>
+
+            <span>New Order</span>
+
+        </button>
+
+
+
+        <button
+        class="action-card"
+        id="historyBtn">
+
+            <i class="ri-history-fill"></i>
+
+            <span>History</span>
+
+        </button>
+
+
+
+        <button
+        class="action-card"
+        id="supportBtn">
+
+            <i class="ri-customer-service-2-fill"></i>
+
+            <span>Support</span>
+
+        </button>
+
+
+
+        <button
+        class="action-card"
+        id="settingsBtn">
+
+            <i class="ri-settings-3-fill"></i>
+
+            <span>Settings</span>
+
+        </button>
+
+    </div>
+
+</section>
+<!-- ==========================================
+RECENT ORDERS
+========================================== -->
+
+<section class="dashboard-card">
+
+    <div class="card-header">
+
+        <h2>Recent Orders</h2>
+
+        <a href="orders.html">View All</a>
+
+    </div>
+
+    <div
+    id="recentOrders"
+    class="orders-list">
+
+        <!-- Orders from Firebase -->
+
+    </div>
+
+</section>
+
+
+
+<!-- ==========================================
+WALLET OVERVIEW
+========================================== -->
+
+<section class="dashboard-card">
+
+    <div class="card-header">
+
+        <h2>Wallet Overview</h2>
+
+    </div>
+
+    <div class="wallet-grid">
+
+        <div class="wallet-card">
+
+            <span>Available Balance</span>
+
+            <h3 id="availableBalance">
+
+                ₦0.00
+
+            </h3>
+
+        </div>
+
+
+
+        <div class="wallet-card">
+
+            <span>Total Deposits</span>
+
+            <h3 id="totalDeposits">
+
+                ₦0.00
+
+            </h3>
+
+        </div>
+
+
+
+        <div class="wallet-card">
+
+            <span>Total Withdrawals</span>
+
+            <h3 id="totalWithdrawals">
+
+                ₦0.00
+
+            </h3>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- ==========================================
+RECENT TRANSACTIONS
+========================================== -->
+
+<section class="dashboard-card">
+
+    <div class="card-header">
+
+        <h2>Recent Transactions</h2>
+
+        <a href="history.html">
+
+            View All
+
+        </a>
+
+    </div>
+
+    <div class="table-wrapper">
+
+        <table class="transaction-table">
+
+            <thead>
+
+                <tr>
+
+                    <th>Type</th>
+
+                    <th>Description</th>
+
+                    <th>Amount</th>
+
+                    <th>Status</th>
+
+                    <th>Date</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody id="recentTransactions">
+
+                <!-- Firebase Transactions -->
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</section>
+
+
+
+<!-- ==========================================
+NOTIFICATION PANEL
+========================================== -->
+
+<div
+class="notification-panel"
+id="notificationPanel">
+
+    <div class="panel-header">
+
+        <h3>Notifications</h3>
+
+        <button id="closeNotifications">
+
+            <i class="ri-close-line"></i>
+
+        </button>
+
+    </div>
+
+    <div
+    id="notificationList">
+
+        <!-- Firebase Notifications -->
+
+    </div>
+
+</div>
+
+
+
+<!-- ==========================================
+PROFILE DROPDOWN
+========================================== -->
+
+<div
+class="profile-dropdown"
+id="profileDropdown">
+
+    <div class="profile-header">
+
+        <img
+        id="dropdownProfileImage"
+        src=""
+        alt="Profile">
+
+        <div>
+
+            <h4 id="dropdownUsername">
+
+                Loading...
+
+            </h4>
+
+            <p id="dropdownEmail">
+
+                Loading...
+
+            </p>
+
+        </div>
+
+    </div>
+
+    <hr>
+
+    <a href="profile.html">
+
+        <i class="ri-user-3-line"></i>
+
+        My Profile
+
+    </a>
+
+    <a href="wallet.html">
+
+        <i class="ri-wallet-3-line"></i>
+
+        Wallet
+
+    </a>
+
+    <a href="settings.html">
+
+        <i class="ri-settings-3-line"></i>
+
+        Settings
+
+    </a>
+
+    <button
+    id="logoutDropdown">
+
+        <i class="ri-logout-circle-r-line"></i>
+
+        Logout
+
+    </button>
+
+</div>
+<!-- ==========================================
+END OF MAIN CONTENT
+========================================== -->
+
+</main>
+
+</div>
+
+<!-- ==========================================
+JAVASCRIPT
+========================================== -->
 
 <script type="module" src="firebase.js"></script>
-<script type="module" src="auth.js"></script>
+
 <script type="module" src="dashboard.js"></script>
 
 </body>
+
 </html>
