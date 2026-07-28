@@ -1,358 +1,693 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dashboard - TheSuftSocials</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | thesuftsocials</title>
 
-<link rel="stylesheet" href="dashboard.css">
+    <!-- Remix Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css" rel="stylesheet">
 
-<script src="https://unpkg.com/lucide@latest"></script>
+    <!-- CSS -->
+    <link rel="stylesheet" href="dashboard.css">
 </head>
+
 <body>
-<div id="sidebarOverlay" class="sidebar-overlay"></div>
 
-<div id="sidebar" class="sidebar">
+<div class="dashboard">
 
-<div class="sidebar-content">
+    <!-- ===========================
+         SIDEBAR
+    ============================ -->
+    <aside class="sidebar" id="sidebar">
 
-<div class="menu-section">
+        <!-- Logo -->
+        <div class="logo-area">
 
-<div class="section-title">Main</div>
+            <div class="logo-icon">
+                <i class="ri-flashlight-fill"></i>
+            </div>
 
-<a href="dashboard.html" class="menu-item active">
-<i data-lucide="layout-dashboard"></i>
-Dashboard
-</a>
+            <div class="logo-text">
+                <h2>thesuftsocials</h2>
+                <span>Premium Dashboard</span>
+            </div>
 
-<a href="wallet.html" class="menu-item">
-<i data-lucide="wallet"></i>
-Wallet
-</a>
+        </div>
 
-<a href="orders.html" class="menu-item">
-<i data-lucide="shopping-bag"></i>
-Orders
-</a>
+        <!-- Navigation -->
+        <nav class="sidebar-menu">
 
-<a href="transactions.html" class="menu-item">
-<i data-lucide="arrow-left-right"></i>
-Transactions
-</a>
+            <a href="dashboard.html" class="menu-item active">
+                <i class="ri-dashboard-fill"></i>
+                <span>Dashboard</span>
+            </a>
+
+            <a href="wallet.html" class="menu-item">
+                <i class="ri-wallet-3-fill"></i>
+                <span>Wallet</span>
+            </a>
+
+            <a href="#" class="menu-item" id="depositMenu">
+                <i class="ri-bank-card-fill"></i>
+                <span>Deposit</span>
+            </a>
+
+            <a href="#" class="menu-item" id="withdrawMenu">
+                <i class="ri-bank-fill"></i>
+                <span>Withdraw</span>
+            </a>
+
+            <a href="orders.html" class="menu-item">
+                <i class="ri-shopping-bag-3-fill"></i>
+                <span>Orders</span>
+            </a>
+
+            <a href="services.html" class="menu-item">
+                <i class="ri-apps-2-fill"></i>
+                <span>Services</span>
+            </a>
+
+            <a href="history.html" class="menu-item">
+                <i class="ri-history-fill"></i>
+                <span>Transactions</span>
+            </a>
+
+            <a href="referrals.html" class="menu-item">
+                <i class="ri-user-star-fill"></i>
+                <span>Referrals</span>
+            </a>
+
+            <a href="support.html" class="menu-item">
+                <i class="ri-customer-service-2-fill"></i>
+                <span>Support</span>
+            </a>
+
+            <a href="settings.html" class="menu-item">
+                <i class="ri-settings-4-fill"></i>
+                <span>Settings</span>
+            </a>
+
+        </nav>
+
+        <!-- Upgrade Card -->
+        <div class="upgrade-card">
+
+            <div class="upgrade-icon">
+                <i class="ri-vip-crown-2-fill"></i>
+            </div>
+
+            <h3>Premium Access</h3>
+
+            <p>
+                Enjoy faster services, priority support and exclusive features.
+            </p>
+
+            <button id="upgradeBtn">
+                Upgrade
+            </button>
+
+        </div>
+
+        <!-- User Footer -->
+        <div class="sidebar-footer">
+
+            <div class="user-box">
+
+                <img
+                    src=""
+                    alt="Profile"
+                    id="profileImage"
+                >
+
+                <div class="user-info">
+
+                    <h4 id="username">
+                        Loading...
+                    </h4>
+
+                    <span id="accountStatus">
+                        Loading...
+                    </span>
+
+                </div>
+
+            </div>
+
+            <button id="logoutBtn" class="logout-btn">
+                <i class="ri-logout-circle-r-line"></i>
+                Logout
+            </button>
+
+        </div>
+
+    </aside>
+
+    <!-- ===========================
+         MAIN CONTENT STARTS HERE
+         (Continue with Part 2)
+    ============================ -->
+    <main class="main-content" id="mainContent">
+              <!-- ===========================
+             TOP NAVBAR
+        ============================ -->
+
+        <header class="topbar">
+
+            <div class="topbar-left">
+
+                <button class="menu-toggle" id="menuToggle">
+                    <i class="ri-menu-3-line"></i>
+                </button>
+
+                <div class="welcome-text">
+                    <h2>
+                        Welcome back,
+                        <span id="welcomeName">Loading...</span>
+                    </h2>
+
+                    <p>
+                        Here's what's happening with your account today.
+                    </p>
+                </div>
+
+            </div>
+
+            <div class="topbar-right">
+
+                <!-- Theme -->
+                <button class="top-icon" id="themeToggle">
+                    <i class="ri-moon-clear-fill"></i>
+                </button>
+
+                <!-- Notifications -->
+                <button class="top-icon notification-btn" id="notificationBtn">
+
+                    <i class="ri-notification-3-fill"></i>
+
+                    <span class="notification-count"
+                          id="notificationCount">
+                        0
+                    </span>
+
+                </button>
+
+                <!-- Profile -->
+                <div class="profile-box" id="profileBox">
+
+                    <img src=""
+                         id="topProfileImage"
+                         alt="Profile">
+
+                    <div class="profile-details">
+
+                        <h4 id="topUsername">
+                            Loading...
+                        </h4>
+
+                        <span id="topEmail">
+                            Loading...
+                        </span>
+
+                    </div>
+
+                    <i class="ri-arrow-down-s-line"></i>
+
+                </div>
+
+            </div>
+
+        </header>
+
+
+
+
+        <!-- ===========================
+             OVERVIEW
+        ============================ -->
+
+        <section class="overview-section">
+
+            <div class="overview-left">
+
+                <h1>
+                    Dashboard Overview
+                </h1>
+
+                <p>
+                    Monitor your wallet, orders and transactions
+                    in real time.
+                </p>
+
+            </div>
+
+            <div class="overview-right">
+
+                <button id="refreshDashboard">
+
+                    <i class="ri-refresh-line"></i>
+
+                    Refresh
+
+                </button>
+
+            </div>
+
+        </section>
+
+
+
+
+
+        <!-- ===========================
+             STATISTICS CARDS
+        ============================ -->
+
+        <section class="stats-grid">
+
+            <!-- Wallet Balance -->
+
+            <div class="stat-card">
+
+                <div class="stat-top">
+
+                    <span>Wallet Balance</span>
+
+                    <div class="card-icon wallet-icon">
+                        <i class="ri-wallet-3-fill"></i>
+                    </div>
+
+                </div>
+
+                <h2 id="walletBalance">
+                    ₦0.00
+                </h2>
+
+                <small>
+                    Available Balance
+                </small>
+
+            </div>
+
+
+
+            <!-- Total Orders -->
+
+            <div class="stat-card">
+
+                <div class="stat-top">
+
+                    <span>Total Orders</span>
+
+                    <div class="card-icon order-icon">
+                        <i class="ri-shopping-bag-3-fill"></i>
+                    </div>
+
+                </div>
+
+                <h2 id="totalOrders">
+                    0
+                </h2>
+
+                <small>
+                    Completed & Pending
+                </small>
+
+            </div>
+
+
+
+            <!-- Total Spent -->
+
+            <div class="stat-card">
+
+                <div class="stat-top">
+
+                    <span>Total Spent</span>
+
+                    <div class="card-icon spent-icon">
+                        <i class="ri-exchange-dollar-fill"></i>
+                    </div>
+
+                </div>
+
+                <h2 id="totalSpent">
+                    ₦0.00
+                </h2>
+
+                <small>
+                    All Time Spending
+                </small>
+
+            </div>
+
+
+
+            <!-- Account Status -->
+
+            <div class="stat-card">
+
+                <div class="stat-top">
+
+                    <span>Account Status</span>
+
+                    <div class="card-icon status-icon">
+                        <i class="ri-shield-check-fill"></i>
+                    </div>
+
+                </div>
+
+                <h2 id="accountBadge">
+                    Active
+                </h2>
+
+                <small id="accountLevel">
+                    Verified User
+                </small>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- ===========================
+             QUICK ACTIONS START HERE
+             (Continue in Part 3)
+        ============================ -->
+              <!-- ===========================
+             QUICK ACTIONS
+        ============================ -->
+
+        <section class="quick-actions">
+
+            <div class="section-title">
+                <h2>Quick Actions</h2>
+                <p>Access the most used features instantly.</p>
+            </div>
+
+            <div class="action-grid">
+
+                <button class="action-card" id="depositBtn">
+
+                    <div class="action-icon deposit">
+                        <i class="ri-bank-card-fill"></i>
+                    </div>
+
+                    <h3>Deposit</h3>
+
+                    <p>Add money to your wallet</p>
+
+                </button>
+
+                <button class="action-card" id="withdrawBtn">
+
+                    <div class="action-icon withdraw">
+                        <i class="ri-bank-fill"></i>
+                    </div>
+
+                    <h3>Withdraw</h3>
+
+                    <p>Transfer money out</p>
+
+                </button>
+
+                <button class="action-card" id="newOrderBtn">
+
+                    <div class="action-icon order">
+                        <i class="ri-shopping-cart-fill"></i>
+                    </div>
+
+                    <h3>New Order</h3>
+
+                    <p>Purchase a service</p>
+
+                </button>
+
+                <button class="action-card" id="referralBtn">
+
+                    <div class="action-icon referral">
+                        <i class="ri-user-star-fill"></i>
+                    </div>
+
+                    <h3>Referrals</h3>
+
+                    <p>Invite friends & earn</p>
+
+                </button>
+
+                <button class="action-card" id="supportBtn">
+
+                    <div class="action-icon support">
+                        <i class="ri-customer-service-2-fill"></i>
+                    </div>
+
+                    <h3>Support</h3>
+
+                    <p>Need help?</p>
+
+                </button>
+
+            </div>
+
+        </section>
+
+
+
+
+
+        <!-- ===========================
+             RECENT ORDERS
+        ============================ -->
+
+        <section class="dashboard-card">
+
+            <div class="card-header">
+
+                <h2>Recent Orders</h2>
+
+                <a href="orders.html">
+                    View All
+                </a>
+
+            </div>
+
+            <div id="recentOrders" class="orders-list">
+
+                <!-- Firebase Orders Here -->
+
+            </div>
+
+        </section>
+
+
+
+
+
+        <!-- ===========================
+             WALLET OVERVIEW
+        ============================ -->
+
+        <section class="dashboard-card">
+
+            <div class="card-header">
+
+                <h2>Wallet Overview</h2>
+
+            </div>
+
+            <div class="wallet-overview">
+
+                <div class="wallet-item">
+
+                    <span>Available Balance</span>
+
+                    <h3 id="availableBalance">
+                        ₦0.00
+                    </h3>
+
+                </div>
+
+                <div class="wallet-item">
+
+                    <span>Total Deposits</span>
+
+                    <h3 id="totalDeposits">
+                        ₦0.00
+                    </h3>
+
+                </div>
+
+                <div class="wallet-item">
+
+                    <span>Total Withdrawals</span>
+
+                    <h3 id="totalWithdrawals">
+                        ₦0.00
+                    </h3>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+
+
+        <!-- ===========================
+             RECENT TRANSACTIONS
+        ============================ -->
+
+        <section class="dashboard-card">
+
+            <div class="card-header">
+
+                <h2>Recent Transactions</h2>
+
+                <a href="history.html">
+                    View All
+                </a>
+
+            </div>
+
+            <div class="table-wrapper">
+
+                <table class="transaction-table">
+
+                    <thead>
+
+                        <tr>
+
+                            <th>Type</th>
+
+                            <th>Description</th>
+
+                            <th>Amount</th>
+
+                            <th>Status</th>
+
+                            <th>Date</th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody id="recentTransactions">
+
+                        <!-- Firebase Transactions -->
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+                <!-- ===========================
+             NOTIFICATION PANEL
+        ============================ -->
+
+        <div class="notification-panel" id="notificationPanel">
+
+            <div class="panel-header">
+                <h3>Notifications</h3>
+
+                <button id="closeNotifications">
+                    <i class="ri-close-line"></i>
+                </button>
+            </div>
+
+            <div id="notificationList">
+
+                <!-- Firebase Notifications -->
+
+            </div>
+
+        </div>
+
+
+
+        <!-- ===========================
+             PROFILE DROPDOWN
+        ============================ -->
+
+        <div class="profile-dropdown" id="profileDropdown">
+
+            <div class="profile-header">
+
+                <img
+                    src=""
+                    id="dropdownProfileImage"
+                    alt="Profile">
+
+                <div>
+
+                    <h4 id="dropdownUsername">
+                        Loading...
+                    </h4>
+
+                    <p id="dropdownEmail">
+                        Loading...
+                    </p>
+
+                </div>
+
+            </div>
+
+            <hr>
+
+            <a href="profile.html">
+                <i class="ri-user-3-line"></i>
+                My Profile
+            </a>
+
+            <a href="wallet.html">
+                <i class="ri-wallet-3-line"></i>
+                Wallet
+            </a>
+
+            <a href="settings.html">
+                <i class="ri-settings-3-line"></i>
+                Settings
+            </a>
+
+            <button id="logoutDropdown">
+
+                <i class="ri-logout-circle-r-line"></i>
+
+                Logout
+
+            </button>
+
+        </div>
+
+
+
+        <!-- ===========================
+             LOADING SCREEN
+        ============================ -->
+
+        <div class="loading-screen" id="loadingScreen">
+
+            <div class="loader"></div>
+
+            <h3>Loading Dashboard...</h3>
+
+        </div>
+
+    </main>
 
 </div>
 
-<div class="menu-section">
-
-<div class="section-title">Store</div>
-
-<a href="logs.html" class="menu-item">
-<i data-lucide="package"></i>
-Logs Store
-</a>
-
-<a href="tools.html" class="menu-item">
-<i data-lucide="wrench"></i>
-Tools Store
-</a>
-
-<a href="#" class="menu-item disabled">
-<i data-lucide="message-square"></i>
-SMS Numbers
-<span class="soon-tag">Soon</span>
-</a>
-
-<a href="#" class="menu-item disabled">
-<i data-lucide="zap"></i>
-SME Boosting
-<span class="soon-tag">Soon</span>
-</a>
-
-</div>
-
-<div class="menu-section">
-
-<div class="section-title">Account</div>
-
-<a
-href="admin.html"
-id="adminLink"
-class="sidebar-link"
-style="display:none;"
->
-Admin Dashboard
-</a>
-  
-<a href="support.html" class="menu-item">
-<i data-lucide="headphones"></i>
-Support
-</a>
-
-<a href="notifications.html" class="menu-item">
-<i data-lucide="bell"></i>
-Notifications
-</a>
-
-<a href="profile.html" class="menu-item">
-<i data-lucide="user"></i>
-Profile
-</a>
-
-</div>
-
-</div>
-
-<div class="sidebar-footer">
-
-<button id="logoutBtn" class="logout-btn">
-<i data-lucide="log-out"></i>
-Sign out
-</button>
-
-</div>
-
-</div>
-<div class="topbar">
-
-<button class="menu-btn">
-<i data-lucide="panel-left"></i>
-</button>
-
-<div class="topbar-right">
-
-<div class="wallet-pill">
-₦0
-</div>
-
-<button class="theme-btn" id="themeToggle">
-<i data-lucide="sun"></i>
-</button>
-
-<a href="notifications.html" class="bell-btn">
-
-<i data-lucide="bell"></i>
-
-<span id="notificationBadge">
-0
-</span>
-
-</a>
-
-<div id="profileInitials" class="avatar">
-DD
-</div>
-
-</div>
-
-</div>
-
-<h1 id="welcomeText">
-Welcome back 👋
-</h1>
-
-<p class="subtitle">
-Here's what's going on with your account
-</p>
-
-</header>
-
-
-<div class="stats-card">
-
-<p>Wallet balance</p>
-
-<h2 id="balance" class="balance">₦0</h2>
-
-<a href="wallet.html">
-View history →
-</a>
-
-</div>
-
-
-<div class="stats-card">
-
-<p>Total purchases</p>
-
-<h2 id="purchases">0</h2>
-
-<a href="orders.html">
-View orders →
-</a>
-
-</div>
-
-
-<div class="stats-card">
-
-<p>Available inventory</p>
-
-<h2 id="inventory">302</h2>
-
-<span id="inventoryDetails">
-113 logs · 189 tools
-</span>
-
-</div>
-
-
-<h3 class="section-title">
-Quick actions
-</h3>
-
-
-<a href="logs.html" class="action-card">
-
-<div class="icon blue">
-<i data-lucide="package"></i>
-</div>
-
-<div>
-<h4>Buy Logs</h4>
-<p>Social media accounts, VPNs, proxies, etc.</p>
-</div>
-
-</a>
-
-
-<a href="tools.html" class="action-card">
-
-<div class="icon purple">
-<i data-lucide="wrench"></i>
-</div>
-
-<div>
-<h4>Buy Tools</h4>
-<p>Updates & pictures</p>
-</div>
-
-</a>
-
-
-<a href="wallet.html" class="action-card">
-
-<div class="icon green">
-<i data-lucide="wallet"></i>
-</div>
-
-<div>
-<h4>Top Up Wallet</h4>
-<p>Add funds to your balance</p>
-</div>
-
-</a>
-
-
-<a href="support.html" class="action-card">
-
-<div class="icon orange">
-<i data-lucide="headphones"></i>
-</div>
-
-<div>
-<h4>Get Support</h4>
-<p>Open a support ticket</p>
-</div>
-
-</a>
-
-
-<div class="section-row">
-
-<h3>Recent orders</h3>
-
-<a href="orders.html">
-View all
-</a>
-
-</div>
-
-
-<div class="empty-card">
-
-<div class="order-icon">
-<i data-lucide="shopping-bag"></i>
-</div>
-
-<h4>No orders yet</h4>
-
-<p>Your purchases will appear here</p>
-
-</div>
-
-
-<h3 class="section-title">
-Coming soon
-</h3>
-
-
-<div class="coming-card">
-
-<div class="soon-left">
-<i data-lucide="message-square"></i>
-<span>SMS Numbers</span>
-</div>
-
-<span>Soon</span>
-
-</div>
-
-
-<div class="soon-card">
-
-<div class="soon-left">
-<i data-lucide="zap"></i>
-<span>SME Boosting</span>
-</div>
-
-<span>Soon</span>
-
-</div>
-
-
-<div class="support-box">
-
-<h3>Need quick help?</h3>
-
-<p>
-Reach support directly if you want a faster response outside tickets.
-</p>
-
-<a
-href="https://wa.me/2349117412352"
-class="whatsapp-btn"
-target="_blank"
->
-<i data-lucide="message-circle"></i>
-Chat on WhatsApp
-</a>
-
-<a
-href="https://t.me/+Xbt-w6-TwsozYjY0"
-class="telegram-btn"
-target="_blank"
->
-<i data-lucide="send"></i>
-Open Telegram
-</a>
-
-<a
-href="mailto:support@thesuftsocials.com"
-class="email-link"
->
-<i data-lucide="mail"></i>
-support@thesuftsocials.com
-</a>
-
-</div>
-
-</div>
-
+<!-- ===========================
+     JAVASCRIPT
+=========================== -->
+
+<script type="module" src="firebase.js"></script>
+<script type="module" src="auth.js"></script>
 <script type="module" src="dashboard.js"></script>
 
-<script>
-lucide.createIcons();
-</script>
-<script src="theme.js"></script>
 </body>
 </html>
