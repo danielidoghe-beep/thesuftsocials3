@@ -1,30 +1,31 @@
-// ===============================
-// dashboard.js (Part 1)
-// Authentication + User Profile
-// ===============================
+// =====================================
+// THESUFTSOCIALS DASHBOARD
+// dashboard.js
+// Part 1
+// =====================================
 
 import { auth, db } from "./firebase.js";
 
 import {
-  onAuthStateChanged,
-  signOut
+    onAuthStateChanged,
+    signOut
 } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-auth.js";
 
 import {
-  doc,
-  getDoc,
-  collection,
-  query,
-  where,
-  getDocs,
-  orderBy,
-  limit
+    doc,
+    getDoc,
+    collection,
+    query,
+    where,
+    orderBy,
+    limit,
+    getDocs
 } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
 
 
-// ===============================
-// HTML ELEMENTS
-// ===============================
+// =====================================
+// ELEMENTS
+// =====================================
 
 const username = document.getElementById("username");
 const welcomeName = document.getElementById("welcomeName");
@@ -51,72 +52,94 @@ const profileImage = document.getElementById("profileImage");
 const topProfileImage = document.getElementById("topProfileImage");
 const dropdownProfileImage = document.getElementById("dropdownProfileImage");
 
-const loadingScreen = document.getElementById("loadingScreen");
+const recentTransactions =
+document.getElementById("recentTransactions");
+
+const notificationList =
+document.getElementById("notificationList");
+
+const notificationCount =
+document.getElementById("notificationCount");
+
+const logoutBtn =
+document.getElementById("logoutBtn");
+
+const logoutDropdown =
+document.getElementById("logoutDropdown");
 
 
-// ===============================
-// AUTH CHECK
-// ===============================
+// =====================================
+// AUTH
+// =====================================
 
-onAuthStateChanged(auth, async (user) => {
+onAuthStateChanged(auth, async (user)=>{
 
-    if (!user) {
+    if(!user){
 
-        window.location.href = "login.html";
+        window.location.href="login.html";
+
         return;
 
     }
 
-    await loadDashboard(user);
+    await loadUser(user);
 
 });
 
 
-// ===============================
+// =====================================
 // LOAD USER
-// ===============================
+// =====================================
 
-async function loadDashboard(user){
+async function loadUser(user){
 
     try{
 
-        const userRef = doc(db,"users",user.uid);
+        const ref = doc(db,"users",user.uid);
 
-        const userSnap = await getDoc(userRef);
+        const snap = await getDoc(ref);
 
-        if(!userSnap.exists()){
+        if(!snap.exists()){
 
-            alert("User data not found.");
+            alert("User account not found.");
 
             return;
 
         }
 
-        const data = userSnap.data();
+        const data = snap.data();
 
         const fullName =
-        `${data.firstName || ""} ${data.lastName || ""}`;
+        `${data.firstName ?? ""} ${data.lastName ?? ""}`;
 
         username.textContent = fullName;
 
-        welcomeName.textContent = data.firstName || "";
+        welcomeName.textContent =
+        data.firstName ?? "";
 
-        topUsername.textContent = fullName;
+        topUsername.textContent =
+        fullName;
 
-        dropdownUsername.textContent = fullName;
+        dropdownUsername.textContent =
+        fullName;
 
-        topEmail.textContent = data.email;
+        topEmail.textContent =
+        data.email ?? "";
 
-        dropdownEmail.textContent = data.email;
+        dropdownEmail.textContent =
+        data.email ?? "";
+
+        const balance =
+        Number(data.balance ?? 0);
 
         walletBalance.textContent =
-        "₦" + Number(data.balance || 0).toLocaleString();
+        "₦" + balance.toLocaleString();
 
         availableBalance.textContent =
-        "₦" + Number(data.balance || 0).toLocaleString();
+        "₦" + balance.toLocaleString();
 
         totalOrders.textContent =
-        data.purchases || 0;
+        Number(data.purchases ?? 0);
 
         accountStatus.textContent =
         "Verified";
@@ -127,11 +150,8 @@ async function loadDashboard(user){
         accountLevel.textContent =
         "Premium User";
 
-        // default avatar
-
         const avatar =
-        "https://ui-avatars.com/api/?background=7C4DFF&color=fff&name=" +
-        encodeURIComponent(fullName);
+`https://ui-avatars.com/api/?name=${encodeURIComponent(fullName)}&background=7C4DFF&color=ffffff`;
 
         profileImage.src = avatar;
 
@@ -139,13 +159,9 @@ async function loadDashboard(user){
 
         dropdownProfileImage.src = avatar;
 
-        // load dashboard data
-
         await loadTransactions(user.uid);
 
         await loadNotifications(user.uid);
-
-        loadingScreen.style.display = "none";
 
     }
 
@@ -153,21 +169,13 @@ async function loadDashboard(user){
 
         console.error(error);
 
-        alert(error.message);
-
     }
 
 }
-// ===============================
+// =====================================
 // PART 2
-// Transactions + Dashboard Stats
-// ===============================
-
-const recentTransactions =
-document.getElementById("recentTransactions");
-
-
-// Load Transactions
+// TRANSACTIONS + DASHBOARD STATS
+// =====================================
 
 async function loadTransactions(uid){
 
@@ -181,57 +189,67 @@ async function loadTransactions(uid){
 
             orderBy("createdAt","desc"),
 
-            limit(10)
+            limit(20)
 
         );
 
-        const snapshot =
-        await getDocs(q);
-
-        recentTransactions.innerHTML = "";
+        const snapshot = await getDocs(q);
 
         let deposits = 0;
         let withdrawals = 0;
         let spent = 0;
 
-        if(snapshot.empty){
+        if(recentTransactions){
 
-            recentTransactions.innerHTML = `
-
-            <tr>
-
-                <td colspan="5"
-                style="text-align:center;padding:30px;">
-
-                No transactions found.
-
-                </td>
-
-            </tr>
-
-            `;
+            recentTransactions.innerHTML = "";
 
         }
 
-        snapshot.forEach(docSnap=>{
+        if(snapshot.empty){
+
+            if(recentTransactions){
+
+                recentTransactions.innerHTML = `
+
+                <tr>
+
+                    <td colspan="5">
+
+                        No transactions found.
+
+                    </td>
+
+                </tr>
+
+                `;
+
+            }
+
+            totalDeposits.textContent="₦0";
+            totalWithdrawals.textContent="₦0";
+            totalSpent.textContent="₦0";
+
+            return;
+
+        }
+
+        snapshot.forEach((docSnap)=>{
 
             const data = docSnap.data();
 
             const amount =
-            Number(data.amount || 0);
+            Number(data.amount ?? 0);
 
             const type =
-            (data.type || "").toLowerCase();
+            (data.type ?? "").toLowerCase();
 
-            // Calculate totals
-
-            if(type === "credit"){
+            if(type==="credit"){
 
                 deposits += amount;
 
             }
 
-            if(type === "debit"){
+            if(type==="debit"){
 
                 withdrawals += amount;
 
@@ -239,73 +257,71 @@ async function loadTransactions(uid){
 
             }
 
-            const date = data.createdAt
-                ? new Date(
-                    data.createdAt
-                ).toLocaleDateString()
-                : "--";
+            let date="--";
 
-            recentTransactions.innerHTML += `
+            if(data.createdAt){
 
-            <tr>
+                date =
+                data.createdAt
+                .toDate()
+                .toLocaleDateString(
+                    "en-NG"
+                );
 
-                <td>
+            }
 
-                    ${capitalize(type)}
+            if(recentTransactions){
 
-                </td>
+                recentTransactions.innerHTML += `
 
-                <td>
+                <tr>
 
-                    Wallet ${capitalize(type)}
+                    <td>
 
-                </td>
+                        ${type.toUpperCase()}
 
-                <td>
+                    </td>
 
-                    ₦${amount.toLocaleString()}
+                    <td>
 
-                </td>
+                        ₦${amount.toLocaleString()}
 
-                <td>
+                    </td>
 
-                    <span class="status-completed">
+                    <td>
 
                         Successful
 
-                    </span>
+                    </td>
 
-                </td>
+                    <td>
 
-                <td>
+                        ${date}
 
-                    ${date}
+                    </td>
 
-                </td>
+                </tr>
 
-            </tr>
+                `;
 
-            `;
+            }
 
         });
 
         totalDeposits.textContent =
-        "₦" +
-        deposits.toLocaleString();
+        "₦" + deposits.toLocaleString();
 
         totalWithdrawals.textContent =
-        "₦" +
-        withdrawals.toLocaleString();
+        "₦" + withdrawals.toLocaleString();
 
         totalSpent.textContent =
-        "₦" +
-        spent.toLocaleString();
+        "₦" + spent.toLocaleString();
 
     }
 
     catch(error){
 
-        console.error(error);
+        console.error("Transactions Error:",error);
 
     }
 
@@ -313,66 +329,68 @@ async function loadTransactions(uid){
 
 
 
-// Helper
+// =====================================
+// HELPER FUNCTIONS
+// =====================================
 
-function capitalize(text){
+function formatMoney(amount){
 
-    if(!text) return "";
-
-    return text.charAt(0).toUpperCase() +
-    text.slice(1);
+    return "₦" +
+    Number(amount)
+    .toLocaleString("en-NG");
 
 }
-// ==========================================
+
+function formatDate(timestamp){
+
+    if(!timestamp){
+
+        return "--";
+
+    }
+
+    return timestamp
+    .toDate()
+    .toLocaleDateString(
+        "en-NG",
+        {
+
+            day:"numeric",
+
+            month:"short",
+
+            year:"numeric"
+
+        }
+
+    );
+
+}
+// =====================================
 // PART 3
-// Notifications + Logout + UI Controls
-// ==========================================
-
-import {
-  collection,
-  query,
-  where,
-  orderBy,
-  limit,
-  getDocs
-} from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
-
-
-// ===============================
-// ELEMENTS
-// ===============================
-
-const notificationList =
-document.getElementById("notificationList");
-
-const notificationCount =
-document.getElementById("notificationCount");
+// NOTIFICATIONS + LOGOUT
+// =====================================
 
 const notificationPanel =
 document.getElementById("notificationPanel");
 
-const notificationBtn =
-document.getElementById("notificationBtn");
+const notificationButton =
+document.getElementById("notificationButton");
 
-const closeNotifications =
-document.getElementById("closeNotifications");
+const closeNotification =
+document.getElementById("closeNotification");
 
 const profileDropdown =
 document.getElementById("profileDropdown");
 
-const profileBox =
-document.getElementById("profileBox");
-
-const logoutBtn =
-document.getElementById("logoutBtn");
-
-const logoutDropdown =
-document.getElementById("logoutDropdown");
+const profileButton =
+document.getElementById("profileButton");
 
 
-// ===============================
+
+// =====================================
 // LOAD NOTIFICATIONS
-// ===============================
+// =====================================
 
 async function loadNotifications(uid){
 
@@ -390,34 +408,45 @@ async function loadNotifications(uid){
 
         );
 
-        const snapshot =
-        await getDocs(q);
+        const snapshot = await getDocs(q);
 
-        notificationList.innerHTML="";
+        if(notificationList){
 
-        let unread=0;
+            notificationList.innerHTML="";
+
+        }
+
+        let unread = 0;
 
         if(snapshot.empty){
 
-            notificationList.innerHTML=`
+            if(notificationList){
 
-                <div class="empty-box">
+                notificationList.innerHTML=`
 
-                    No notifications yet.
+                <div class="empty-notification">
+
+                    No notifications available.
 
                 </div>
 
-            `;
+                `;
 
-            notificationCount.textContent="0";
+            }
+
+            if(notificationCount){
+
+                notificationCount.textContent="0";
+
+            }
 
             return;
 
         }
 
-        snapshot.forEach(doc=>{
+        snapshot.forEach((docSnap)=>{
 
-            const data=doc.data();
+            const data = docSnap.data();
 
             if(data.read===false){
 
@@ -425,34 +454,41 @@ async function loadNotifications(uid){
 
             }
 
-            const amountDate =
-            data.createdAt
-            ? new Date(data.createdAt).toLocaleString()
-            : "";
+            const date = data.createdAt
+            ? formatDate(data.createdAt)
+            : "--";
 
-            notificationList.innerHTML +=`
+            if(notificationList){
 
-            <div class="notification-item">
+                notificationList.innerHTML += `
 
-                <h4>${data.title}</h4>
+                <div class="notification-item">
 
-                <p>${data.message}</p>
+                    <h4>${data.title ?? ""}</h4>
 
-                <small>${amountDate}</small>
+                    <p>${data.message ?? ""}</p>
 
-            </div>
+                    <small>${date}</small>
 
-            `;
+                </div>
+
+                `;
+
+            }
 
         });
 
-        notificationCount.textContent=unread;
+        if(notificationCount){
+
+            notificationCount.textContent = unread;
+
+        }
 
     }
 
     catch(error){
 
-        console.log(error);
+        console.error("Notification Error:",error);
 
     }
 
@@ -460,121 +496,129 @@ async function loadNotifications(uid){
 
 
 
-// ===============================
-// Notification Panel
-// ===============================
+// =====================================
+// NOTIFICATION PANEL
+// =====================================
 
-if(notificationBtn){
+if(notificationButton){
 
-notificationBtn.onclick=()=>{
+    notificationButton.onclick=()=>{
 
-notificationPanel.classList.toggle("show");
+        notificationPanel.classList.toggle("show");
 
-};
-
-}
-
-if(closeNotifications){
-
-closeNotifications.onclick=()=>{
-
-notificationPanel.classList.remove("show");
-
-};
+    };
 
 }
 
+if(closeNotification){
 
+    closeNotification.onclick=()=>{
 
-// ===============================
-// Profile Menu
-// ===============================
+        notificationPanel.classList.remove("show");
 
-if(profileBox){
-
-profileBox.onclick=()=>{
-
-profileDropdown.classList.toggle("show");
-
-};
+    };
 
 }
 
 
 
-// ===============================
-// Close when clicking outside
-// ===============================
+// =====================================
+// PROFILE MENU
+// =====================================
+
+if(profileButton){
+
+    profileButton.onclick=()=>{
+
+        profileDropdown.classList.toggle("show");
+
+    };
+
+}
+
+
+
+// =====================================
+// CLOSE MENUS WHEN CLICKING OUTSIDE
+// =====================================
 
 window.addEventListener("click",(e)=>{
 
-if(
-notificationBtn &&
-notificationPanel &&
-!notificationPanel.contains(e.target) &&
-!notificationBtn.contains(e.target)
-){
+    if(
 
-notificationPanel.classList.remove("show");
+        notificationPanel &&
 
-}
+        notificationButton &&
 
-if(
-profileBox &&
-profileDropdown &&
-!profileDropdown.contains(e.target) &&
-!profileBox.contains(e.target)
-){
+        !notificationPanel.contains(e.target) &&
 
-profileDropdown.classList.remove("show");
+        !notificationButton.contains(e.target)
 
-}
+    ){
+
+        notificationPanel.classList.remove("show");
+
+    }
+
+    if(
+
+        profileDropdown &&
+
+        profileButton &&
+
+        !profileDropdown.contains(e.target) &&
+
+        !profileButton.contains(e.target)
+
+    ){
+
+        profileDropdown.classList.remove("show");
+
+    }
 
 });
 
 
 
-// ===============================
+// =====================================
 // LOGOUT
-// ===============================
+// =====================================
 
 async function logout(){
 
-try{
+    try{
 
-await signOut(auth);
+        await signOut(auth);
 
-window.location.href="login.html";
+        window.location.href="login.html";
 
-}
+    }
 
-catch(error){
+    catch(error){
 
-alert(error.message);
+        alert(error.message);
 
-}
+    }
 
 }
 
 if(logoutBtn){
 
-logoutBtn.onclick=logout;
+    logoutBtn.addEventListener("click",logout);
 
 }
 
 if(logoutDropdown){
 
-logoutDropdown.onclick=logout;
+    logoutDropdown.addEventListener("click",logout);
 
 }
-// ==========================================
+// =====================================
 // PART 4
-// Sidebar • Theme • Dashboard Initialization
-// ==========================================
+// SIDEBAR + THEME + STARTUP
+// =====================================
 
-// ===============================
-// ELEMENTS
-// ===============================
+// Sidebar
 
 const sidebar =
 document.getElementById("sidebar");
@@ -582,22 +626,7 @@ document.getElementById("sidebar");
 const menuToggle =
 document.getElementById("menuToggle");
 
-const themeToggle =
-document.getElementById("themeToggle");
-
-const currentDate =
-document.getElementById("currentDate");
-
-const currentTime =
-document.getElementById("currentTime");
-
-
-
-// ===============================
-// SIDEBAR
-// ===============================
-
-if(menuToggle){
+if(menuToggle && sidebar){
 
     menuToggle.addEventListener("click",()=>{
 
@@ -608,10 +637,7 @@ if(menuToggle){
 }
 
 
-
-// ===============================
-// CLOSE SIDEBAR ON MOBILE
-// ===============================
+// Close sidebar on mobile
 
 document.addEventListener("click",(e)=>{
 
@@ -637,9 +663,12 @@ document.addEventListener("click",(e)=>{
 
 
 
-// ===============================
+// =====================================
 // THEME
-// ===============================
+// =====================================
+
+const themeToggle =
+document.getElementById("themeToggle");
 
 const savedTheme =
 localStorage.getItem("theme");
@@ -652,147 +681,32 @@ if(savedTheme){
 
 if(themeToggle){
 
-themeToggle.onclick=()=>{
+    themeToggle.addEventListener("click",()=>{
 
-document.body.classList.toggle("light-mode");
+        document.body.classList.toggle("light-mode");
 
-if(document.body.classList.contains("light-mode")){
+        if(document.body.classList.contains("light-mode")){
 
-localStorage.setItem(
-"theme",
-"light-mode"
-);
+            localStorage.setItem(
+                "theme",
+                "light-mode"
+            );
 
-}else{
+        }else{
 
-localStorage.removeItem("theme");
+            localStorage.removeItem("theme");
 
-}
-
-};
-
-}
-
-
-
-// ===============================
-// LIVE DATE
-// ===============================
-
-function updateDate(){
-
-    if(!currentDate) return;
-
-    const today =
-    new Date();
-
-    currentDate.textContent =
-    today.toLocaleDateString(
-        "en-NG",
-        {
-            weekday:"long",
-            day:"numeric",
-            month:"long",
-            year:"numeric"
         }
-    );
+
+    });
 
 }
 
-updateDate();
 
 
-
-// ===============================
-// LIVE CLOCK
-// ===============================
-
-function updateClock(){
-
-    if(!currentTime) return;
-
-    const now =
-    new Date();
-
-    currentTime.textContent =
-    now.toLocaleTimeString(
-        "en-NG",
-        {
-            hour:"2-digit",
-            minute:"2-digit",
-            second:"2-digit"
-        }
-    );
-
-}
-
-updateClock();
-
-setInterval(updateClock,1000);
-
-
-
-// ===============================
-// LOADING SCREEN
-// ===============================
-
-window.addEventListener("load",()=>{
-
-    if(loadingScreen){
-
-        setTimeout(()=>{
-
-            loadingScreen.style.opacity="0";
-
-            setTimeout(()=>{
-
-                loadingScreen.style.display="none";
-
-            },400);
-
-        },500);
-
-    }
-
-});
-
-
-
-// ===============================
-// PAGE ANIMATION
-// ===============================
-
-document.querySelectorAll(".stat-card").forEach(card=>{
-
-    card.style.opacity="0";
-
-    card.style.transform="translateY(25px)";
-
-});
-
-setTimeout(()=>{
-
-document.querySelectorAll(".stat-card").forEach((card,index)=>{
-
-setTimeout(()=>{
-
-card.style.transition=".45s";
-
-card.style.opacity="1";
-
-card.style.transform="translateY(0)";
-
-},index*120);
-
-});
-
-},300);
-
-
-
-// ===============================
-// REFRESH EVERY 30 SECONDS
-// ===============================
+// =====================================
+// AUTO REFRESH
+// =====================================
 
 setInterval(()=>{
 
@@ -810,24 +724,69 @@ setInterval(()=>{
 
 
 
-// ===============================
-// PREVENT IMAGE ERROR
-// ===============================
+// =====================================
+// DEFAULT PROFILE IMAGE
+// =====================================
 
-document.querySelectorAll("img").forEach(img=>{
+document.querySelectorAll("img").forEach((img)=>{
 
-img.onerror=function(){
+    img.onerror=function(){
 
-this.src="https://ui-avatars.com/api/?background=7C4DFF&color=ffffff&name=User";
+        this.src="https://ui-avatars.com/api/?background=7C4DFF&color=ffffff&name=User";
 
-};
+    };
 
 });
 
 
 
-// ===============================
-// FINISHED
-// ===============================
+// =====================================
+// PAGE READY
+// =====================================
 
-console.log("Dashboard Loaded Successfully");
+window.addEventListener("DOMContentLoaded",()=>{
+
+    console.log("Dashboard Ready");
+
+});
+
+
+
+// =====================================
+// LOGOUT BUTTON SAFETY
+// =====================================
+
+const logoutButtons =
+document.querySelectorAll(".logout-btn");
+
+logoutButtons.forEach((button)=>{
+
+    button.addEventListener("click",logout);
+
+});
+
+
+
+// =====================================
+// UTILITIES
+// =====================================
+
+function showMessage(message){
+
+    console.log(message);
+
+}
+
+function showError(error){
+
+    console.error(error);
+
+}
+
+
+
+// =====================================
+// END
+// =====================================
+
+console.log("TheSuftSocials Dashboard Loaded");
