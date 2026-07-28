@@ -1,7 +1,7 @@
-// ==========================================
-// dashboard.js
-// Part 1 - Authentication & User Profile
-// ==========================================
+// =====================================
+// dashboard.js - Part 1
+// Firebase + Authentication + User Data
+// =====================================
 
 import { auth, db } from "./firebase.js";
 
@@ -16,34 +16,52 @@ import {
 } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
 
 
-// ==========================================
+// =====================================
 // HTML ELEMENTS
-// ==========================================
+// =====================================
 
 const loadingScreen = document.getElementById("loadingScreen");
 
 const username = document.getElementById("username");
-const topUsername = document.getElementById("topUsername");
-const dropdownUsername = document.getElementById("dropdownUsername");
-
 const welcomeName = document.getElementById("welcomeName");
 
+const topUsername = document.getElementById("topUsername");
 const topEmail = document.getElementById("topEmail");
-const dropdownEmail = document.getElementById("dropdownEmail");
 
-const profileImage = document.getElementById("profileImage");
-const topProfileImage = document.getElementById("topProfileImage");
-const dropdownProfileImage = document.getElementById("dropdownProfileImage");
+const dropdownUsername =
+document.getElementById("dropdownUsername");
 
-const walletBalance = document.getElementById("walletBalance");
-const availableBalance = document.getElementById("availableBalance");
+const dropdownEmail =
+document.getElementById("dropdownEmail");
 
-const accountStatus = document.getElementById("accountStatus");
+const walletBalance =
+document.getElementById("walletBalance");
+
+const availableBalance =
+document.getElementById("availableBalance");
+
+const accountStatus =
+document.getElementById("accountStatus");
+
+const accountBadge =
+document.getElementById("accountBadge");
+
+const accountLevel =
+document.getElementById("accountLevel");
+
+const profileImage =
+document.getElementById("profileImage");
+
+const topProfileImage =
+document.getElementById("topProfileImage");
+
+const dropdownProfileImage =
+document.getElementById("dropdownProfileImage");
 
 
-// ==========================================
-// AUTHENTICATION
-// ==========================================
+// =====================================
+// AUTH CHECK
+// =====================================
 
 onAuthStateChanged(auth, async (user) => {
 
@@ -59,21 +77,23 @@ onAuthStateChanged(auth, async (user) => {
 });
 
 
-// ==========================================
+// =====================================
 // LOAD USER
-// ==========================================
+// =====================================
 
 async function loadUser(user){
 
     try{
 
-        const userRef = doc(db, "users", user.uid);
+        const userRef = doc(db,"users",user.uid);
 
         const userSnap = await getDoc(userRef);
 
         if(!userSnap.exists()){
 
-            alert("User profile not found.");
+            alert("User record not found.");
+
+            loadingScreen.style.display = "none";
 
             return;
 
@@ -81,43 +101,58 @@ async function loadUser(user){
 
         const data = userSnap.data();
 
+        const firstName =
+        data.firstName || "";
+
+        const lastName =
+        data.lastName || "";
+
         const fullName =
-            `${data.firstName || ""} ${data.lastName || ""}`.trim();
+        `${firstName} ${lastName}`;
 
         username.textContent = fullName;
 
-        if(welcomeName)
-            welcomeName.textContent = data.firstName || "";
+        welcomeName.textContent = firstName;
 
         topUsername.textContent = fullName;
+
         dropdownUsername.textContent = fullName;
 
-        topEmail.textContent = data.email || user.email;
-        dropdownEmail.textContent = data.email || user.email;
+        topEmail.textContent =
+        data.email || "";
 
-        accountStatus.textContent =
-            data.accountStatus || "Premium Member";
+        dropdownEmail.textContent =
+        data.email || "";
+
+        const balance =
+        Number(data.balance || 0);
 
         walletBalance.textContent =
-            "₦" + Number(data.balance || 0).toLocaleString("en-NG");
+        "₦" + balance.toLocaleString("en-NG");
 
         availableBalance.textContent =
-            "₦" + Number(data.balance || 0).toLocaleString("en-NG");
+        "₦" + balance.toLocaleString("en-NG");
+
+        accountStatus.textContent =
+        "Verified";
+
+        accountBadge.textContent =
+        "Active";
+
+        accountLevel.textContent =
+        "Premium User";
 
         const avatar =
-        data.photoURL ||
-        "https://ui-avatars.com/api/?background=6d5cff&color=ffffff&name=" +
-        encodeURIComponent(fullName);
+        `https://ui-avatars.com/api/?background=6d5cff&color=ffffff&name=${encodeURIComponent(fullName)}`;
 
         profileImage.src = avatar;
+
         topProfileImage.src = avatar;
+
         dropdownProfileImage.src = avatar;
 
-        if(loadingScreen){
-
-            loadingScreen.style.display = "none";
-
-        }
+        // Load the remaining dashboard data
+        loadDashboard(user.uid);
 
     }
 
@@ -127,12 +162,15 @@ async function loadUser(user){
 
         alert(error.message);
 
+        loadingScreen.style.display = "none";
+
     }
 
 }
-// ==========================================
-// Part 2 - Orders & Wallet Statistics
-// ==========================================
+// =====================================
+// dashboard.js - Part 2
+// Transactions + Orders + Dashboard Stats
+// =====================================
 
 import {
     collection,
@@ -144,15 +182,21 @@ import {
 } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
 
 
-// ==========================================
+// =====================================
 // HTML ELEMENTS
-// ==========================================
+// =====================================
+
+const recentTransactions =
+document.getElementById("recentTransactions");
 
 const recentOrders =
 document.getElementById("recentOrders");
 
-const recentActivity =
-document.getElementById("recentActivity");
+const totalOrders =
+document.getElementById("totalOrders");
+
+const totalSpent =
+document.getElementById("totalSpent");
 
 const totalDeposits =
 document.getElementById("totalDeposits");
@@ -160,35 +204,170 @@ document.getElementById("totalDeposits");
 const totalWithdrawals =
 document.getElementById("totalWithdrawals");
 
-const totalSpent =
-document.getElementById("totalSpent");
 
-const totalOrders =
-document.getElementById("totalOrders");
-
-
-
-// ==========================================
+// =====================================
 // LOAD DASHBOARD
-// ==========================================
+// =====================================
 
 async function loadDashboard(uid){
 
     await Promise.all([
 
-        loadOrders(uid),
+        loadTransactions(uid),
 
-        loadTransactions(uid)
+        loadOrders(uid)
 
     ]);
+
+    // Dashboard finished loading
+    if(loadingScreen){
+
+        loadingScreen.style.display = "none";
+
+    }
 
 }
 
 
 
-// ==========================================
+// =====================================
+// LOAD TRANSACTIONS
+// =====================================
+
+async function loadTransactions(uid){
+
+    try{
+
+        const q = query(
+
+            collection(db,"transactions"),
+
+            where("userId","==",uid),
+
+            orderBy("createdAt","desc"),
+
+            limit(10)
+
+        );
+
+        const snapshot =
+        await getDocs(q);
+
+        recentTransactions.innerHTML = "";
+
+        let deposits = 0;
+        let withdrawals = 0;
+        let spent = 0;
+
+        if(snapshot.empty){
+
+            recentTransactions.innerHTML = `
+
+            <tr>
+
+                <td colspan="5">
+
+                    No transactions found.
+
+                </td>
+
+            </tr>
+
+            `;
+
+        }
+
+        snapshot.forEach(docSnap=>{
+
+            const data = docSnap.data();
+
+            const amount =
+            Number(data.amount || 0);
+
+            const type =
+            data.type || "Credit";
+
+            if(type.toLowerCase()=="credit"){
+
+                deposits += amount;
+
+            }
+
+            if(type.toLowerCase()=="debit"){
+
+                withdrawals += amount;
+
+                spent += amount;
+
+            }
+
+            const date =
+            data.createdAt
+            ? new Date(
+            data.createdAt
+            ).toLocaleDateString("en-NG")
+            : "--";
+
+            recentTransactions.innerHTML += `
+
+            <tr>
+
+                <td>${type}</td>
+
+                <td>
+
+                ${data.description || "Wallet Transaction"}
+
+                </td>
+
+                <td>
+
+                ₦${amount.toLocaleString("en-NG")}
+
+                </td>
+
+                <td>
+
+                Successful
+
+                </td>
+
+                <td>
+
+                ${date}
+
+                </td>
+
+            </tr>
+
+            `;
+
+        });
+
+        totalDeposits.textContent =
+        "₦" + deposits.toLocaleString("en-NG");
+
+        totalWithdrawals.textContent =
+        "₦" + withdrawals.toLocaleString("en-NG");
+
+        totalSpent.textContent =
+        "₦" + spent.toLocaleString("en-NG");
+
+    }
+
+    catch(error){
+
+        console.error(error);
+
+    }
+
+}
+
+
+
+// =====================================
 // LOAD ORDERS
-// ==========================================
+// =====================================
 
 async function loadOrders(uid){
 
@@ -209,209 +388,63 @@ async function loadOrders(uid){
         const snapshot =
         await getDocs(q);
 
-        recentOrders.innerHTML="";
+        recentOrders.innerHTML = "";
 
-        let orderCount=0;
+        let count = 0;
 
         if(snapshot.empty){
 
-            recentOrders.innerHTML=`
+            recentOrders.innerHTML = `
 
-            <div class="empty-card">
+            <div class="empty-orders">
 
-                No orders yet.
+                No Orders Yet
 
             </div>
 
             `;
 
-            totalOrders.textContent="0";
+            totalOrders.textContent = "0";
 
             return;
 
         }
 
-        snapshot.forEach(doc=>{
+        snapshot.forEach(docSnap=>{
 
-            orderCount++;
+            count++;
 
-            const data=doc.data();
-
-            const amount=
-            Number(data.amount || 0);
-
-            const service=
-            data.service || "Service";
-
-            const status=
-            data.status || "Pending";
-
-            const created=
-            data.createdAt
-            ? new Date(
-                data.createdAt
-              ).toLocaleDateString("en-NG")
-            : "--";
+            const data = docSnap.data();
 
             recentOrders.innerHTML += `
 
-            <div class="order-item">
+            <div class="order-card">
 
-                <div class="order-left">
+                <img
+                src="${data.image || ''}"
+                class="order-image">
 
-                    <div class="order-icon">
-
-                        <i class="ri-shopping-bag-fill"></i>
-
-                    </div>
-
-                    <div>
-
-                        <div class="order-name">
-
-                            ${service}
-
-                        </div>
-
-                        <div class="order-date">
-
-                            ${created}
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-                <div class="order-price">
-
-                    ₦${amount.toLocaleString("en-NG")}
-
-                </div>
-
-            </div>
-
-            `;
-
-        });
-
-        totalOrders.textContent=
-        orderCount;
-
-    }
-
-    catch(error){
-
-        console.error(error);
-
-    }
-
-}
-
-
-
-// ==========================================
-// LOAD TRANSACTIONS
-// ==========================================
-
-async function loadTransactions(uid){
-
-    try{
-
-        const q=query(
-
-            collection(db,"transactions"),
-
-            where("userId","==",uid),
-
-            orderBy("createdAt","desc"),
-
-            limit(10)
-
-        );
-
-        const snapshot=
-        await getDocs(q);
-
-        recentActivity.innerHTML="";
-
-        let deposits=0;
-        let withdrawals=0;
-        let spent=0;
-
-        if(snapshot.empty){
-
-            recentActivity.innerHTML=`
-
-            <div class="empty-card">
-
-                No recent activity.
-
-            </div>
-
-            `;
-
-        }
-
-        snapshot.forEach(doc=>{
-
-            const data=
-            doc.data();
-
-            const amount=
-            Number(data.amount || 0);
-
-            const type=
-            (data.type || "").toLowerCase();
-
-            if(type==="credit"){
-
-                deposits += amount;
-
-            }
-
-            if(type==="debit"){
-
-                withdrawals += amount;
-
-                spent += amount;
-
-            }
-
-            const created=
-            data.createdAt
-            ? new Date(
-                data.createdAt
-              ).toLocaleString("en-NG")
-            : "--";
-
-            recentActivity.innerHTML += `
-
-            <div class="activity-item">
-
-                <div class="activity-dot"></div>
-
-                <div class="activity-content">
+                <div>
 
                     <h4>
 
-                        ${data.description || "Transaction"}
+                    ${data.productName || "Product"}
 
                     </h4>
 
                     <p>
 
-                        ₦${amount.toLocaleString("en-NG")}
+                    ₦${Number(data.amount||0).toLocaleString("en-NG")}
 
                     </p>
 
-                    <span>
-
-                        ${created}
-
-                    </span>
-
                 </div>
+
+                <span>
+
+                ${data.status || "Pending"}
+
+                </span>
 
             </div>
 
@@ -419,14 +452,7 @@ async function loadTransactions(uid){
 
         });
 
-        totalDeposits.textContent=
-        "₦"+deposits.toLocaleString("en-NG");
-
-        totalWithdrawals.textContent=
-        "₦"+withdrawals.toLocaleString("en-NG");
-
-        totalSpent.textContent=
-        "₦"+spent.toLocaleString("en-NG");
+        totalOrders.textContent = count;
 
     }
 
@@ -437,21 +463,12 @@ async function loadTransactions(uid){
     }
 
 }
+// =====================================
+// dashboard.js - Part 3
+// Notifications + UI Controls
+// =====================================
 
-
-
-// ==========================================
-// START DASHBOARD
-// ==========================================
-
-if(auth.currentUser){
-
-    loadDashboard(auth.currentUser.uid);
-
-}
-// ==========================================
-// Part 3 - UI Controls
-// ==========================================
+// HTML ELEMENTS
 
 const notificationBtn =
 document.getElementById("notificationBtn");
@@ -489,17 +506,20 @@ document.getElementById("sidebar");
 const themeToggle =
 document.getElementById("themeToggle");
 
+const refreshDashboard =
+document.getElementById("refreshDashboard");
 
 
-// ==========================================
+
+// =====================================
 // LOAD NOTIFICATIONS
-// ==========================================
+// =====================================
 
 async function loadNotifications(uid){
 
     try{
 
-        const q=query(
+        const q = query(
 
             collection(db,"notifications"),
 
@@ -511,34 +531,34 @@ async function loadNotifications(uid){
 
         );
 
-        const snapshot=
+        const snapshot =
         await getDocs(q);
 
-        notificationList.innerHTML="";
+        notificationList.innerHTML = "";
 
-        let unread=0;
+        let unread = 0;
 
         if(snapshot.empty){
 
-            notificationList.innerHTML=`
+            notificationList.innerHTML = `
 
             <div class="empty-card">
 
-                No notifications
+                No notifications yet.
 
             </div>
 
             `;
 
-            notificationCount.textContent="0";
+            notificationCount.textContent = "0";
 
             return;
 
         }
 
-        snapshot.forEach(doc=>{
+        snapshot.forEach(docSnap=>{
 
-            const data=doc.data();
+            const data = docSnap.data();
 
             if(data.read===false){
 
@@ -546,7 +566,7 @@ async function loadNotifications(uid){
 
             }
 
-            notificationList.innerHTML +=`
+            notificationList.innerHTML += `
 
             <div class="notification-item">
 
@@ -566,9 +586,7 @@ async function loadNotifications(uid){
 
                     ${
                         data.createdAt
-                        ? new Date(
-                        data.createdAt
-                        ).toLocaleString("en-NG")
+                        ? new Date(data.createdAt).toLocaleString("en-NG")
                         : "--"
                     }
 
@@ -580,13 +598,13 @@ async function loadNotifications(uid){
 
         });
 
-        notificationCount.textContent=unread;
+        notificationCount.textContent = unread;
 
     }
 
     catch(error){
 
-        console.log(error);
+        console.error(error);
 
     }
 
@@ -594,9 +612,11 @@ async function loadNotifications(uid){
 
 
 
-// ==========================================
-// OPEN NOTIFICATIONS
-// ==========================================
+// =====================================
+// OPEN/CLOSE NOTIFICATIONS
+// =====================================
+
+if(notificationBtn){
 
 notificationBtn.onclick=()=>{
 
@@ -604,17 +624,25 @@ notificationPanel.classList.toggle("show");
 
 };
 
+}
+
+if(closeNotifications){
+
 closeNotifications.onclick=()=>{
 
 notificationPanel.classList.remove("show");
 
 };
 
+}
 
 
-// ==========================================
+
+// =====================================
 // PROFILE MENU
-// ==========================================
+// =====================================
+
+if(profileBox){
 
 profileBox.onclick=()=>{
 
@@ -622,11 +650,15 @@ profileDropdown.classList.toggle("show");
 
 };
 
+}
 
 
-// ==========================================
+
+// =====================================
 // SIDEBAR
-// ==========================================
+// =====================================
+
+if(menuToggle){
 
 menuToggle.onclick=()=>{
 
@@ -634,51 +666,41 @@ sidebar.classList.toggle("show");
 
 };
 
+}
 
 
-// ==========================================
-// CLOSE POPUPS
-// ==========================================
 
-window.addEventListener("click",(e)=>{
+// =====================================
+// REFRESH BUTTON
+// =====================================
 
-if(
+if(refreshDashboard){
 
-!notificationPanel.contains(e.target)
+refreshDashboard.onclick=()=>{
 
-&&
+const user = auth.currentUser;
 
-!notificationBtn.contains(e.target)
+if(user){
 
-){
+loadUser(user);
 
-notificationPanel.classList.remove("show");
+loadDashboard(user.uid);
+
+loadNotifications(user.uid);
 
 }
 
-if(
-
-!profileDropdown.contains(e.target)
-
-&&
-
-!profileBox.contains(e.target)
-
-){
-
-profileDropdown.classList.remove("show");
+};
 
 }
 
-});
 
 
+// =====================================
+// LIGHT / DARK MODE
+// =====================================
 
-// ==========================================
-// DARK / LIGHT MODE
-// ==========================================
-
-const savedTheme=
+const savedTheme =
 localStorage.getItem("theme");
 
 if(savedTheme){
@@ -686,6 +708,8 @@ if(savedTheme){
 document.body.classList.add(savedTheme);
 
 }
+
+if(themeToggle){
 
 themeToggle.onclick=()=>{
 
@@ -709,49 +733,59 @@ localStorage.removeItem("theme");
 
 };
 
+}
 
 
-// ==========================================
+
+// =====================================
 // LOGOUT
-// ==========================================
+// =====================================
 
 async function logout(){
 
-try{
+    try{
 
-await signOut(auth);
+        await signOut(auth);
 
-window.location.href="login.html";
+        window.location.href="login.html";
+
+    }
+
+    catch(error){
+
+        alert(error.message);
+
+    }
 
 }
 
-catch(error){
+if(logoutBtn){
 
-alert(error.message);
-
-}
+logoutBtn.onclick = logout;
 
 }
 
-logoutBtn.onclick=logout;
+if(logoutDropdown){
 
-logoutDropdown.onclick=logout;
+logoutDropdown.onclick = logout;
+
+}
 
 
 
-// ==========================================
-// REFRESH DATA
-// ==========================================
+// =====================================
+// AUTO REFRESH
+// =====================================
 
 setInterval(()=>{
 
-const user=auth.currentUser;
+const user = auth.currentUser;
 
 if(user){
 
-loadOrders(user.uid);
-
 loadTransactions(user.uid);
+
+loadOrders(user.uid);
 
 loadNotifications(user.uid);
 
@@ -761,29 +795,9 @@ loadNotifications(user.uid);
 
 
 
-// ==========================================
-// HIDE LOADER
-// ==========================================
-
-window.addEventListener("load",()=>{
-
-setTimeout(()=>{
-
-if(loadingScreen){
-
-loadingScreen.style.display="none";
-
-}
-
-},500);
-
-});
-
-
-
-// ==========================================
+// =====================================
 // START NOTIFICATIONS
-// ==========================================
+// =====================================
 
 onAuthStateChanged(auth,(user)=>{
 
@@ -794,320 +808,221 @@ loadNotifications(user.uid);
 }
 
 });
+// =====================================
+// dashboard.js - Part 4
+// Final Initialization
+// =====================================
 
 
 
-console.log("Dashboard Ready");
-// ==========================================
-// Part 4 - Premium Dashboard Features
-// ==========================================
-
-// QUICK ACTION BUTTONS
-const depositBtn = document.getElementById("depositBtn");
-const withdrawBtn = document.getElementById("withdrawBtn");
-const historyBtn = document.getElementById("historyBtn");
-
-const vpnService = document.getElementById("vpnService");
-const esimService = document.getElementById("esimService");
-const numberService = document.getElementById("numberService");
-const boostService = document.getElementById("boostService");
-const digitalService = document.getElementById("digitalService");
-
-const refreshDashboard =
-document.getElementById("refreshDashboard");
-
-
-
-// ==========================================
-// NAVIGATION
-// ==========================================
-
-if(depositBtn){
-
-depositBtn.onclick=()=>{
-
-window.location.href="wallet.html";
-
-};
-
-}
-
-if(withdrawBtn){
-
-withdrawBtn.onclick=()=>{
-
-window.location.href="wallet.html";
-
-};
-
-}
-
-if(historyBtn){
-
-historyBtn.onclick=()=>{
-
-window.location.href="history.html";
-
-};
-
-}
-
-
-
-// ==========================================
-// SERVICES
-// ==========================================
-
-if(vpnService){
-
-vpnService.onclick=()=>{
-
-window.location.href="vpn.html";
-
-};
-
-}
-
-if(esimService){
-
-esimService.onclick=()=>{
-
-window.location.href="esim.html";
-
-};
-
-}
-
-if(numberService){
-
-numberService.onclick=()=>{
-
-window.location.href="numbers.html";
-
-};
-
-}
-
-if(boostService){
-
-boostService.onclick=()=>{
-
-window.location.href="boost.html";
-
-};
-
-}
-
-if(digitalService){
-
-digitalService.onclick=()=>{
-
-window.location.href="services.html";
-
-};
-
-}
-
-
-
-// ==========================================
-// REFRESH DASHBOARD
-// ==========================================
-
-if(refreshDashboard){
-
-refreshDashboard.onclick=()=>{
-
-const user=auth.currentUser;
-
-if(!user) return;
-
-loadUser(user);
-
-loadDashboard(user.uid);
-
-loadNotifications(user.uid);
-
-};
-
-}
-
-
-
-// ==========================================
+// =====================================
 // IMAGE FALLBACK
-// ==========================================
+// =====================================
 
 document.querySelectorAll("img").forEach(img=>{
 
-img.onerror=function(){
+    img.onerror=function(){
 
-this.src="https://ui-avatars.com/api/?background=6d5cff&color=ffffff&name=User";
+        this.src=
+        "https://ui-avatars.com/api/?background=6d5cff&color=ffffff&name=User";
 
-};
+    };
 
 });
 
 
 
-// ==========================================
+// =====================================
 // CARD ANIMATION
-// ==========================================
+// =====================================
 
 const cards=document.querySelectorAll(
 
-".service-card,.dashboard-card,.analytics-box"
+".stat-card,.service-card,.dashboard-card,.action-card"
 
 );
 
 cards.forEach((card,index)=>{
 
-card.style.opacity="0";
+    card.style.opacity="0";
 
-card.style.transform="translateY(30px)";
+    card.style.transform="translateY(20px)";
 
-setTimeout(()=>{
+    setTimeout(()=>{
 
-card.style.transition=".45s";
+        card.style.transition=".45s ease";
 
-card.style.opacity="1";
+        card.style.opacity="1";
 
-card.style.transform="translateY(0)";
+        card.style.transform="translateY(0)";
 
-},index*120);
-
-});
-
-
-
-// ==========================================
-// BALANCE COUNT ANIMATION
-// ==========================================
-
-function animateBalance(element,value){
-
-let start=0;
-
-const end=Number(value);
-
-const duration=800;
-
-const increment=end/40;
-
-const timer=setInterval(()=>{
-
-start+=increment;
-
-if(start>=end){
-
-start=end;
-
-clearInterval(timer);
-
-}
-
-element.textContent=
-
-"₦"+Math.floor(start).toLocaleString("en-NG");
-
-},duration/40);
-
-}
-
-
-
-// ==========================================
-// ANIMATE BALANCE AFTER LOAD
-// ==========================================
-
-const observer=new MutationObserver(()=>{
-
-const amount=
-
-walletBalance.textContent
-
-.replace(/[₦,]/g,"");
-
-if(!isNaN(amount)){
-
-animateBalance(walletBalance,amount);
-
-animateBalance(availableBalance,amount);
-
-observer.disconnect();
-
-}
-
-});
-
-observer.observe(walletBalance,{
-
-childList:true
+    },index*80);
 
 });
 
 
 
-// ==========================================
-// CLOSE SIDEBAR MOBILE
-// ==========================================
+// =====================================
+// CLOSE SIDEBAR ON MOBILE
+// =====================================
 
 window.addEventListener("resize",()=>{
 
-if(window.innerWidth>992){
+    if(window.innerWidth>992){
 
-sidebar.classList.remove("show");
+        if(sidebar){
 
-}
+            sidebar.classList.remove("show");
+
+        }
+
+    }
 
 });
 
 
 
-// ==========================================
+// =====================================
 // ESC KEY
-// ==========================================
+// =====================================
 
 document.addEventListener("keydown",(e)=>{
 
-if(e.key==="Escape"){
+    if(e.key==="Escape"){
 
-notificationPanel.classList.remove("show");
+        if(notificationPanel){
 
-profileDropdown.classList.remove("show");
+            notificationPanel.classList.remove("show");
 
-sidebar.classList.remove("show");
+        }
 
-}
+        if(profileDropdown){
+
+            profileDropdown.classList.remove("show");
+
+        }
+
+        if(sidebar){
+
+            sidebar.classList.remove("show");
+
+        }
+
+    }
 
 });
 
 
 
-// ==========================================
-// REMOVE LOADING SCREEN
-// ==========================================
+// =====================================
+// CLICK OUTSIDE
+// =====================================
 
-setTimeout(()=>{
+window.addEventListener("click",(e)=>{
 
-if(loadingScreen){
+    if(
 
-loadingScreen.style.opacity="0";
+        profileBox &&
 
-setTimeout(()=>{
+        profileDropdown &&
 
-loadingScreen.remove();
+        !profileBox.contains(e.target) &&
 
-},400);
+        !profileDropdown.contains(e.target)
+
+    ){
+
+        profileDropdown.classList.remove("show");
+
+    }
+
+    if(
+
+        notificationBtn &&
+
+        notificationPanel &&
+
+        !notificationBtn.contains(e.target) &&
+
+        !notificationPanel.contains(e.target)
+
+    ){
+
+        notificationPanel.classList.remove("show");
+
+    }
+
+});
+
+
+
+// =====================================
+// SAFE LOADING SCREEN
+// =====================================
+
+function hideLoading(){
+
+    if(!loadingScreen) return;
+
+    loadingScreen.style.opacity="0";
+
+    setTimeout(()=>{
+
+        loadingScreen.style.display="none";
+
+    },300);
 
 }
 
-},700);
+
+
+// Always hide loader after 5 seconds,
+// even if something fails.
+
+window.addEventListener("load",()=>{
+
+    setTimeout(hideLoading,5000);
+
+});
 
 
 
-// ==========================================
-// FINISHED
-// ==========================================
+// =====================================
+// GLOBAL ERROR HANDLER
+// =====================================
 
-console.log("thesuftsocials Dashboard Ready 🚀");
+window.addEventListener("error",(event)=>{
+
+    console.error(event.error);
+
+    hideLoading();
+
+});
+
+
+
+// =====================================
+// UNHANDLED PROMISES
+// =====================================
+
+window.addEventListener(
+
+"unhandledrejection",
+
+(event)=>{
+
+    console.error(event.reason);
+
+    hideLoading();
+
+}
+
+);
+
+
+
+// =====================================
+// DASHBOARD READY
+// =====================================
+
+console.log("Dashboard initialized successfully.");
