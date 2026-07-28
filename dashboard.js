@@ -1,8 +1,7 @@
-// =====================================
-// THESUFTSOCIALS DASHBOARD
+// ==========================================
 // dashboard.js
-// Part 1
-// =====================================
+// Part 1 - Authentication & User Profile
+// ==========================================
 
 import { auth, db } from "./firebase.js";
 
@@ -13,71 +12,44 @@ import {
 
 import {
     doc,
-    getDoc,
-    collection,
-    query,
-    where,
-    orderBy,
-    limit,
-    getDocs
+    getDoc
 } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
 
 
-// =====================================
-// ELEMENTS
-// =====================================
+// ==========================================
+// HTML ELEMENTS
+// ==========================================
+
+const loadingScreen = document.getElementById("loadingScreen");
 
 const username = document.getElementById("username");
-const welcomeName = document.getElementById("welcomeName");
 const topUsername = document.getElementById("topUsername");
 const dropdownUsername = document.getElementById("dropdownUsername");
 
+const welcomeName = document.getElementById("welcomeName");
+
 const topEmail = document.getElementById("topEmail");
 const dropdownEmail = document.getElementById("dropdownEmail");
-
-const walletBalance = document.getElementById("walletBalance");
-const availableBalance = document.getElementById("availableBalance");
-
-const totalOrders = document.getElementById("totalOrders");
-const totalSpent = document.getElementById("totalSpent");
-
-const totalDeposits = document.getElementById("totalDeposits");
-const totalWithdrawals = document.getElementById("totalWithdrawals");
-
-const accountStatus = document.getElementById("accountStatus");
-const accountBadge = document.getElementById("accountBadge");
-const accountLevel = document.getElementById("accountLevel");
 
 const profileImage = document.getElementById("profileImage");
 const topProfileImage = document.getElementById("topProfileImage");
 const dropdownProfileImage = document.getElementById("dropdownProfileImage");
 
-const recentTransactions =
-document.getElementById("recentTransactions");
+const walletBalance = document.getElementById("walletBalance");
+const availableBalance = document.getElementById("availableBalance");
 
-const notificationList =
-document.getElementById("notificationList");
-
-const notificationCount =
-document.getElementById("notificationCount");
-
-const logoutBtn =
-document.getElementById("logoutBtn");
-
-const logoutDropdown =
-document.getElementById("logoutDropdown");
+const accountStatus = document.getElementById("accountStatus");
 
 
-// =====================================
-// AUTH
-// =====================================
+// ==========================================
+// AUTHENTICATION
+// ==========================================
 
-onAuthStateChanged(auth, async (user)=>{
+onAuthStateChanged(auth, async (user) => {
 
-    if(!user){
+    if (!user) {
 
-        window.location.href="login.html";
-
+        window.location.href = "login.html";
         return;
 
     }
@@ -87,81 +59,244 @@ onAuthStateChanged(auth, async (user)=>{
 });
 
 
-// =====================================
+// ==========================================
 // LOAD USER
-// =====================================
+// ==========================================
 
 async function loadUser(user){
 
     try{
 
-        const ref = doc(db,"users",user.uid);
+        const userRef = doc(db, "users", user.uid);
 
-        const snap = await getDoc(ref);
+        const userSnap = await getDoc(userRef);
 
-        if(!snap.exists()){
+        if(!userSnap.exists()){
 
-            alert("User account not found.");
+            alert("User profile not found.");
 
             return;
 
         }
 
-        const data = snap.data();
+        const data = userSnap.data();
 
         const fullName =
-        `${data.firstName ?? ""} ${data.lastName ?? ""}`;
+            `${data.firstName || ""} ${data.lastName || ""}`.trim();
 
         username.textContent = fullName;
 
-        welcomeName.textContent =
-        data.firstName ?? "";
+        if(welcomeName)
+            welcomeName.textContent = data.firstName || "";
 
-        topUsername.textContent =
-        fullName;
+        topUsername.textContent = fullName;
+        dropdownUsername.textContent = fullName;
 
-        dropdownUsername.textContent =
-        fullName;
-
-        topEmail.textContent =
-        data.email ?? "";
-
-        dropdownEmail.textContent =
-        data.email ?? "";
-
-        const balance =
-        Number(data.balance ?? 0);
-
-        walletBalance.textContent =
-        "₦" + balance.toLocaleString();
-
-        availableBalance.textContent =
-        "₦" + balance.toLocaleString();
-
-        totalOrders.textContent =
-        Number(data.purchases ?? 0);
+        topEmail.textContent = data.email || user.email;
+        dropdownEmail.textContent = data.email || user.email;
 
         accountStatus.textContent =
-        "Verified";
+            data.accountStatus || "Premium Member";
 
-        accountBadge.textContent =
-        "Active";
+        walletBalance.textContent =
+            "₦" + Number(data.balance || 0).toLocaleString("en-NG");
 
-        accountLevel.textContent =
-        "Premium User";
+        availableBalance.textContent =
+            "₦" + Number(data.balance || 0).toLocaleString("en-NG");
 
         const avatar =
-`https://ui-avatars.com/api/?name=${encodeURIComponent(fullName)}&background=7C4DFF&color=ffffff`;
+        data.photoURL ||
+        "https://ui-avatars.com/api/?background=6d5cff&color=ffffff&name=" +
+        encodeURIComponent(fullName);
 
         profileImage.src = avatar;
-
         topProfileImage.src = avatar;
-
         dropdownProfileImage.src = avatar;
 
-        await loadTransactions(user.uid);
+        if(loadingScreen){
 
-        await loadNotifications(user.uid);
+            loadingScreen.style.display = "none";
+
+        }
+
+    }
+
+    catch(error){
+
+        console.error(error);
+
+        alert(error.message);
+
+    }
+
+}
+// ==========================================
+// Part 2 - Orders & Wallet Statistics
+// ==========================================
+
+import {
+    collection,
+    query,
+    where,
+    orderBy,
+    limit,
+    getDocs
+} from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
+
+
+// ==========================================
+// HTML ELEMENTS
+// ==========================================
+
+const recentOrders =
+document.getElementById("recentOrders");
+
+const recentActivity =
+document.getElementById("recentActivity");
+
+const totalDeposits =
+document.getElementById("totalDeposits");
+
+const totalWithdrawals =
+document.getElementById("totalWithdrawals");
+
+const totalSpent =
+document.getElementById("totalSpent");
+
+const totalOrders =
+document.getElementById("totalOrders");
+
+
+
+// ==========================================
+// LOAD DASHBOARD
+// ==========================================
+
+async function loadDashboard(uid){
+
+    await Promise.all([
+
+        loadOrders(uid),
+
+        loadTransactions(uid)
+
+    ]);
+
+}
+
+
+
+// ==========================================
+// LOAD ORDERS
+// ==========================================
+
+async function loadOrders(uid){
+
+    try{
+
+        const q = query(
+
+            collection(db,"orders"),
+
+            where("userId","==",uid),
+
+            orderBy("createdAt","desc"),
+
+            limit(5)
+
+        );
+
+        const snapshot =
+        await getDocs(q);
+
+        recentOrders.innerHTML="";
+
+        let orderCount=0;
+
+        if(snapshot.empty){
+
+            recentOrders.innerHTML=`
+
+            <div class="empty-card">
+
+                No orders yet.
+
+            </div>
+
+            `;
+
+            totalOrders.textContent="0";
+
+            return;
+
+        }
+
+        snapshot.forEach(doc=>{
+
+            orderCount++;
+
+            const data=doc.data();
+
+            const amount=
+            Number(data.amount || 0);
+
+            const service=
+            data.service || "Service";
+
+            const status=
+            data.status || "Pending";
+
+            const created=
+            data.createdAt
+            ? new Date(
+                data.createdAt
+              ).toLocaleDateString("en-NG")
+            : "--";
+
+            recentOrders.innerHTML += `
+
+            <div class="order-item">
+
+                <div class="order-left">
+
+                    <div class="order-icon">
+
+                        <i class="ri-shopping-bag-fill"></i>
+
+                    </div>
+
+                    <div>
+
+                        <div class="order-name">
+
+                            ${service}
+
+                        </div>
+
+                        <div class="order-date">
+
+                            ${created}
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="order-price">
+
+                    ₦${amount.toLocaleString("en-NG")}
+
+                </div>
+
+            </div>
+
+            `;
+
+        });
+
+        totalOrders.textContent=
+        orderCount;
 
     }
 
@@ -172,16 +307,18 @@ async function loadUser(user){
     }
 
 }
-// =====================================
-// PART 2
-// TRANSACTIONS + DASHBOARD STATS
-// =====================================
+
+
+
+// ==========================================
+// LOAD TRANSACTIONS
+// ==========================================
 
 async function loadTransactions(uid){
 
     try{
 
-        const q = query(
+        const q=query(
 
             collection(db,"transactions"),
 
@@ -189,59 +326,43 @@ async function loadTransactions(uid){
 
             orderBy("createdAt","desc"),
 
-            limit(20)
+            limit(10)
 
         );
 
-        const snapshot = await getDocs(q);
+        const snapshot=
+        await getDocs(q);
 
-        let deposits = 0;
-        let withdrawals = 0;
-        let spent = 0;
+        recentActivity.innerHTML="";
 
-        if(recentTransactions){
-
-            recentTransactions.innerHTML = "";
-
-        }
+        let deposits=0;
+        let withdrawals=0;
+        let spent=0;
 
         if(snapshot.empty){
 
-            if(recentTransactions){
+            recentActivity.innerHTML=`
 
-                recentTransactions.innerHTML = `
+            <div class="empty-card">
 
-                <tr>
+                No recent activity.
 
-                    <td colspan="5">
+            </div>
 
-                        No transactions found.
-
-                    </td>
-
-                </tr>
-
-                `;
-
-            }
-
-            totalDeposits.textContent="₦0";
-            totalWithdrawals.textContent="₦0";
-            totalSpent.textContent="₦0";
-
-            return;
+            `;
 
         }
 
-        snapshot.forEach((docSnap)=>{
+        snapshot.forEach(doc=>{
 
-            const data = docSnap.data();
+            const data=
+            doc.data();
 
-            const amount =
-            Number(data.amount ?? 0);
+            const amount=
+            Number(data.amount || 0);
 
-            const type =
-            (data.type ?? "").toLowerCase();
+            const type=
+            (data.type || "").toLowerCase();
 
             if(type==="credit"){
 
@@ -257,71 +378,61 @@ async function loadTransactions(uid){
 
             }
 
-            let date="--";
-
-            if(data.createdAt){
-
-                date =
+            const created=
+            data.createdAt
+            ? new Date(
                 data.createdAt
-                .toDate()
-                .toLocaleDateString(
-                    "en-NG"
-                );
+              ).toLocaleString("en-NG")
+            : "--";
 
-            }
+            recentActivity.innerHTML += `
 
-            if(recentTransactions){
+            <div class="activity-item">
 
-                recentTransactions.innerHTML += `
+                <div class="activity-dot"></div>
 
-                <tr>
+                <div class="activity-content">
 
-                    <td>
+                    <h4>
 
-                        ${type.toUpperCase()}
+                        ${data.description || "Transaction"}
 
-                    </td>
+                    </h4>
 
-                    <td>
+                    <p>
 
-                        ₦${amount.toLocaleString()}
+                        ₦${amount.toLocaleString("en-NG")}
 
-                    </td>
+                    </p>
 
-                    <td>
+                    <span>
 
-                        Successful
+                        ${created}
 
-                    </td>
+                    </span>
 
-                    <td>
+                </div>
 
-                        ${date}
+            </div>
 
-                    </td>
-
-                </tr>
-
-                `;
-
-            }
+            `;
 
         });
 
-        totalDeposits.textContent =
-        "₦" + deposits.toLocaleString();
+        totalDeposits.textContent=
+        "₦"+deposits.toLocaleString("en-NG");
 
-        totalWithdrawals.textContent =
-        "₦" + withdrawals.toLocaleString();
+        totalWithdrawals.textContent=
+        "₦"+withdrawals.toLocaleString("en-NG");
 
-        totalSpent.textContent =
-        "₦" + spent.toLocaleString();
+        totalSpent.textContent=
+        "₦"+spent.toLocaleString("en-NG");
 
     }
 
     catch(error){
 
-        console.error("Transactions Error:",error);
+        console.error(error);
 
     }
 
@@ -329,74 +440,66 @@ async function loadTransactions(uid){
 
 
 
-// =====================================
-// HELPER FUNCTIONS
-// =====================================
+// ==========================================
+// START DASHBOARD
+// ==========================================
 
-function formatMoney(amount){
+if(auth.currentUser){
 
-    return "₦" +
-    Number(amount)
-    .toLocaleString("en-NG");
+    loadDashboard(auth.currentUser.uid);
 
 }
+// ==========================================
+// Part 3 - UI Controls
+// ==========================================
 
-function formatDate(timestamp){
-
-    if(!timestamp){
-
-        return "--";
-
-    }
-
-    return timestamp
-    .toDate()
-    .toLocaleDateString(
-        "en-NG",
-        {
-
-            day:"numeric",
-
-            month:"short",
-
-            year:"numeric"
-
-        }
-
-    );
-
-}
-// =====================================
-// PART 3
-// NOTIFICATIONS + LOGOUT
-// =====================================
+const notificationBtn =
+document.getElementById("notificationBtn");
 
 const notificationPanel =
 document.getElementById("notificationPanel");
 
-const notificationButton =
-document.getElementById("notificationButton");
+const notificationList =
+document.getElementById("notificationList");
 
-const closeNotification =
-document.getElementById("closeNotification");
+const notificationCount =
+document.getElementById("notificationCount");
+
+const closeNotifications =
+document.getElementById("closeNotifications");
+
+const profileBox =
+document.getElementById("profileBox");
 
 const profileDropdown =
 document.getElementById("profileDropdown");
 
-const profileButton =
-document.getElementById("profileButton");
+const logoutBtn =
+document.getElementById("logoutBtn");
+
+const logoutDropdown =
+document.getElementById("logoutDropdown");
+
+const menuToggle =
+document.getElementById("menuToggle");
+
+const sidebar =
+document.getElementById("sidebar");
+
+const themeToggle =
+document.getElementById("themeToggle");
 
 
 
-// =====================================
+// ==========================================
 // LOAD NOTIFICATIONS
-// =====================================
+// ==========================================
 
 async function loadNotifications(uid){
 
     try{
 
-        const q = query(
+        const q=query(
 
             collection(db,"notifications"),
 
@@ -408,45 +511,34 @@ async function loadNotifications(uid){
 
         );
 
-        const snapshot = await getDocs(q);
+        const snapshot=
+        await getDocs(q);
 
-        if(notificationList){
+        notificationList.innerHTML="";
 
-            notificationList.innerHTML="";
-
-        }
-
-        let unread = 0;
+        let unread=0;
 
         if(snapshot.empty){
 
-            if(notificationList){
+            notificationList.innerHTML=`
 
-                notificationList.innerHTML=`
+            <div class="empty-card">
 
-                <div class="empty-notification">
+                No notifications
 
-                    No notifications available.
+            </div>
 
-                </div>
+            `;
 
-                `;
-
-            }
-
-            if(notificationCount){
-
-                notificationCount.textContent="0";
-
-            }
+            notificationCount.textContent="0";
 
             return;
 
         }
 
-        snapshot.forEach((docSnap)=>{
+        snapshot.forEach(doc=>{
 
-            const data = docSnap.data();
+            const data=doc.data();
 
             if(data.read===false){
 
@@ -454,41 +546,47 @@ async function loadNotifications(uid){
 
             }
 
-            const date = data.createdAt
-            ? formatDate(data.createdAt)
-            : "--";
+            notificationList.innerHTML +=`
 
-            if(notificationList){
+            <div class="notification-item">
 
-                notificationList.innerHTML += `
+                <h4>
 
-                <div class="notification-item">
+                    ${data.title || "Notification"}
 
-                    <h4>${data.title ?? ""}</h4>
+                </h4>
 
-                    <p>${data.message ?? ""}</p>
+                <p>
 
-                    <small>${date}</small>
+                    ${data.message || ""}
 
-                </div>
+                </p>
 
-                `;
+                <small>
 
-            }
+                    ${
+                        data.createdAt
+                        ? new Date(
+                        data.createdAt
+                        ).toLocaleString("en-NG")
+                        : "--"
+                    }
+
+                </small>
+
+            </div>
+
+            `;
 
         });
 
-        if(notificationCount){
-
-            notificationCount.textContent = unread;
-
-        }
+        notificationCount.textContent=unread;
 
     }
 
     catch(error){
 
-        console.error("Notification Error:",error);
+        console.log(error);
 
     }
 
@@ -496,297 +594,520 @@ async function loadNotifications(uid){
 
 
 
-// =====================================
-// NOTIFICATION PANEL
-// =====================================
+// ==========================================
+// OPEN NOTIFICATIONS
+// ==========================================
 
-if(notificationButton){
+notificationBtn.onclick=()=>{
 
-    notificationButton.onclick=()=>{
+notificationPanel.classList.toggle("show");
 
-        notificationPanel.classList.toggle("show");
+};
 
-    };
+closeNotifications.onclick=()=>{
 
-}
+notificationPanel.classList.remove("show");
 
-if(closeNotification){
-
-    closeNotification.onclick=()=>{
-
-        notificationPanel.classList.remove("show");
-
-    };
-
-}
+};
 
 
 
-// =====================================
+// ==========================================
 // PROFILE MENU
-// =====================================
+// ==========================================
 
-if(profileButton){
+profileBox.onclick=()=>{
 
-    profileButton.onclick=()=>{
+profileDropdown.classList.toggle("show");
 
-        profileDropdown.classList.toggle("show");
-
-    };
-
-}
+};
 
 
 
-// =====================================
-// CLOSE MENUS WHEN CLICKING OUTSIDE
-// =====================================
+// ==========================================
+// SIDEBAR
+// ==========================================
+
+menuToggle.onclick=()=>{
+
+sidebar.classList.toggle("show");
+
+};
+
+
+
+// ==========================================
+// CLOSE POPUPS
+// ==========================================
 
 window.addEventListener("click",(e)=>{
 
-    if(
+if(
 
-        notificationPanel &&
+!notificationPanel.contains(e.target)
 
-        notificationButton &&
+&&
 
-        !notificationPanel.contains(e.target) &&
+!notificationBtn.contains(e.target)
 
-        !notificationButton.contains(e.target)
+){
 
-    ){
+notificationPanel.classList.remove("show");
 
-        notificationPanel.classList.remove("show");
+}
 
-    }
+if(
 
-    if(
+!profileDropdown.contains(e.target)
 
-        profileDropdown &&
+&&
 
-        profileButton &&
+!profileBox.contains(e.target)
 
-        !profileDropdown.contains(e.target) &&
+){
 
-        !profileButton.contains(e.target)
+profileDropdown.classList.remove("show");
 
-    ){
-
-        profileDropdown.classList.remove("show");
-
-    }
+}
 
 });
 
 
 
-// =====================================
-// LOGOUT
-// =====================================
+// ==========================================
+// DARK / LIGHT MODE
+// ==========================================
 
-async function logout(){
-
-    try{
-
-        await signOut(auth);
-
-        window.location.href="login.html";
-
-    }
-
-    catch(error){
-
-        alert(error.message);
-
-    }
-
-}
-
-if(logoutBtn){
-
-    logoutBtn.addEventListener("click",logout);
-
-}
-
-if(logoutDropdown){
-
-    logoutDropdown.addEventListener("click",logout);
-
-}
-// =====================================
-// PART 4
-// SIDEBAR + THEME + STARTUP
-// =====================================
-
-// Sidebar
-
-const sidebar =
-document.getElementById("sidebar");
-
-const menuToggle =
-document.getElementById("menuToggle");
-
-if(menuToggle && sidebar){
-
-    menuToggle.addEventListener("click",()=>{
-
-        sidebar.classList.toggle("show");
-
-    });
-
-}
-
-
-// Close sidebar on mobile
-
-document.addEventListener("click",(e)=>{
-
-    if(
-
-        window.innerWidth <= 992 &&
-
-        sidebar &&
-
-        menuToggle &&
-
-        !sidebar.contains(e.target) &&
-
-        !menuToggle.contains(e.target)
-
-    ){
-
-        sidebar.classList.remove("show");
-
-    }
-
-});
-
-
-
-// =====================================
-// THEME
-// =====================================
-
-const themeToggle =
-document.getElementById("themeToggle");
-
-const savedTheme =
+const savedTheme=
 localStorage.getItem("theme");
 
 if(savedTheme){
 
-    document.body.classList.add(savedTheme);
+document.body.classList.add(savedTheme);
 
 }
 
-if(themeToggle){
+themeToggle.onclick=()=>{
 
-    themeToggle.addEventListener("click",()=>{
+document.body.classList.toggle("light-mode");
 
-        document.body.classList.toggle("light-mode");
+if(document.body.classList.contains("light-mode")){
 
-        if(document.body.classList.contains("light-mode")){
+localStorage.setItem(
 
-            localStorage.setItem(
-                "theme",
-                "light-mode"
-            );
+"theme",
 
-        }else{
+"light-mode"
 
-            localStorage.removeItem("theme");
+);
 
-        }
+}else{
 
-    });
+localStorage.removeItem("theme");
 
 }
 
+};
 
 
-// =====================================
-// AUTO REFRESH
-// =====================================
+
+// ==========================================
+// LOGOUT
+// ==========================================
+
+async function logout(){
+
+try{
+
+await signOut(auth);
+
+window.location.href="login.html";
+
+}
+
+catch(error){
+
+alert(error.message);
+
+}
+
+}
+
+logoutBtn.onclick=logout;
+
+logoutDropdown.onclick=logout;
+
+
+
+// ==========================================
+// REFRESH DATA
+// ==========================================
 
 setInterval(()=>{
 
-    const user = auth.currentUser;
+const user=auth.currentUser;
 
-    if(user){
+if(user){
 
-        loadTransactions(user.uid);
+loadOrders(user.uid);
 
-        loadNotifications(user.uid);
+loadTransactions(user.uid);
 
-    }
+loadNotifications(user.uid);
+
+}
 
 },30000);
 
 
 
-// =====================================
-// DEFAULT PROFILE IMAGE
-// =====================================
+// ==========================================
+// HIDE LOADER
+// ==========================================
 
-document.querySelectorAll("img").forEach((img)=>{
+window.addEventListener("load",()=>{
 
-    img.onerror=function(){
+setTimeout(()=>{
 
-        this.src="https://ui-avatars.com/api/?background=7C4DFF&color=ffffff&name=User";
+if(loadingScreen){
 
-    };
-
-});
-
-
-
-// =====================================
-// PAGE READY
-// =====================================
-
-window.addEventListener("DOMContentLoaded",()=>{
-
-    console.log("Dashboard Ready");
-
-});
-
-
-
-// =====================================
-// LOGOUT BUTTON SAFETY
-// =====================================
-
-const logoutButtons =
-document.querySelectorAll(".logout-btn");
-
-logoutButtons.forEach((button)=>{
-
-    button.addEventListener("click",logout);
-
-});
-
-
-
-// =====================================
-// UTILITIES
-// =====================================
-
-function showMessage(message){
-
-    console.log(message);
+loadingScreen.style.display="none";
 
 }
 
-function showError(error){
+},500);
 
-    console.error(error);
+});
+
+
+
+// ==========================================
+// START NOTIFICATIONS
+// ==========================================
+
+onAuthStateChanged(auth,(user)=>{
+
+if(user){
+
+loadNotifications(user.uid);
+
+}
+
+});
+
+
+
+console.log("Dashboard Ready");
+// ==========================================
+// Part 4 - Premium Dashboard Features
+// ==========================================
+
+// QUICK ACTION BUTTONS
+const depositBtn = document.getElementById("depositBtn");
+const withdrawBtn = document.getElementById("withdrawBtn");
+const historyBtn = document.getElementById("historyBtn");
+
+const vpnService = document.getElementById("vpnService");
+const esimService = document.getElementById("esimService");
+const numberService = document.getElementById("numberService");
+const boostService = document.getElementById("boostService");
+const digitalService = document.getElementById("digitalService");
+
+const refreshDashboard =
+document.getElementById("refreshDashboard");
+
+
+
+// ==========================================
+// NAVIGATION
+// ==========================================
+
+if(depositBtn){
+
+depositBtn.onclick=()=>{
+
+window.location.href="wallet.html";
+
+};
+
+}
+
+if(withdrawBtn){
+
+withdrawBtn.onclick=()=>{
+
+window.location.href="wallet.html";
+
+};
+
+}
+
+if(historyBtn){
+
+historyBtn.onclick=()=>{
+
+window.location.href="history.html";
+
+};
 
 }
 
 
 
-// =====================================
-// END
-// =====================================
+// ==========================================
+// SERVICES
+// ==========================================
 
-console.log("TheSuftSocials Dashboard Loaded");
+if(vpnService){
+
+vpnService.onclick=()=>{
+
+window.location.href="vpn.html";
+
+};
+
+}
+
+if(esimService){
+
+esimService.onclick=()=>{
+
+window.location.href="esim.html";
+
+};
+
+}
+
+if(numberService){
+
+numberService.onclick=()=>{
+
+window.location.href="numbers.html";
+
+};
+
+}
+
+if(boostService){
+
+boostService.onclick=()=>{
+
+window.location.href="boost.html";
+
+};
+
+}
+
+if(digitalService){
+
+digitalService.onclick=()=>{
+
+window.location.href="services.html";
+
+};
+
+}
+
+
+
+// ==========================================
+// REFRESH DASHBOARD
+// ==========================================
+
+if(refreshDashboard){
+
+refreshDashboard.onclick=()=>{
+
+const user=auth.currentUser;
+
+if(!user) return;
+
+loadUser(user);
+
+loadDashboard(user.uid);
+
+loadNotifications(user.uid);
+
+};
+
+}
+
+
+
+// ==========================================
+// IMAGE FALLBACK
+// ==========================================
+
+document.querySelectorAll("img").forEach(img=>{
+
+img.onerror=function(){
+
+this.src="https://ui-avatars.com/api/?background=6d5cff&color=ffffff&name=User";
+
+};
+
+});
+
+
+
+// ==========================================
+// CARD ANIMATION
+// ==========================================
+
+const cards=document.querySelectorAll(
+
+".service-card,.dashboard-card,.analytics-box"
+
+);
+
+cards.forEach((card,index)=>{
+
+card.style.opacity="0";
+
+card.style.transform="translateY(30px)";
+
+setTimeout(()=>{
+
+card.style.transition=".45s";
+
+card.style.opacity="1";
+
+card.style.transform="translateY(0)";
+
+},index*120);
+
+});
+
+
+
+// ==========================================
+// BALANCE COUNT ANIMATION
+// ==========================================
+
+function animateBalance(element,value){
+
+let start=0;
+
+const end=Number(value);
+
+const duration=800;
+
+const increment=end/40;
+
+const timer=setInterval(()=>{
+
+start+=increment;
+
+if(start>=end){
+
+start=end;
+
+clearInterval(timer);
+
+}
+
+element.textContent=
+
+"₦"+Math.floor(start).toLocaleString("en-NG");
+
+},duration/40);
+
+}
+
+
+
+// ==========================================
+// ANIMATE BALANCE AFTER LOAD
+// ==========================================
+
+const observer=new MutationObserver(()=>{
+
+const amount=
+
+walletBalance.textContent
+
+.replace(/[₦,]/g,"");
+
+if(!isNaN(amount)){
+
+animateBalance(walletBalance,amount);
+
+animateBalance(availableBalance,amount);
+
+observer.disconnect();
+
+}
+
+});
+
+observer.observe(walletBalance,{
+
+childList:true
+
+});
+
+
+
+// ==========================================
+// CLOSE SIDEBAR MOBILE
+// ==========================================
+
+window.addEventListener("resize",()=>{
+
+if(window.innerWidth>992){
+
+sidebar.classList.remove("show");
+
+}
+
+});
+
+
+
+// ==========================================
+// ESC KEY
+// ==========================================
+
+document.addEventListener("keydown",(e)=>{
+
+if(e.key==="Escape"){
+
+notificationPanel.classList.remove("show");
+
+profileDropdown.classList.remove("show");
+
+sidebar.classList.remove("show");
+
+}
+
+});
+
+
+
+// ==========================================
+// REMOVE LOADING SCREEN
+// ==========================================
+
+setTimeout(()=>{
+
+if(loadingScreen){
+
+loadingScreen.style.opacity="0";
+
+setTimeout(()=>{
+
+loadingScreen.remove();
+
+},400);
+
+}
+
+},700);
+
+
+
+// ==========================================
+// FINISHED
+// ==========================================
+
+console.log("thesuftsocials Dashboard Ready 🚀");
