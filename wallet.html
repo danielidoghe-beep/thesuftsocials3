@@ -329,30 +329,191 @@ id="paymentOverlay">
 PAYMENT MODAL
 ===================================-->
 
-<div
-class="payment-modal"
-id="paymentModal">
+<div class="payment-overlay" id="paymentOverlay"></div>
 
-    <div
-    class="payment-sheet">
+<div class="payment-modal" id="paymentModal">
 
-        <div
-        class="sheet-header">
+    <div class="payment-sheet">
 
-            <h3>
+        <!-- Header -->
 
-                Complete your top-up
+        <div class="sheet-header">
 
-            </h3>
+            <h2>Complete your top-up</h2>
 
-            <button
-            id="closePayment">
+            <button id="closePayment" class="close-btn">
 
                 <i class="ri-close-line"></i>
 
             </button>
 
         </div>
+
+        <!-- Amount & Reference -->
+
+        <div class="summary-card">
+
+            <div class="summary-item">
+
+                <span>Amount</span>
+
+                <h3 id="paymentAmount">
+
+                    ₦1,000
+
+                </h3>
+
+            </div>
+
+            <div class="summary-item">
+
+                <span>Reference</span>
+
+                <div class="reference-box">
+
+                    <strong id="paymentReference">
+
+                        TS000000
+
+                    </strong>
+
+                    <button id="copyReference">
+
+                        <i class="ri-file-copy-line"></i>
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Transfer Card -->
+
+        <div class="transfer-card">
+
+            <h3>
+
+                Transfer to this account
+
+            </h3>
+
+            <div class="bank-box">
+
+                <span class="bank-label">
+
+                    Bank
+
+                </span>
+
+                <h2 id="bankName">
+
+                    PalmPay
+
+                </h2>
+
+                <span class="bank-label">
+
+                    Account Number
+
+                </span>
+
+                <div class="account-row">
+
+                    <h1 id="accountNumber">
+
+                        9117412352
+
+                    </h1>
+
+                    <button id="copyAccount">
+
+                        <i class="ri-file-copy-line"></i>
+
+                    </button>
+
+                </div>
+
+                <span class="bank-label">
+
+                    Amount to send
+
+                </span>
+
+                <h2
+                class="sendAmount"
+                id="sendAmount">
+
+                    ₦1,000
+
+                </h2>
+
+            </div>
+
+        </div>
+
+        <!-- Instructions -->
+
+        <div class="instruction-card">
+
+            <h3>
+
+                Instructions
+
+            </h3>
+
+            <ol>
+
+                <li>Open your banking app.</li>
+
+                <li>Transfer the exact amount shown above.</li>
+
+                <li>Tap the button below.</li>
+
+                <li>Send your payment receipt on WhatsApp.</li>
+
+                <li>Your wallet will be credited after confirmation.</li>
+
+            </ol>
+
+        </div>
+
+        <!-- WhatsApp -->
+
+        <button
+        id="sendProofBtn"
+        class="whatsapp-btn">
+
+            <i class="ri-whatsapp-line"></i>
+
+            Send Proof to WhatsApp
+
+        </button>
+
+        <!-- Footer -->
+
+        <div class="popup-footer">
+
+            <button
+            id="cancelPayment"
+            class="cancel-btn">
+
+                CANCEL
+
+            </button>
+
+            <span>
+
+                Secured by Bank Transfer
+
+            </span>
+
+        </div>
+
+    </div>
+
+</div>
 
         <!--==============================
         PAYMENT CARD
