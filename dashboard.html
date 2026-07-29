@@ -502,55 +502,37 @@ SUPPORT
 
 </section>
 
-<!-- ===========================
-SIDE MENU
-=========================== -->
+<!-- =========================
+SIDEBAR
+========================= -->
 
-<div
-class="sidebar"
-id="sidebar">
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
 
-    <div class="sidebar-header">
+<aside class="sidebar" id="sidebar">
 
-        <div class="profile-avatar large">
+    <div class="sidebar-logo">
 
-            D
-
+        <div class="logo-icon">
+            <div class="logo-layer"></div>
+            <div class="logo-layer"></div>
+            <div class="logo-layer"></div>
         </div>
 
-        <div>
-
-            <h3 id="sideUsername">
-
-                Loading...
-
-            </h3>
-
-            <p id="sideEmail">
-
-                Loading...
-
-            </p>
-
-        </div>
+        <h2>ThesuftSocials</h2>
 
     </div>
 
-    <nav class="sidebar-menu">
+    <!-- MAIN -->
 
-        <a href="dashboard.html">
+    <div class="sidebar-section">
 
-            <i class="ri-home-5-line"></i>
+        <h3>MAIN</h3>
 
-            Dashboard
+        <a href="dashboard.html" class="active">
 
-        </a>
+            <i class="ri-dashboard-line"></i>
 
-        <a href="store.html">
-
-            <i class="ri-store-2-line"></i>
-
-            Store
+            <span>Dashboard</span>
 
         </a>
 
@@ -558,31 +540,95 @@ id="sidebar">
 
             <i class="ri-wallet-3-line"></i>
 
-            Wallet
+            <span>Wallet</span>
 
         </a>
 
         <a href="orders.html">
 
-            <i class="ri-shopping-bag-line"></i>
+            <i class="ri-inbox-archive-line"></i>
 
-            Orders
-
-        </a>
-
-        <a href="history.html">
-
-            <i class="ri-history-line"></i>
-
-            Transactions
+            <span>Orders</span>
 
         </a>
 
-        <a href="notifications.html">
+        <a href="transactions.html">
+
+            <i class="ri-file-list-3-line"></i>
+
+            <span>Transactions</span>
+
+        </a>
+
+    </div>
+
+    <!-- STORE -->
+
+    <div class="sidebar-section">
+
+        <h3>STORE</h3>
+
+        <a href="logs.html">
+
+            <i class="ri-box-3-line"></i>
+
+            <span>Logs Store</span>
+
+        </a>
+
+        <a href="tools.html">
+
+            <i class="ri-tools-line"></i>
+
+            <span>Tools Store</span>
+
+        </a>
+
+        <a href="sms.html">
+
+            <i class="ri-message-2-line"></i>
+
+            <span>SMS Numbers</span>
+
+        </a>
+
+        <a href="boost.html">
+
+            <i class="ri-flashlight-line"></i>
+
+            <span>SME Boosting</span>
+
+        </a>
+
+        <a href="esim.html">
+
+            <i class="ri-sim-card-line"></i>
+
+            <span>E-Sim</span>
+
+        </a>
+
+        <a href="community.html">
+
+            <i class="ri-chat-3-line"></i>
+
+            <span>Community</span>
+
+        </a>
+
+    </div>
+
+    <!-- ACCOUNT -->
+
+    <div class="sidebar-section">
+
+        <h3>ACCOUNT</h3>
+
+        <a href="support.html">
 
             <i class="ri-notification-3-line"></i>
 
-            Notifications
+            <span>Support</span>
 
         </a>
 
@@ -590,33 +636,21 @@ id="sidebar">
 
             <i class="ri-user-line"></i>
 
-            Profile
+            <span>Profile</span>
 
         </a>
 
-        <a href="settings.html">
-
-            <i class="ri-settings-3-line"></i>
-
-            Settings
-
-        </a>
-
-        <button id="logoutBtn">
+        <button id="logoutBtn" class="logout-btn">
 
             <i class="ri-logout-box-r-line"></i>
 
-            Logout
+            <span>Sign out</span>
 
         </button>
 
-    </nav>
+    </div>
 
-</div>
-
-<div
-class="sidebar-overlay"
-id="sidebarOverlay"></div>
+</aside>
 <!-- ===========================
 SIDEBAR OVERLAY
 =========================== -->
