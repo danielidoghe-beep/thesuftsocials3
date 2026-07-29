@@ -1,67 +1,211 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Orders</title>
+<!-- ==========================================
+ORDERS PAGE
+========================================== -->
 
-<link rel="stylesheet" href="orders.css">
+<div class="orders-page">
 
-<script src="https://unpkg.com/lucide@latest"></script>
-</head>
-<body>
+    <!-- PAGE TITLE -->
 
-<div class="topbar">
+    <section class="orders-title">
 
-<a href="dashboard.html">
-<i data-lucide="panel-left"></i>
-</a>
+        <h1>Orders</h1>
 
-<div class="topbar-right">
+        <p>Your purchase history</p>
 
-<div class="wallet-pill">₦0</div>
+    </section>
 
-<i data-lucide="sun"></i>
+    <!-- ==========================================
+    RECENT ORDERS
+    ========================================== -->
 
-<a href="notifications.html">
-<i data-lucide="bell"></i>
-</a>
+    <section class="orders-section">
 
-<div class="avatar">DD</div>
+        <div class="orders-header">
+
+            <h2>RECENT ORDERS</h2>
+
+        </div>
+
+        <!-- Orders will load here from Firebase -->
+
+        <div id="ordersList">
+
+            <!-- EMPTY STATE -->
+
+            <div
+                id="emptyOrders"
+                class="empty-orders">
+
+                <div class="empty-card">
+
+                    <h3>No orders yet</h3>
+
+                    <p>
+                        You have not made any purchases yet.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+</div>
+        <!-- EMPTY STATE -->
+
+        <div
+            id="emptyOrders"
+            class="empty-orders">
+
+            <div class="empty-card">
+
+                <h3>
+                    No orders yet
+                </h3>
+
+                <p>
+                    You have not made any purchases yet.
+                </p>
+
+            </div>
+
+        </div>
+
+        <!-- ORDERS WILL LOAD HERE -->
+
+        <div
+            id="ordersList"
+            class="orders-list">
+
+            <!-- Firebase inserts orders here -->
+
+        </div>
+
+    </section>
 
 </div>
 
-</div>
+<!-- ==========================================
+ORDER DETAILS MODAL
+========================================== -->
 
-<div class="page">
-
-<h1 class="page-title">Orders</h1>
-
-<p class="subtitle">
-Your purchase history
-</p>
-
-<div id="emptyOrders" class="orders-card">
-
-<div class="empty-content">
-
-<i data-lucide="package"></i>
-
-<h3>No orders yet</h3>
-
-<p>
-Your purchases will appear here after you buy something
-</p>
+<div
+    class="order-overlay"
+    id="orderOverlay">
 
 </div>
 
-</div>
+<div
+    class="order-modal"
+    id="orderModal">
+
+    <div class="order-sheet">
+
+        <div class="order-header">
+
+            <h2>
+                Order Details
+            </h2>
+
+            <button
+                id="closeOrder">
+
+                <i class="ri-close-line"></i>
+
+            </button>
+
+        </div>
+
+        <div class="order-body">
+
+            <div class="detail-row">
+
+                <span>Service</span>
+
+                <strong id="modalService">
+
+                    --
+
+                </strong>
+
+            </div>
+
+            <div class="detail-row">
+
+                <span>Amount</span>
+
+                <strong id="modalAmount">
+
+                    ₦0
+
+                </strong>
+
+            </div>
+
+            <div class="detail-row">
+
+                <span>Status</span>
+
+                <strong id="modalStatus">
+
+                    Pending
+
+                </strong>
+
+            </div>
+
+            <div class="detail-row">
+
+                <span>Order ID</span>
+
+                <strong id="modalOrderId">
+
+                    --
+
+                </strong>
+
+            </div>
+
+            <div class="detail-row">
+
+                <span>Date</span>
+
+                <strong id="modalDate">
+
+                    --
+
+                </strong>
+
+            </div>
+
+        </div>
+
+    </div>
 
 </div>
+<!-- ORDERS LIST -->
 
-<script>
-lucide.createIcons();
-</script>
+<div id="ordersList" class="orders-list">
 
-</body>
-</html>
+    <!-- EMPTY STATE -->
+
+    <div
+        id="emptyOrders"
+        class="empty-orders">
+
+        <h3>No orders yet</h3>
+
+        <p>
+            You have not made any purchases yet.
+        </p>
+
+    </div>
+
+    <!-- FIREBASE ORDERS WILL LOAD HERE -->
+
+</div>
+</section>
+
+</div>
