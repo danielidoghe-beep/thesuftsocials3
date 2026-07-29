@@ -1,3 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Orders | thesuftsocials</title>
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/remixicon@4.6.0/fonts/remixicon.css"
+        rel="stylesheet">
+
+    <link
+        rel="stylesheet"
+        href="orders.css">
+
+</head>
+
+<body>
+
+<!-- ==========================================
+LOADING SCREEN
+========================================== -->
+
+<div
+    class="loading-screen"
+    id="loadingScreen">
+
+    <div class="loading-content">
+
+        <div class="logo-stack">
+
+            <div class="stack one"></div>
+
+            <div class="stack two"></div>
+
+            <div class="stack three"></div>
+
+        </div>
+
+        <h2>thesuftsocials</h2>
+
+    </div>
+
+</div>
+
 <!-- ==========================================
 ORDERS PAGE
 ========================================== -->
@@ -8,27 +58,40 @@ ORDERS PAGE
 
     <section class="orders-title">
 
-        <h1>Orders</h1>
+        <h1>
 
-        <p>Your purchase history</p>
+            Orders
+
+        </h1>
+
+        <p>
+
+            Your purchase history
+
+        </p>
 
     </section>
-
-    <!-- ==========================================
+        <!-- ==========================================
     RECENT ORDERS
     ========================================== -->
 
-    <section class="orders-section">
+    <section class="orders-card">
 
         <div class="orders-header">
 
-            <h2>RECENT ORDERS</h2>
+            <h2>
+
+                RECENT ORDERS
+
+            </h2>
 
         </div>
 
-        <!-- Orders will load here from Firebase -->
+        <!-- Orders from Firebase will load here -->
 
-        <div id="ordersList">
+        <div
+            id="ordersList"
+            class="orders-list">
 
             <!-- EMPTY STATE -->
 
@@ -36,59 +99,31 @@ ORDERS PAGE
                 id="emptyOrders"
                 class="empty-orders">
 
-                <div class="empty-card">
+                <div class="empty-icon">
 
-                    <h3>No orders yet</h3>
-
-                    <p>
-                        You have not made any purchases yet.
-                    </p>
+                    <i class="ri-shopping-bag-3-line"></i>
 
                 </div>
 
-            </div>
-
-        </div>
-
-    </section>
-
-</div>
-        <!-- EMPTY STATE -->
-
-        <div
-            id="emptyOrders"
-            class="empty-orders">
-
-            <div class="empty-card">
-
                 <h3>
+
                     No orders yet
+
                 </h3>
 
                 <p>
+
                     You have not made any purchases yet.
+
                 </p>
 
             </div>
 
         </div>
 
-        <!-- ORDERS WILL LOAD HERE -->
-
-        <div
-            id="ordersList"
-            class="orders-list">
-
-            <!-- Firebase inserts orders here -->
-
-        </div>
-
     </section>
-
-</div>
-
-<!-- ==========================================
-ORDER DETAILS MODAL
+    <!-- ==========================================
+ORDER DETAILS POPUP
 ========================================== -->
 
 <div
@@ -103,14 +138,19 @@ ORDER DETAILS MODAL
 
     <div class="order-sheet">
 
-        <div class="order-header">
+        <!-- HEADER -->
+
+        <div class="order-modal-header">
 
             <h2>
+
                 Order Details
+
             </h2>
 
             <button
-                id="closeOrder">
+                id="closeOrder"
+                class="close-order-btn">
 
                 <i class="ri-close-line"></i>
 
@@ -118,19 +158,36 @@ ORDER DETAILS MODAL
 
         </div>
 
-        <div class="order-body">
+        <!-- PRODUCT -->
 
-            <div class="detail-row">
+        <div class="order-product">
 
-                <span>Service</span>
+            <img
+                id="modalProductImage"
+                src=""
+                alt="Product">
 
-                <strong id="modalService">
+            <div>
 
-                    --
+                <h3 id="modalProductName">
 
-                </strong>
+                    Product Name
+
+                </h3>
+
+                <p id="modalOrderId">
+
+                    Order ID
+
+                </p>
 
             </div>
+
+        </div>
+
+        <!-- DETAILS -->
+
+        <div class="order-details">
 
             <div class="detail-row">
 
@@ -146,11 +203,11 @@ ORDER DETAILS MODAL
 
             <div class="detail-row">
 
-                <span>Status</span>
+                <span>Quantity</span>
 
-                <strong id="modalStatus">
+                <strong id="modalQuantity">
 
-                    Pending
+                    1
 
                 </strong>
 
@@ -158,11 +215,11 @@ ORDER DETAILS MODAL
 
             <div class="detail-row">
 
-                <span>Order ID</span>
+                <span>Status</span>
 
-                <strong id="modalOrderId">
+                <strong id="modalStatus">
 
-                    --
+                    Pending
 
                 </strong>
 
@@ -185,27 +242,24 @@ ORDER DETAILS MODAL
     </div>
 
 </div>
-<!-- ORDERS LIST -->
+<!-- ==========================================
+BOTTOM SPACE
+========================================== -->
 
-<div id="ordersList" class="orders-list">
-
-    <!-- EMPTY STATE -->
-
-    <div
-        id="emptyOrders"
-        class="empty-orders">
-
-        <h3>No orders yet</h3>
-
-        <p>
-            You have not made any purchases yet.
-        </p>
-
-    </div>
-
-    <!-- FIREBASE ORDERS WILL LOAD HERE -->
+<div class="bottom-space"></div>
 
 </div>
-</section>
 
-</div>
+<!-- ==========================================
+SCRIPTS
+========================================== -->
+
+<script type="module"
+        src="firebase.js"></script>
+
+<script type="module"
+        src="orders.js"></script>
+
+</body>
+
+</html>
