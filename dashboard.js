@@ -1,8 +1,3 @@
-// =====================================
-// dashboard.js - Part 1
-// Firebase + Authentication + User Data
-// =====================================
-
 import { auth, db } from "./firebase.js";
 
 import {
@@ -15,85 +10,116 @@ import {
     getDoc
 } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
 
-
-// =====================================
-// HTML ELEMENTS
-// =====================================
+/* ==========================
+ELEMENTS
+========================== */
 
 const loadingScreen = document.getElementById("loadingScreen");
 
-const username = document.getElementById("username");
-const welcomeName = document.getElementById("welcomeName");
+const menuBtn = document.getElementById("menuBtn");
 
-const topUsername = document.getElementById("topUsername");
-const topEmail = document.getElementById("topEmail");
+const sidebar = document.getElementById("sidebar");
 
-const dropdownUsername =
-document.getElementById("dropdownUsername");
+const sidebarOverlay = document.getElementById("sidebarOverlay");
 
-const dropdownEmail =
-document.getElementById("dropdownEmail");
+const logoutBtn = document.getElementById("logoutBtn");
 
-const walletBalance =
-document.getElementById("walletBalance");
+/* ==========================
+SIDEBAR
+========================== */
 
-const availableBalance =
-document.getElementById("availableBalance");
+menuBtn.addEventListener("click", () => {
 
-const accountStatus =
-document.getElementById("accountStatus");
+    sidebar.classList.add("active");
 
-const accountBadge =
-document.getElementById("accountBadge");
+    sidebarOverlay.classList.add("active");
 
-const accountLevel =
-document.getElementById("accountLevel");
+});
 
-const profileImage =
-document.getElementById("profileImage");
+sidebarOverlay.addEventListener("click", () => {
 
-const topProfileImage =
-document.getElementById("topProfileImage");
+    sidebar.classList.remove("active");
 
-const dropdownProfileImage =
-document.getElementById("dropdownProfileImage");
+    sidebarOverlay.classList.remove("active");
 
+});
 
-// =====================================
-// AUTH CHECK
-// =====================================
+/* ==========================
+AUTH CHECK
+========================== */
 
 onAuthStateChanged(auth, async (user) => {
 
     if (!user) {
 
         window.location.href = "login.html";
+
         return;
 
     }
 
-    await loadUser(user);
+    loadUser(user);
 
 });
 
+/* ==========================
+LOAD USER
+========================== */
 
-// =====================================
-// LOAD USER
-// =====================================
+async function loadUser(user) {
 
-async function loadUser(user){
+    try {
 
-    try{
-
-        const userRef = doc(db,"users",user.uid);
+        const userRef = doc(db, "users", user.uid);
 
         const userSnap = await getDoc(userRef);
 
-        if(!userSnap.exists()){
+        if (userSnap.exists()) {
 
-            alert("User record not found.");
+            const data = userSnap.data();
 
-            loadingScreen.style.display = "none";
+            console.log(data);
+
+        }
+
+    } catch (error) {
+
+        console.error(error);
+
+    }
+await loadRecentOrders(user.uid);
+await loadRecentTransactions(user.uid);
+   loadNotifications(user.uid);
+    loadingScreen.classList.add("hide");
+
+}
+
+/* ==========================
+LOGOUT
+========================== */
+
+logoutBtn.addEventListener("click", async () => {
+
+    await signOut(auth);
+
+    window.location.href = "login.html";
+
+});
+/* ==========================
+LOAD USER DATA
+========================== */
+
+async function loadUser(user) {
+
+    try {
+
+        const userRef = doc(db, "users", user.uid);
+
+        const userSnap = await getDoc(userRef);
+
+        if (!userSnap.exists()) {
+
+            loadingScreen.classList.add("hide");
 
             return;
 
@@ -101,77 +127,86 @@ async function loadUser(user){
 
         const data = userSnap.data();
 
-        const firstName =
-        data.firstName || "";
+        /* =====================
+        USER NAME
+        ===================== */
 
-        const lastName =
-        data.lastName || "";
+        document.getElementById("userName").textContent =
+            data.firstName || user.displayName || "User";
 
-        const fullName =
-        `${firstName} ${lastName}`;
+        document.getElementById("sideUsername").textContent =
+            data.firstName || user.displayName || "User";
 
-        username.textContent = fullName;
+        /* =====================
+        EMAIL
+        ===================== */
 
-        welcomeName.textContent = firstName;
+        document.getElementById("sideEmail").textContent =
+            user.email;
 
-        topUsername.textContent = fullName;
-
-        dropdownUsername.textContent = fullName;
-
-        topEmail.textContent =
-        data.email || "";
-
-        dropdownEmail.textContent =
-        data.email || "";
+        /* =====================
+        WALLET
+        ===================== */
 
         const balance =
-        Number(data.balance || 0);
+            Number(data.walletBalance || 0);
 
-        walletBalance.textContent =
-        "₦" + balance.toLocaleString("en-NG");
+        document.getElementById("walletBalance").textContent =
+            "₦" + balance.toLocaleString();
 
-        availableBalance.textContent =
-        "₦" + balance.toLocaleString("en-NG");
+        document.getElementById("headerBalance").textContent =
+            "₦" + balance.toLocaleString();
 
-        accountStatus.textContent =
-        "Verified";
+        /* =====================
+        SUMMARY
+        ===================== */
 
-        accountBadge.textContent =
-        "Active";
+        document.getElementById("purchaseCount").textContent =
+            data.totalPurchases || 0;
 
-        accountLevel.textContent =
-        "Premium User";
+        document.getElementById("inventoryCount").textContent =
+            data.inventory || 0;
+
+        /* =====================
+        PROFILE
+        ===================== */
 
         const avatar =
-        `https://ui-avatars.com/api/?background=6d5cff&color=ffffff&name=${encodeURIComponent(fullName)}`;
+            document.querySelector(".profile-avatar");
 
-        profileImage.src = avatar;
+        const sidebarAvatar =
+            document.querySelector(".profile-avatar.large");
 
-        topProfileImage.src = avatar;
+        if (user.photoURL) {
 
-        dropdownProfileImage.src = avatar;
+            avatar.innerHTML =
+                `<img src="${user.photoURL}" alt="">`;
 
-        // Load the remaining dashboard data
-        loadDashboard(user.uid);
+            sidebarAvatar.innerHTML =
+                `<img src="${user.photoURL}" alt="">`;
 
-    }
+        } else {
 
-    catch(error){
+            const firstLetter =
+                (data.firstName || user.email)
+                .charAt(0)
+                .toUpperCase();
+
+            avatar.textContent = firstLetter;
+
+            sidebarAvatar.textContent = firstLetter;
+
+        }
+
+    } catch (error) {
 
         console.error(error);
 
-        alert(error.message);
-
-        loadingScreen.style.display = "none";
-
     }
 
-}
-// =====================================
-// dashboard.js - Part 2
-// Transactions + Orders + Dashboard Stats
-// =====================================
+    loadingScreen.classList.add("hide");
 
+}
 import {
     collection,
     query,
@@ -179,272 +214,68 @@ import {
     orderBy,
     limit,
     getDocs
+   onSnapshot
 } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
 
+/* ==========================
+LOAD RECENT ORDERS
+========================== */
 
-// =====================================
-// HTML ELEMENTS
-// =====================================
+async function loadRecentOrders(userId) {
 
-const recentTransactions =
-document.getElementById("recentTransactions");
+    const container =
+        document.getElementById("recentOrders");
 
-const recentOrders =
-document.getElementById("recentOrders");
-
-const totalOrders =
-document.getElementById("totalOrders");
-
-const totalSpent =
-document.getElementById("totalSpent");
-
-const totalDeposits =
-document.getElementById("totalDeposits");
-
-const totalWithdrawals =
-document.getElementById("totalWithdrawals");
-
-
-// =====================================
-// LOAD DASHBOARD
-// =====================================
-
-async function loadDashboard(uid){
-
-    await Promise.all([
-
-        loadTransactions(uid),
-
-        loadOrders(uid)
-
-    ]);
-
-    // Dashboard finished loading
-    if(loadingScreen){
-
-        loadingScreen.style.display = "none";
-
-    }
-
-}
-
-
-
-// =====================================
-// LOAD TRANSACTIONS
-// =====================================
-
-async function loadTransactions(uid){
-
-    try{
+    try {
 
         const q = query(
-
-            collection(db,"transactions"),
-
-            where("userId","==",uid),
-
-            orderBy("createdAt","desc"),
-
-            limit(10)
-
+            collection(db, "orders"),
+            where("userId", "==", userId),
+            orderBy("createdAt", "desc"),
+            limit(3)
         );
 
-        const snapshot =
-        await getDocs(q);
+        const snapshot = await getDocs(q);
 
-        recentTransactions.innerHTML = "";
-
-        let deposits = 0;
-        let withdrawals = 0;
-        let spent = 0;
-
-        if(snapshot.empty){
-
-            recentTransactions.innerHTML = `
-
-            <tr>
-
-                <td colspan="5">
-
-                    No transactions found.
-
-                </td>
-
-            </tr>
-
-            `;
-
-        }
-
-        snapshot.forEach(docSnap=>{
-
-            const data = docSnap.data();
-
-            const amount =
-            Number(data.amount || 0);
-
-            const type =
-            data.type || "Credit";
-
-            if(type.toLowerCase()=="credit"){
-
-                deposits += amount;
-
-            }
-
-            if(type.toLowerCase()=="debit"){
-
-                withdrawals += amount;
-
-                spent += amount;
-
-            }
-
-            const date =
-            data.createdAt
-            ? new Date(
-            data.createdAt
-            ).toLocaleDateString("en-NG")
-            : "--";
-
-            recentTransactions.innerHTML += `
-
-            <tr>
-
-                <td>${type}</td>
-
-                <td>
-
-                ${data.description || "Wallet Transaction"}
-
-                </td>
-
-                <td>
-
-                ₦${amount.toLocaleString("en-NG")}
-
-                </td>
-
-                <td>
-
-                Successful
-
-                </td>
-
-                <td>
-
-                ${date}
-
-                </td>
-
-            </tr>
-
-            `;
-
-        });
-
-        totalDeposits.textContent =
-        "₦" + deposits.toLocaleString("en-NG");
-
-        totalWithdrawals.textContent =
-        "₦" + withdrawals.toLocaleString("en-NG");
-
-        totalSpent.textContent =
-        "₦" + spent.toLocaleString("en-NG");
-
-    }
-
-    catch(error){
-
-        console.error(error);
-
-    }
-
-}
-
-
-
-// =====================================
-// LOAD ORDERS
-// =====================================
-
-async function loadOrders(uid){
-
-    try{
-
-        const q = query(
-
-            collection(db,"orders"),
-
-            where("userId","==",uid),
-
-            orderBy("createdAt","desc"),
-
-            limit(5)
-
-        );
-
-        const snapshot =
-        await getDocs(q);
-
-        recentOrders.innerHTML = "";
-
-        let count = 0;
-
-        if(snapshot.empty){
-
-            recentOrders.innerHTML = `
-
-            <div class="empty-orders">
-
-                No Orders Yet
-
-            </div>
-
-            `;
-
-            totalOrders.textContent = "0";
+        if (snapshot.empty) {
 
             return;
 
         }
 
-        snapshot.forEach(docSnap=>{
+        container.innerHTML = "";
 
-            count++;
+        snapshot.forEach((docSnap) => {
 
-            const data = docSnap.data();
+            const order = docSnap.data();
 
-            recentOrders.innerHTML += `
+            container.innerHTML += `
 
             <div class="order-card">
 
-                <img
-                src="${data.image || ''}"
-                class="order-image">
+                <div class="order-left">
 
-                <div>
+                    <div class="order-icon">
 
-                    <h4>
+                        <i class="ri-shopping-bag-3-line"></i>
 
-                    ${data.productName || "Product"}
+                    </div>
 
-                    </h4>
+                    <div>
 
-                    <p>
+                        <h4>${order.productName}</h4>
 
-                    ₦${Number(data.amount||0).toLocaleString("en-NG")}
+                        <p>${order.status}</p>
 
-                    </p>
+                    </div>
 
                 </div>
 
-                <span>
+                <div class="order-right">
 
-                ${data.status || "Pending"}
+                    ₦${Number(order.amount).toLocaleString()}
 
-                </span>
+                </div>
 
             </div>
 
@@ -452,577 +283,251 @@ async function loadOrders(uid){
 
         });
 
-        totalOrders.textContent = count;
-
-    }
-
-    catch(error){
+    } catch (error) {
 
         console.error(error);
 
     }
 
 }
-// =====================================
-// dashboard.js - Part 3
-// Notifications + UI Controls
-// =====================================
 
-// HTML ELEMENTS
+/* ==========================
+LOAD RECENT TRANSACTIONS
+========================== */
 
-const notificationBtn =
-document.getElementById("notificationBtn");
+async function loadRecentTransactions(userId) {
 
-const notificationPanel =
-document.getElementById("notificationPanel");
+    const container =
+        document.getElementById("recentTransactions");
 
-const notificationList =
-document.getElementById("notificationList");
-
-const notificationCount =
-document.getElementById("notificationCount");
-
-const closeNotifications =
-document.getElementById("closeNotifications");
-
-const profileBox =
-document.getElementById("profileBox");
-
-const profileDropdown =
-document.getElementById("profileDropdown");
-
-const logoutBtn =
-document.getElementById("logoutBtn");
-
-const logoutDropdown =
-document.getElementById("logoutDropdown");
-
-const menuToggle =
-document.getElementById("menuToggle");
-
-const sidebar =
-document.getElementById("sidebar");
-
-const themeToggle =
-document.getElementById("themeToggle");
-
-const refreshDashboard =
-document.getElementById("refreshDashboard");
-
-
-
-// =====================================
-// LOAD NOTIFICATIONS
-// =====================================
-
-async function loadNotifications(uid){
-
-    try{
+    try {
 
         const q = query(
-
-            collection(db,"notifications"),
-
-            where("userId","==",uid),
-
-            orderBy("createdAt","desc"),
-
-            limit(20)
-
+            collection(db, "transactions"),
+            where("userId", "==", userId),
+            orderBy("createdAt", "desc"),
+            limit(3)
         );
 
-        const snapshot =
-        await getDocs(q);
+        const snapshot = await getDocs(q);
 
-        notificationList.innerHTML = "";
-
-        let unread = 0;
-
-        if(snapshot.empty){
-
-            notificationList.innerHTML = `
-
-            <div class="empty-card">
-
-                No notifications yet.
-
-            </div>
-
-            `;
-
-            notificationCount.textContent = "0";
+        if (snapshot.empty) {
 
             return;
 
         }
 
-        snapshot.forEach(docSnap=>{
+        container.innerHTML = "";
 
-            const data = docSnap.data();
+        snapshot.forEach((docSnap) => {
 
-            if(data.read===false){
+            const transaction = docSnap.data();
+
+            container.innerHTML += `
+
+            <div class="transaction-card">
+
+                <div class="transaction-left">
+
+                    <div class="transaction-icon">
+
+                        <i class="ri-wallet-3-line"></i>
+
+                    </div>
+
+                    <div>
+
+                        <h4>${transaction.type}</h4>
+
+                        <p>${transaction.status}</p>
+
+                    </div>
+
+                </div>
+
+                <div class="transaction-right">
+
+                    ₦${Number(transaction.amount).toLocaleString()}
+
+                </div>
+
+            </div>
+
+            `;
+
+        });
+
+    } catch (error) {
+
+        console.error(error);
+
+    }
+
+}
+/* ==========================
+LOAD NOTIFICATIONS
+========================== */
+
+function loadNotifications(userId) {
+
+    const badge =
+        document.getElementById("notificationBadge");
+
+    const q = query(
+        collection(db, "notifications"),
+        where("userId", "==", userId),
+        orderBy("createdAt", "desc")
+    );
+
+    onSnapshot(q, (snapshot) => {
+
+        let unread = 0;
+
+        snapshot.forEach((doc) => {
+
+            const notification = doc.data();
+
+            if (!notification.read) {
 
                 unread++;
 
             }
 
-            notificationList.innerHTML += `
-
-            <div class="notification-item">
-
-                <h4>
-
-                    ${data.title || "Notification"}
-
-                </h4>
-
-                <p>
-
-                    ${data.message || ""}
-
-                </p>
-
-                <small>
-
-                    ${
-                        data.createdAt
-                        ? new Date(data.createdAt).toLocaleString("en-NG")
-                        : "--"
-                    }
-
-                </small>
-
-            </div>
-
-            `;
-
         });
 
-        notificationCount.textContent = unread;
+        badge.textContent = unread;
 
-    }
+        if (unread === 0) {
 
-    catch(error){
+            badge.style.display = "none";
 
-        console.error(error);
+        } else {
 
-    }
-
-}
-
-
-
-// =====================================
-// OPEN/CLOSE NOTIFICATIONS
-// =====================================
-
-if(notificationBtn){
-
-notificationBtn.onclick=()=>{
-
-notificationPanel.classList.toggle("show");
-
-};
-
-}
-
-if(closeNotifications){
-
-closeNotifications.onclick=()=>{
-
-notificationPanel.classList.remove("show");
-
-};
-
-}
-
-
-
-// =====================================
-// PROFILE MENU
-// =====================================
-
-if(profileBox){
-
-profileBox.onclick=()=>{
-
-profileDropdown.classList.toggle("show");
-
-};
-
-}
-
-
-
-// =====================================
-// SIDEBAR
-// =====================================
-
-if(menuToggle){
-
-menuToggle.onclick=()=>{
-
-sidebar.classList.toggle("show");
-
-};
-
-}
-
-
-
-// =====================================
-// REFRESH BUTTON
-// =====================================
-
-if(refreshDashboard){
-
-refreshDashboard.onclick=()=>{
-
-const user = auth.currentUser;
-
-if(user){
-
-loadUser(user);
-
-loadDashboard(user.uid);
-
-loadNotifications(user.uid);
-
-}
-
-};
-
-}
-
-
-
-// =====================================
-// LIGHT / DARK MODE
-// =====================================
-
-const savedTheme =
-localStorage.getItem("theme");
-
-if(savedTheme){
-
-document.body.classList.add(savedTheme);
-
-}
-
-if(themeToggle){
-
-themeToggle.onclick=()=>{
-
-document.body.classList.toggle("light-mode");
-
-if(document.body.classList.contains("light-mode")){
-
-localStorage.setItem(
-
-"theme",
-
-"light-mode"
-
-);
-
-}else{
-
-localStorage.removeItem("theme");
-
-}
-
-};
-
-}
-
-
-
-// =====================================
-// LOGOUT
-// =====================================
-
-async function logout(){
-
-    try{
-
-        await signOut(auth);
-
-        window.location.href="login.html";
-
-    }
-
-    catch(error){
-
-        alert(error.message);
-
-    }
-
-}
-
-if(logoutBtn){
-
-logoutBtn.onclick = logout;
-
-}
-
-if(logoutDropdown){
-
-logoutDropdown.onclick = logout;
-
-}
-
-
-
-// =====================================
-// AUTO REFRESH
-// =====================================
-
-setInterval(()=>{
-
-const user = auth.currentUser;
-
-if(user){
-
-loadTransactions(user.uid);
-
-loadOrders(user.uid);
-
-loadNotifications(user.uid);
-
-}
-
-},30000);
-
-
-
-// =====================================
-// START NOTIFICATIONS
-// =====================================
-
-onAuthStateChanged(auth,(user)=>{
-
-if(user){
-
-loadNotifications(user.uid);
-
-}
-
-});
-// =====================================
-// dashboard.js - Part 4
-// Final Initialization
-// =====================================
-
-
-
-// =====================================
-// IMAGE FALLBACK
-// =====================================
-
-document.querySelectorAll("img").forEach(img=>{
-
-    img.onerror=function(){
-
-        this.src=
-        "https://ui-avatars.com/api/?background=6d5cff&color=ffffff&name=User";
-
-    };
-
-});
-
-
-
-// =====================================
-// CARD ANIMATION
-// =====================================
-
-const cards=document.querySelectorAll(
-
-".stat-card,.service-card,.dashboard-card,.action-card"
-
-);
-
-cards.forEach((card,index)=>{
-
-    card.style.opacity="0";
-
-    card.style.transform="translateY(20px)";
-
-    setTimeout(()=>{
-
-        card.style.transition=".45s ease";
-
-        card.style.opacity="1";
-
-        card.style.transform="translateY(0)";
-
-    },index*80);
-
-});
-
-
-
-// =====================================
-// CLOSE SIDEBAR ON MOBILE
-// =====================================
-
-window.addEventListener("resize",()=>{
-
-    if(window.innerWidth>992){
-
-        if(sidebar){
-
-            sidebar.classList.remove("show");
+            badge.style.display = "flex";
 
         }
 
-    }
+    });
 
-});
+}
+/* ==========================
+REALTIME USER DATA
+========================== */
 
+function watchUserData(userId) {
 
+    const userRef = doc(db, "users", userId);
 
-// =====================================
-// ESC KEY
-// =====================================
+    onSnapshot(userRef, (snapshot) => {
 
-document.addEventListener("keydown",(e)=>{
+        if (!snapshot.exists()) {
 
-    if(e.key==="Escape"){
-
-        if(notificationPanel){
-
-            notificationPanel.classList.remove("show");
-
-        }
-
-        if(profileDropdown){
-
-            profileDropdown.classList.remove("show");
+            return;
 
         }
 
-        if(sidebar){
+        const data = snapshot.data();
 
-            sidebar.classList.remove("show");
+        const balance =
+            Number(data.walletBalance || 0);
 
-        }
+        document.getElementById("walletBalance").textContent =
+            "₦" + balance.toLocaleString();
 
-    }
+        document.getElementById("headerBalance").textContent =
+            "₦" + balance.toLocaleString();
 
-});
+        document.getElementById("purchaseCount").textContent =
+            data.totalPurchases || 0;
 
+        document.getElementById("inventoryCount").textContent =
+            data.inventory || 0;
 
+    });
 
-// =====================================
-// CLICK OUTSIDE
-// =====================================
+}
+/* ==========================
+UTILITY FUNCTIONS
+========================== */
 
-window.addEventListener("click",(e)=>{
+function closeSidebar() {
 
-    if(
+    sidebar.classList.remove("active");
 
-        profileBox &&
-
-        profileDropdown &&
-
-        !profileBox.contains(e.target) &&
-
-        !profileDropdown.contains(e.target)
-
-    ){
-
-        profileDropdown.classList.remove("show");
-
-    }
-
-    if(
-
-        notificationBtn &&
-
-        notificationPanel &&
-
-        !notificationBtn.contains(e.target) &&
-
-        !notificationPanel.contains(e.target)
-
-    ){
-
-        notificationPanel.classList.remove("show");
-
-    }
-
-});
-
-
-
-// =====================================
-// SAFE LOADING SCREEN
-// =====================================
-
-function hideLoading(){
-
-    if(!loadingScreen) return;
-
-    loadingScreen.style.opacity="0";
-
-    setTimeout(()=>{
-
-        loadingScreen.style.display="none";
-
-    },300);
+    sidebarOverlay.classList.remove("active");
 
 }
 
+function hideLoading() {
 
+    if (!loadingScreen) return;
 
-// Always hide loader after 5 seconds,
-// even if something fails.
+    loadingScreen.classList.add("hide");
 
-window.addEventListener("load",()=>{
+    setTimeout(() => {
 
-    setTimeout(hideLoading,5000);
+        loadingScreen.style.display = "none";
+
+    }, 300);
+
+}
+
+/* ==========================
+ESC KEY
+========================== */
+
+document.addEventListener("keydown", (event) => {
+
+    if (event.key === "Escape") {
+
+        closeSidebar();
+
+    }
 
 });
 
+/* ==========================
+CLICK OUTSIDE
+========================== */
 
+sidebarOverlay.addEventListener("click", closeSidebar);
 
-// =====================================
-// GLOBAL ERROR HANDLER
-// =====================================
+/* ==========================
+WINDOW ERROR
+========================== */
 
-window.addEventListener("error",(event)=>{
+window.addEventListener("error", (error) => {
 
-    console.error(event.error);
+    console.error("Dashboard Error:", error);
 
     hideLoading();
 
 });
 
+/* ==========================
+UNHANDLED PROMISES
+========================== */
 
+window.addEventListener("unhandledrejection", (event) => {
 
-// =====================================
-// UNHANDLED PROMISES
-// =====================================
-
-window.addEventListener(
-
-"unhandledrejection",
-
-(event)=>{
-
-    console.error(event.reason);
+    console.error("Promise Error:", event.reason);
 
     hideLoading();
 
-}
+});
 
-);
+/* ==========================
+ONLINE / OFFLINE
+========================== */
 
+window.addEventListener("offline", () => {
 
+    console.warn("No internet connection.");
 
-// =====================================
-// DASHBOARD READY
-// =====================================
+});
 
-console.log("Dashboard initialized successfully.");
+window.addEventListener("online", () => {
+
+    console.log("Internet connection restored.");
+
+});
