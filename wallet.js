@@ -6,7 +6,14 @@ import {
 
 import {
     doc,
-    getDoc
+    getDoc,
+    onSnapshot,
+    collection,
+    query,
+    where,
+    orderBy,
+    limit,
+    getDocs
 } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
 
 /*==================================
@@ -19,6 +26,51 @@ document.getElementById("loadingScreen");
 const walletBalance =
 document.getElementById("walletBalance");
 
+const amountInput =
+document.getElementById("amountInput");
+
+const openPaymentBtn =
+document.getElementById("openPaymentBtn");
+
+const paymentModal =
+document.getElementById("paymentModal");
+
+const paymentOverlay =
+document.getElementById("paymentOverlay");
+
+const paymentAmount =
+document.getElementById("paymentAmount");
+
+const paymentReference =
+document.getElementById("paymentReference");
+
+const bankName =
+document.getElementById("bankName");
+
+const accountNumber =
+document.getElementById("accountNumber");
+
+const copyAccount =
+document.getElementById("copyAccount");
+
+const sendProofBtn =
+document.getElementById("sendProofBtn");
+
+const closePayment =
+document.getElementById("closePayment");
+
+const cancelPayment =
+document.getElementById("cancelPayment");
+
+const minimumToast =
+document.getElementById("minimumToast");
+
+const transactionList =
+document.getElementById("transactionList");
+
+const quickButtons =
+document.querySelectorAll(".amount-btn");
+
 const backBtn =
 document.getElementById("backBtn");
 
@@ -27,6 +79,8 @@ HELPERS
 ==================================*/
 
 function hideLoading(){
+
+    if(!loadingScreen) return;
 
     loadingScreen.classList.add("hide");
 
@@ -38,18 +92,41 @@ function hideLoading(){
 
 }
 
+function showMinimumToast(){
+
+    if(!minimumToast) return;
+
+    minimumToast.classList.add("show");
+
+    setTimeout(()=>{
+
+        minimumToast.classList.remove("show");
+
+    },3000);
+
+}
+
+function generateReference(){
+
+    return "TS" + Date.now();
+
+}
 /*==================================
 BACK BUTTON
 ==================================*/
 
-backBtn.addEventListener("click",()=>{
+if(backBtn){
 
-    window.location.href="dashboard.html";
+    backBtn.addEventListener("click",()=>{
 
-});
+        window.location.href="dashboard.html";
+
+    });
+
+}
 
 /*==================================
-AUTH CHECK
+AUTH
 ==================================*/
 
 onAuthStateChanged(auth,async(user)=>{
@@ -62,7 +139,11 @@ onAuthStateChanged(auth,async(user)=>{
 
     }
 
-    await loadWallet(user);
+    await loadWallet(user.uid);
+
+    watchWallet(user.uid);
+
+    await loadTransactions(user.uid);
 
 });
 
@@ -70,12 +151,12 @@ onAuthStateChanged(auth,async(user)=>{
 LOAD WALLET
 ==================================*/
 
-async function loadWallet(user){
+async function loadWallet(userId){
 
     try{
 
         const userRef =
-        doc(db,"users",user.uid);
+        doc(db,"users",userId);
 
         const userSnap =
         await getDoc(userRef);
@@ -108,52 +189,79 @@ async function loadWallet(user){
     }
 
 }
-/*==================================
-PAYMENT
-==================================*/
-
-const amountInput =
-document.getElementById("amountInput");
-
-const quickButtons =
-document.querySelectorAll(".quickBtn");
-
-const openPaymentBtn =
-document.getElementById("openPaymentBtn");
-
-const paymentModal =
-document.getElementById("paymentModal");
-
-const paymentOverlay =
-document.getElementById("paymentOverlay");
-
-const paymentAmount =
-document.getElementById("paymentAmount");
-
-const paymentReference =
-document.getElementById("paymentReference");
-
-const bankName =
-document.getElementById("bankName");
-
-const minimumToast =
-document.getElementById("minimumToast");
 
 /*==================================
-QUICK AMOUNT
+REALTIME WALLET
 ==================================*/
 
-quickButtons.forEach(button=>{
+function watchWallet(userId){
+
+    const userRef =
+    doc(db,"users",userId);
+
+    onSnapshot(userRef,(snapshot)=>{
+
+        if(!snapshot.exists()) return;
+
+        const data =
+        snapshot.data();
+
+        walletBalance.textContent =
+        "₦" +
+        Number(
+            data.walletBalance || 0
+        ).toLocaleString("en-NG");
+
+    });
+
+}
+
+/*==================================
+QUICK AMOUNT BUTTONS
+==================================*/
+
+quickButtons.forEach((button)=>{
 
     button.addEventListener("click",()=>{
 
+        quickButtons.forEach((btn)=>{
+
+            btn.classList.remove("active");
+
+        });
+
+        button.classList.add("active");
+
         amountInput.value =
         button.dataset.amount;
+
+        amountInput.focus();
 
     });
 
 });
 
+/*==================================
+REMOVE ACTIVE WHEN USER TYPES
+==================================*/
+
+amountInput.addEventListener("input",()=>{
+
+    quickButtons.forEach((btn)=>{
+
+        if(btn.dataset.amount === amountInput.value){
+
+            btn.classList.add("active");
+
+        }else{
+
+            btn.classList.remove("active");
+
+        }
+
+    });
+
+});
 /*==================================
 BANK ROTATION
 ==================================*/
@@ -185,33 +293,6 @@ function getNextBank(){
 }
 
 /*==================================
-REFERENCE
-==================================*/
-
-function generateReference(){
-
-    return "TS" +
-    Date.now().toString().slice(-8);
-
-}
-
-/*==================================
-WARNING
-==================================*/
-
-function showMinimumToast(){
-
-    minimumToast.classList.add("show");
-
-    setTimeout(()=>{
-
-        minimumToast.classList.remove("show");
-
-    },3000);
-
-}
-
-/*==================================
 OPEN PAYMENT
 ==================================*/
 
@@ -220,7 +301,7 @@ openPaymentBtn.addEventListener("click",()=>{
     const amount =
     Number(amountInput.value);
 
-    if(!amount || amount < 1000){
+    if(amount < 1000){
 
         showMinimumToast();
 
@@ -228,38 +309,63 @@ openPaymentBtn.addEventListener("click",()=>{
 
     }
 
+    /* Amount */
+
     paymentAmount.textContent =
     "₦" + amount.toLocaleString("en-NG");
+
+    /* Reference */
 
     paymentReference.textContent =
     generateReference();
 
-    bankName.textContent =
+    /* Rotate Bank */
+
+    const bank =
     getNextBank();
 
-    paymentModal.classList.add("show");
+    bankName.textContent =
+    bank;
 
-    paymentOverlay.classList.add("show");
+    /* Same account details */
+
+    accountNumber.textContent =
+    "9117412352";
+
+    /* Open Popup */
+
+    paymentModal.classList.add("active");
+
+    paymentOverlay.classList.add("active");
 
 });
+
 /*==================================
-PAYMENT ACTIONS
+CLOSE PAYMENT
 ==================================*/
 
-const accountNumber =
-document.getElementById("accountNumber");
+function closePaymentModal(){
 
-const copyAccount =
-document.getElementById("copyAccount");
+    paymentModal.classList.remove("active");
 
-const sendProofBtn =
-document.getElementById("sendProofBtn");
+    paymentOverlay.classList.remove("active");
 
-const closePayment =
-document.getElementById("closePayment");
+}
 
-const cancelPayment =
-document.getElementById("cancelPayment");
+closePayment.addEventListener(
+    "click",
+    closePaymentModal
+);
+
+cancelPayment.addEventListener(
+    "click",
+    closePaymentModal
+);
+
+paymentOverlay.addEventListener(
+    "click",
+    closePaymentModal
+);
 
 /*==================================
 COPY ACCOUNT NUMBER
@@ -273,11 +379,13 @@ copyAccount.addEventListener("click",async()=>{
             accountNumber.textContent
         );
 
-        copyAccount.textContent="Copied";
+        copyAccount.textContent =
+        "Copied";
 
         setTimeout(()=>{
 
-            copyAccount.textContent="Copy";
+            copyAccount.textContent =
+            "Copy";
 
         },2000);
 
@@ -288,9 +396,8 @@ copyAccount.addEventListener("click",async()=>{
     }
 
 });
-
 /*==================================
-SEND TO WHATSAPP
+SEND PROOF TO WHATSAPP
 ==================================*/
 
 sendProofBtn.addEventListener("click",()=>{
@@ -323,93 +430,35 @@ Thank you.`;
     const whatsappNumber =
     "2349117412352";
 
-    const url =
+    const whatsappUrl =
 
 `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
 
-    window.open(url,"_blank");
+    window.open(
+        whatsappUrl,
+        "_blank"
+    );
 
 });
 
 /*==================================
-CLOSE PAYMENT
-==================================*/
-
-function closePaymentModal(){
-
-    paymentModal.classList.remove("show");
-
-    paymentOverlay.classList.remove("show");
-
-}
-
-closePayment.addEventListener(
-"click",
-closePaymentModal
-);
-
-cancelPayment.addEventListener(
-"click",
-closePaymentModal
-);
-
-paymentOverlay.addEventListener(
-"click",
-closePaymentModal
-);
-/*==================================
-REALTIME WALLET
-==================================*/
-
-import {
-    collection,
-    query,
-    where,
-    orderBy,
-    limit,
-    getDocs,
-    onSnapshot
-} from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
-
-/*==================================
-WATCH WALLET
-==================================*/
-
-function watchWallet(userId){
-
-    const userRef = doc(db,"users",userId);
-
-    onSnapshot(userRef,(snapshot)=>{
-
-        if(!snapshot.exists()) return;
-
-        const data = snapshot.data();
-
-        walletBalance.textContent =
-        "₦" + Number(
-            data.walletBalance || 0
-        ).toLocaleString("en-NG");
-
-    });
-
-}
-
-/*==================================
-RECENT TRANSACTIONS
+LOAD RECENT TRANSACTIONS
 ==================================*/
 
 async function loadTransactions(userId){
 
-    const list =
-    document.getElementById("transactionList");
-
     try{
 
         const q = query(
+
             collection(db,"transactions"),
+
             where("userId","==",userId),
+
             orderBy("createdAt","desc"),
+
             limit(5)
+
         );
 
         const snapshot =
@@ -421,39 +470,46 @@ async function loadTransactions(userId){
 
         }
 
-        list.innerHTML = "";
+        transactionList.innerHTML = "";
 
-        snapshot.forEach((doc)=>{
+        snapshot.forEach((document)=>{
 
-            const item = doc.data();
+            const item =
+            document.data();
 
-            list.innerHTML += `
+            transactionList.innerHTML += `
 
-            <div class="transaction-item">
+            <div class="transaction-card">
 
-                <div class="transaction-left">
+                <div class="transaction-icon">
 
-                    <div class="transaction-icon">
-
-                        <i class="ri-wallet-3-line"></i>
-
-                    </div>
-
-                    <div>
-
-                        <h4>${item.type}</h4>
-
-                        <p>${item.status}</p>
-
-                    </div>
+                    <i class="ri-wallet-3-line"></i>
 
                 </div>
 
-                <div class="transaction-right">
+                <div class="transaction-info">
 
-                    ₦${Number(
-                        item.amount || 0
-                    ).toLocaleString("en-NG")}
+                    <h3>${item.type || "Wallet Top-up"}</h3>
+
+                    <p>${item.status || "Pending"}</p>
+
+                    <div class="transaction-bottom">
+
+                        <span class="transaction-amount">
+
+                            ₦${Number(
+                                item.amount || 0
+                            ).toLocaleString("en-NG")}
+
+                        </span>
+
+                        <span class="status ${String(item.status || "").toLowerCase()}">
+
+                            ${item.status || "Pending"}
+
+                        </span>
+
+                    </div>
 
                 </div>
 
@@ -472,29 +528,7 @@ async function loadTransactions(userId){
 }
 
 /*==================================
-START
-==================================*/
-
-onAuthStateChanged(auth,async(user)=>{
-
-    if(!user){
-
-        window.location.replace("login.html");
-
-        return;
-
-    }
-
-    await loadWallet(user);
-
-    await loadTransactions(user.uid);
-
-    watchWallet(user.uid);
-
-});
-
-/*==================================
-ERRORS
+HIDE LOADING IF ERROR
 ==================================*/
 
 window.addEventListener("error",()=>{
