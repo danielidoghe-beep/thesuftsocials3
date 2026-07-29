@@ -1339,3 +1339,376 @@ RESPONSIVE
     }
 
 }
+/*==================================
+SIDEBAR
+==================================*/
+
+.sidebar{
+
+    position:fixed;
+
+    top:0;
+
+    left:-330px;
+
+    width:300px;
+
+    max-width:85%;
+
+    height:100vh;
+
+    background:#ffffff;
+
+    transition:.35s ease;
+
+    z-index:1000;
+
+    overflow-y:auto;
+
+    box-shadow:8px 0 35px rgba(0,0,0,.12);
+
+}
+
+.sidebar.active{
+
+    left:0;
+
+}
+
+/*==================================
+LOGO
+==================================*/
+
+.sidebar-logo{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:14px;
+
+    padding:28px 24px;
+
+    border-bottom:1px solid #f2f2f2;
+
+}
+
+.logo-icon{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:4px;
+
+}
+
+.logo-layer{
+
+    width:28px;
+
+    height:7px;
+
+    background:#22C55E;
+
+    border-radius:20px;
+
+    transform:skew(-25deg);
+
+}
+
+.sidebar-logo h2{
+
+    font-size:20px;
+
+    font-weight:800;
+
+    color:#111827;
+
+}
+
+/*==================================
+SECTION
+==================================*/
+
+.sidebar-section{
+
+    padding:22px 18px 10px;
+
+}
+
+.sidebar-section h3{
+
+    font-size:12px;
+
+    color:#9CA3AF;
+
+    letter-spacing:1px;
+
+    margin-bottom:14px;
+
+    font-weight:700;
+
+}
+/*==================================
+SIDEBAR MENU
+==================================*/
+
+.sidebar-section a,
+.logout-btn{
+
+    width:100%;
+
+    height:54px;
+
+    display:flex;
+
+    align-items:center;
+
+    gap:16px;
+
+    padding:0 18px;
+
+    margin-bottom:8px;
+
+    border-radius:14px;
+
+    text-decoration:none;
+
+    font-size:15px;
+
+    font-weight:600;
+
+    color:#374151;
+
+    border:none;
+
+    background:transparent;
+
+    cursor:pointer;
+
+    transition:.25s;
+
+}
+
+.sidebar-section a i,
+.logout-btn i{
+
+    width:22px;
+
+    font-size:20px;
+
+    text-align:center;
+
+    color:#6B7280;
+
+}
+
+/*==================================
+ACTIVE MENU
+==================================*/
+
+.sidebar-section a.active{
+
+    background:#F3F4F6;
+
+    color:#111827;
+
+}
+
+.sidebar-section a.active i{
+
+    color:#111827;
+
+}
+
+/*==================================
+HOVER
+==================================*/
+
+.sidebar-section a:hover{
+
+    background:#F9FAFB;
+
+}
+
+.sidebar-section a:hover i{
+
+    color:#22C55E;
+
+}
+
+/*==================================
+LOGOUT
+==================================*/
+
+.logout-btn{
+
+    margin-top:14px;
+
+    color:#DC2626;
+
+}
+
+.logout-btn i{
+
+    color:#DC2626;
+
+}
+
+.logout-btn:hover{
+
+    background:#FEF2F2;
+
+}
+
+/*==================================
+SCROLLBAR
+==================================*/
+
+.sidebar::-webkit-scrollbar{
+
+    width:5px;
+
+}
+
+.sidebar::-webkit-scrollbar-thumb{
+
+    background:#E5E7EB;
+
+    border-radius:20px;
+
+}
+/*==================================
+SIDEBAR OVERLAY
+==================================*/
+
+.sidebar-overlay{
+
+    position:fixed;
+
+    inset:0;
+
+    background:rgba(15,23,42,.45);
+
+    opacity:0;
+
+    visibility:hidden;
+
+    transition:.35s ease;
+
+    z-index:999;
+
+}
+
+.sidebar-overlay.active{
+
+    opacity:1;
+
+    visibility:visible;
+
+}
+
+/*==================================
+SIDEBAR ANIMATION
+==================================*/
+
+.sidebar{
+
+    will-change:transform,left;
+
+}
+
+.sidebar.active{
+
+    animation:sidebarOpen .35s ease forwards;
+
+}
+
+@keyframes sidebarOpen{
+
+    from{
+
+        transform:translateX(-12px);
+
+        opacity:.85;
+
+    }
+
+    to{
+
+        transform:translateX(0);
+
+        opacity:1;
+
+    }
+
+}
+
+/*==================================
+LOGO
+==================================*/
+
+.logo-layer:nth-child(1){
+
+    width:32px;
+
+}
+
+.logo-layer:nth-child(2){
+
+    width:26px;
+
+}
+
+.logo-layer:nth-child(3){
+
+    width:20px;
+
+}
+
+/*==================================
+MENU SPACING
+==================================*/
+
+.sidebar-section:last-child{
+
+    padding-bottom:35px;
+
+}
+
+.sidebar-section a span,
+.logout-btn span{
+
+    flex:1;
+
+}
+
+/*==================================
+FOCUS
+==================================*/
+
+.sidebar-section a:focus,
+.logout-btn:focus{
+
+    outline:none;
+
+    background:#F3F4F6;
+
+}
+
+/*==================================
+MOBILE
+==================================*/
+
+@media(max-width:430px){
+
+    .sidebar{
+
+        width:290px;
+
+        max-width:84%;
+
+    }
+
+}
