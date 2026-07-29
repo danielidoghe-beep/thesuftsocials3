@@ -7,8 +7,9 @@
 
 <title>Dashboard | thesuftsocials</title>
 
-<link rel="stylesheet"
-href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css">
+<link
+href="https://cdn.jsdelivr.net/npm/remixicon@4.6.0/fonts/remixicon.css"
+rel="stylesheet">
 
 <link rel="stylesheet" href="dashboard.css">
 
@@ -16,163 +17,283 @@ href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css">
 
 <body>
 
-<div class="dashboard">
+<!-- LOADING SCREEN -->
 
-    <!-- TOP BAR -->
+<div id="loadingScreen" class="loading-screen">
 
-    <header class="topbar">
+    <div class="loading-box">
 
-        <button id="menuBtn" class="icon-btn">
+        <img
+        src="assets/logo.png"
+        class="loading-logo"
+        alt="Logo">
 
-            <i class="ri-menu-line"></i>
+        <h1 class="loading-title">
+            thesuftsocials
+        </h1>
 
-        </button>
+        <div class="loading-dots">
 
-        <div class="top-actions">
+            <span></span>
+            <span></span>
+            <span></span>
 
-            <button class="theme-btn" id="themeToggle">
+        </div>
 
-                <i class="ri-moon-line"></i>
+    </div>
 
-            </button>
+</div>
 
-            <div class="notification">
+<!-- DASHBOARD -->
 
-                <button id="notificationBtn">
+<div class="dashboard" id="dashboard">
 
-                    <i class="ri-notification-3-line"></i>
+<header class="topbar">
 
-                    <span id="notificationCount">0</span>
+<div class="left-side">
 
-                </button>
+<button class="menu-btn">
+
+<i class="ri-menu-line"></i>
+
+</button>
+
+</div>
+
+<div class="right-side">
+
+<div class="balance-pill">
+
+<span id="topBalance">
+
+₦0
+
+</span>
+
+</div>
+
+<button class="theme-btn">
+
+<i class="ri-moon-line"></i>
+
+</button>
+
+<button class="notify-btn">
+
+<i class="ri-notification-3-line"></i>
+
+<span
+id="notificationCount">
+
+0
+
+</span>
+
+</button>
+
+<div class="profile-circle">
+
+<img
+id="profileImage"
+src="assets/default-avatar.png"
+alt="Profile">
+
+</div>
+
+</div>
+
+</header>
+
+<section class="welcome">
+
+<h1>
+
+Welcome back,
+
+<span id="userFirstName">
+
+Loading...
+
+</span>
+
+</h1>
+
+<p>
+
+Here's what's going on with your account
+
+</p>
+
+</section>
+
+<section class="wallet-card">
+
+<p>
+
+Wallet balance
+
+</p>
+
+<h2 id="walletBalance">
+
+₦0
+
+</h2>
+
+<a href="wallet.html">
+
+View wallet
+
+<i class="ri-arrow-right-line"></i>
+
+</a>
+
+</section>
+<!-- ===========================
+SUMMARY CARDS
+=========================== -->
+
+<section class="summary-grid">
+
+    <!-- Total Purchases -->
+
+    <div class="summary-card">
+
+        <div class="summary-left">
+
+            <div class="summary-icon purchases">
+
+                <i class="ri-shopping-bag-3-line"></i>
 
             </div>
 
-            <div class="profile-box" id="profileBox">
+            <div>
 
-                <img
-                id="topProfileImage"
-                src=""
-                alt="Profile">
+                <h3>
+
+                    Total Purchases
+
+                </h3>
+
+                <p>
+
+                    Completed Orders
+
+                </p>
 
             </div>
 
         </div>
 
-    </header>
+        <h2 id="totalPurchases">
 
-
-
-    <!-- WELCOME -->
-
-    <section class="welcome">
-
-        <h1>
-
-            Welcome back,
-
-            <span id="welcomeName">
-
-                Loading...
-
-            </span>
-
-            👋
-
-        </h1>
-
-        <p>
-
-            Here's what's going on with your account
-
-        </p>
-
-    </section>
-
-
-
-    <!-- WALLET CARD -->
-
-    <section class="wallet-card">
-
-        <p>
-
-            Wallet balance
-
-        </p>
-
-        <h2 id="walletBalance">
-
-            ₦0
+            0
 
         </h2>
 
-        <a href="wallet.html">
+    </div>
 
-            View wallet
+    <!-- Available Inventory -->
 
-            <i class="ri-arrow-right-line"></i>
+    <div class="summary-card">
 
-        </a>
+        <div class="summary-left">
 
-    </section>
-    <!-- ===========================
+            <div class="summary-icon inventory">
+
+                <i class="ri-stack-line"></i>
+
+            </div>
+
+            <div>
+
+                <h3>
+
+                    Available Inventory
+
+                </h3>
+
+                <p>
+
+                    Ready for Delivery
+
+                </p>
+
+            </div>
+
+        </div>
+
+        <h2 id="availableInventory">
+
+            0
+
+        </h2>
+
+    </div>
+
+</section>
+
+<!-- ===========================
 QUICK ACTIONS
 =========================== -->
 
 <section class="quick-actions">
 
-    <h2 class="section-title">
+    <div class="section-header">
 
-        QUICK ACTIONS
+        <h2>
 
-    </h2>
+            Quick Actions
 
-    <div class="actions-grid">
+        </h2>
 
-        <!-- eSIM -->
+    </div>
+
+    <div class="action-grid">
+
+        <!-- Buy eSIM -->
 
         <a href="esim.html" class="action-card">
 
-            <div class="action-icon blue">
+            <div class="action-icon esim">
 
                 <i class="ri-sim-card-line"></i>
 
             </div>
 
-            <h3>
+            <h4>
 
                 Buy eSIM
 
-            </h3>
+            </h4>
 
             <p>
 
-                Local & International eSIM
+                Local & Global
 
             </p>
 
         </a>
 
-        <!-- VPN -->
+        <!-- Buy VPN -->
 
         <a href="vpn.html" class="action-card">
 
-            <div class="action-icon purple">
+            <div class="action-icon vpn">
 
                 <i class="ri-shield-keyhole-line"></i>
 
             </div>
 
-            <h3>
+            <h4>
 
                 Buy VPN
 
-            </h3>
+            </h4>
 
             <p>
 
-                Premium VPN Accounts
+                Premium Servers
 
             </p>
 
@@ -182,21 +303,21 @@ QUICK ACTIONS
 
         <a href="numbers.html" class="action-card">
 
-            <div class="action-icon orange">
+            <div class="action-icon numbers">
 
                 <i class="ri-smartphone-line"></i>
 
             </div>
 
-            <h3>
+            <h4>
 
                 USA Numbers
 
-            </h3>
+            </h4>
 
             <p>
 
-                Virtual Numbers Worldwide
+                Virtual Numbers
 
             </p>
 
@@ -206,21 +327,21 @@ QUICK ACTIONS
 
         <a href="boost.html" class="action-card">
 
-            <div class="action-icon pink">
+            <div class="action-icon boost">
 
-                <i class="ri-bar-chart-grouped-line"></i>
+                <i class="ri-bar-chart-box-line"></i>
 
             </div>
 
-            <h3>
+            <h4>
 
                 Social Boost
 
-            </h3>
+            </h4>
 
             <p>
 
-                Followers, Likes & Views
+                Likes & Followers
 
             </p>
 
@@ -230,21 +351,21 @@ QUICK ACTIONS
 
         <a href="wallet.html" class="action-card">
 
-            <div class="action-icon green">
+            <div class="action-icon wallet">
 
                 <i class="ri-wallet-3-line"></i>
 
             </div>
 
-            <h3>
+            <h4>
 
                 Top Up Wallet
 
-            </h3>
+            </h4>
 
             <p>
 
-                Fund your wallet instantly
+                Add Funds
 
             </p>
 
@@ -254,21 +375,21 @@ QUICK ACTIONS
 
         <a href="support.html" class="action-card">
 
-            <div class="action-icon yellow">
+            <div class="action-icon support">
 
                 <i class="ri-customer-service-2-line"></i>
 
             </div>
 
-            <h3>
+            <h4>
 
                 Get Support
 
-            </h3>
+            </h4>
 
             <p>
 
-                Contact our support team
+                Contact Team
 
             </p>
 
@@ -283,20 +404,36 @@ SUPPORT TICKETS
 
 <section class="support-section">
 
-    <h2 class="section-title">
+    <div class="section-header">
 
-        SUPPORT TICKETS
+        <h2>
 
-    </h2>
+            Support Tickets
+
+        </h2>
+
+        <a href="support.html">
+
+            VIEW ALL
+
+        </a>
+
+    </div>
 
     <div class="support-card">
 
-        <div class="support-info">
+        <div class="support-text">
+
+            <h3>
+
+                Need assistance?
+
+            </h3>
 
             <p>
 
-                Manage your support tickets in the
-                dedicated support page.
+                Open a support ticket and our team
+                will respond as quickly as possible.
 
             </p>
 
@@ -304,7 +441,7 @@ SUPPORT TICKETS
 
         <a
         href="support.html"
-        class="support-btn">
+        class="support-button">
 
             GO TO SUPPORT
 
@@ -318,13 +455,13 @@ SUPPORT TICKETS
 RECENT ORDERS
 =========================== -->
 
-<section class="recent-orders">
+<section class="orders-section">
 
     <div class="section-header">
 
         <h2>
 
-            RECENT ORDERS
+            Recent Orders
 
         </h2>
 
@@ -338,7 +475,7 @@ RECENT ORDERS
 
     <div
     id="recentOrders"
-    class="orders-box">
+    class="orders-container">
 
         <!-- Orders from Firebase -->
 
@@ -350,13 +487,13 @@ RECENT ORDERS
 RECENT TRANSACTIONS
 =========================== -->
 
-<section class="recent-transactions">
+<section class="transactions-section">
 
     <div class="section-header">
 
         <h2>
 
-            RECENT TRANSACTIONS
+            Recent Transactions
 
         </h2>
 
@@ -370,33 +507,34 @@ RECENT TRANSACTIONS
 
     <div
     id="recentTransactions"
-    class="transactions-box">
+    class="transactions-container">
 
         <!-- Transactions from Firebase -->
 
     </div>
 
 </section>
+
 <!-- ===========================
 NEED QUICK HELP
 =========================== -->
 
 <section class="help-section">
 
-    <div class="help-card">
+    <h2>
 
-        <h2>
+        Need Quick Help?
 
-            Need quick help?
+    </h2>
 
-        </h2>
+    <p>
 
-        <p>
+        Contact our support team through any of
+        the channels below.
 
-            Reach our support team directly for
-            faster assistance.
+    </p>
 
-        </p>
+    <div class="help-buttons">
 
         <a
         href="#"
@@ -405,7 +543,7 @@ NEED QUICK HELP
 
             <i class="ri-whatsapp-line"></i>
 
-            Chat on WhatsApp
+            WhatsApp
 
         </a>
 
@@ -416,26 +554,25 @@ NEED QUICK HELP
 
             <i class="ri-telegram-line"></i>
 
-            Open Telegram
+            Telegram
 
         </a>
 
-        <div class="support-email">
+    </div>
 
-            <i class="ri-mail-line"></i>
+    <div class="support-email">
 
-            <span id="supportEmail">
+        <i class="ri-mail-line"></i>
 
-                support@thesuftsocials.com
+        <span>
 
-            </span>
+            support@thesuftsocials.com
 
-        </div>
+        </span>
 
     </div>
 
 </section>
-
 <!-- ===========================
 NOTIFICATION PANEL
 =========================== -->
@@ -444,15 +581,16 @@ NOTIFICATION PANEL
 class="notification-panel"
 id="notificationPanel">
 
-    <div class="panel-header">
+    <div class="notification-header">
 
-        <h3>
+        <h2>
 
             Notifications
 
-        </h3>
+        </h2>
 
-        <button id="closeNotifications">
+        <button
+        id="closeNotifications">
 
             <i class="ri-close-line"></i>
 
@@ -460,7 +598,9 @@ id="notificationPanel">
 
     </div>
 
-    <div id="notificationList">
+    <div
+    id="notificationList"
+    class="notification-list">
 
         <!-- Firebase Notifications -->
 
@@ -469,29 +609,29 @@ id="notificationPanel">
 </div>
 
 <!-- ===========================
-PROFILE MENU
+PROFILE DROPDOWN
 =========================== -->
 
 <div
 class="profile-dropdown"
 id="profileDropdown">
 
-    <div class="profile-header">
+    <div class="profile-top">
 
         <img
         src=""
-        id="profileImage"
+        id="dropdownProfileImage"
         alt="Profile">
 
         <div>
 
-            <h3 id="username">
+            <h3 id="dropdownUsername">
 
                 Loading...
 
             </h3>
 
-            <p id="userEmail">
+            <p id="dropdownEmail">
 
                 Loading...
 
@@ -501,21 +641,27 @@ id="profileDropdown">
 
     </div>
 
-    <hr>
-
     <a href="profile.html">
 
         <i class="ri-user-line"></i>
 
-        Profile
+        My Profile
 
     </a>
 
     <a href="wallet.html">
 
-        <i class="ri-wallet-line"></i>
+        <i class="ri-wallet-3-line"></i>
 
         Wallet
+
+    </a>
+
+    <a href="orders.html">
+
+        <i class="ri-shopping-bag-3-line"></i>
+
+        Orders
 
     </a>
 
@@ -527,7 +673,8 @@ id="profileDropdown">
 
     </a>
 
-    <button id="logoutBtn">
+    <button
+    id="logoutBtn">
 
         <i class="ri-logout-box-r-line"></i>
 
@@ -538,16 +685,54 @@ id="profileDropdown">
 </div>
 
 <!-- ===========================
-LOADING
+BOTTOM NAVIGATION
 =========================== -->
 
-<div
-class="loading-screen"
-id="loadingScreen">
+<nav class="bottom-nav">
 
-    <div class="loader"></div>
+    <a
+    href="dashboard.html"
+    class="active">
 
-</div>
+        <i class="ri-home-5-line"></i>
+
+        <span>Home</span>
+
+    </a>
+
+    <a href="services.html">
+
+        <i class="ri-apps-2-line"></i>
+
+        <span>Services</span>
+
+    </a>
+
+    <a href="wallet.html">
+
+        <i class="ri-wallet-3-line"></i>
+
+        <span>Wallet</span>
+
+    </a>
+
+    <a href="history.html">
+
+        <i class="ri-history-line"></i>
+
+        <span>History</span>
+
+    </a>
+
+    <a href="profile.html">
+
+        <i class="ri-user-3-line"></i>
+
+        <span>Profile</span>
+
+    </a>
+
+</nav>
 
 </div>
 
