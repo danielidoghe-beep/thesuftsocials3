@@ -1,271 +1,445 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Wallet</title>
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
 
-<link rel="stylesheet" href="dashboard.css">
-<script src="https://unpkg.com/lucide@latest"></script>
+<title>Wallet | thesuftsocials</title>
 
-<style>
+<link
+href="https://cdn.jsdelivr.net/npm/remixicon@4.6.0/fonts/remixicon.css"
+rel="stylesheet">
 
-.page{
-    padding:22px;
-}
-
-.wallet-card,
-.topup-card,
-.transactions-card{
-    background:#fff;
-    border:1px solid #e8e8e8;
-    border-radius:20px;
-    padding:22px;
-    margin-bottom:20px;
-}
-
-.wallet-balance{
-    font-size:54px;
-    font-weight:700;
-    color:#4f8900;
-    margin:10px 0;
-}
-
-.method-title{
-    font-size:14px;
-    font-weight:600;
-    margin-bottom:12px;
-}
-
-.payment-methods{
-    display:flex;
-    gap:10px;
-    margin-bottom:25px;
-}
-
-.method{
-    flex:1;
-    padding:14px;
-    border:1px solid #ddd;
-    border-radius:14px;
-    text-align:center;
-    cursor:pointer;
-    position:relative;
-}
-
-.method.active{
-    border:2px solid #4f8900;
-    color:#4f8900;
-    font-weight:600;
-}
-
-.recommended{
-    position:absolute;
-    top:-8px;
-    right:8px;
-    background:red;
-    color:#fff;
-    font-size:10px;
-    padding:3px 6px;
-    border-radius:20px;
-}
-
-.account-box{
-    display:none;
-    background:#f7f7f7;
-    border-radius:14px;
-    padding:15px;
-    margin-bottom:15px;
-}
-
-.account-box p{
-    margin-bottom:8px;
-}
-
-.copy-btn{
-    background:#111;
-    color:white;
-    border:none;
-    padding:10px 15px;
-    border-radius:8px;
-}
-
-.action-btn{
-    width:100%;
-    height:52px;
-    border:none;
-    border-radius:12px;
-    background:#356600;
-    color:white;
-    font-size:16px;
-    font-weight:600;
-    margin-top:15px;
-}
-
-.coming-soon{
-    background:#356600;
-}
-
-.transactions-card{
-    height:220px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    color:#888;
-}
-
-</style>
+<link
+rel="stylesheet"
+href="wallet.css">
 
 </head>
+
 <body>
 
-<div class="topbar">
+<!--==========================
+LOADING SCREEN
+===========================-->
 
-<div class="topbar-left">
-<a href="dashboard.html">
-<i data-lucide="arrow-left"></i>
-</a>
-</div>
+<div
+class="loading-screen"
+id="loadingScreen">
 
-<div class="topbar-right">
-<div id="profileInitials" class="avatar">DD</div>
-</div>
+    <div class="loading-content">
 
-</div>
+        <div class="logo-stack">
 
-<div class="page">
+            <div class="stack one"></div>
 
-<h1 class="welcome">Wallet</h1>
+            <div class="stack two"></div>
 
-<p class="subtitle">
-Manage your balance and transactions
-</p>
+            <div class="stack three"></div>
 
-<div class="wallet-card">
+        </div>
 
-<p class="stats-label">
-Available balance
-</p>
+        <h2>thesuftsocials</h2>
 
-<div class="wallet-balance">
-₦0
-</div>
-
-<p class="small-text">
-Funds never expire • Used instantly on all purchases
-</p>
+    </div>
 
 </div>
 
-<div class="topup-card">
+<!--==========================
+WALLET PAGE
+===========================-->
 
-<h3 style="margin-bottom:10px;">
-Top up wallet
-</h3>
+<div
+class="wallet-page">
 
-<p class="small-text" style="margin-bottom:20px;">
-Pay securely via Instant Transfer
-</p>
+<!--==========================
+HEADER
+===========================-->
 
-<div class="method-title">
-Payment method
-</div>
+<header class="wallet-header">
 
-<div class="payment-methods">
+<button
+class="icon-btn"
+id="backBtn">
 
-<div class="method active">
-Flutterwave
-</div>
+<i class="ri-arrow-left-line"></i>
 
-<div class="method" id="transferBtn">
+</button>
 
-<span class="recommended">
-Recommended
+<h2>
+
+Wallet
+
+</h2>
+
+<div style="width:42px"></div>
+
+</header>
+
+<!--==========================
+BALANCE CARD
+===========================-->
+
+<section class="balance-card">
+
+<span>
+
+Available Balance
+
 </span>
 
-Instant Transfer
+<h1 id="walletBalance">
+
+₦0.00
+
+</h1>
+
+<p>
+
+Fund your wallet via Bank Transfer
+
+</p>
+
+</section>
+
+<!--==========================
+ENTER AMOUNT
+===========================-->
+
+<section class="amount-box">
+
+<label>
+
+Amount
+
+</label>
+
+<div class="amount-input">
+
+<span>
+
+₦
+
+</span>
+
+<input
+type="number"
+id="amountInput"
+placeholder="Enter amount">
 
 </div>
 
-</div>
+</section>
 
-<div class="account-box" id="accountBox">
+<!--==========================
+QUICK AMOUNTS
+===========================-->
 
-<p><strong>Bank:</strong> PalmPay</p>
+<section class="quick-amounts">
 
-<p><strong>Account Name:</strong> Ogaga Blessing Idoghe</p>
+<button
+class="quickBtn"
+data-amount="1000">
 
-<p><strong>Account Number:</strong> 9117412352</p>
+₦1,000
 
-<button class="copy-btn" onclick="copyAccount()">
-Copy Account Number
 </button>
 
-</div>
+<button
+class="quickBtn"
+data-amount="2000">
 
-<button class="action-btn coming-soon" id="mainButton">
-Coming Soon
+₦2,000
+
 </button>
 
-</div>
+<button
+class="quickBtn"
+data-amount="5000">
 
-<h3 class="section-title">
-Recent transactions
+₦5,000
+
+</button>
+
+<button
+class="quickBtn"
+data-amount="10000">
+
+₦10,000
+
+</button>
+
+<button
+class="quickBtn"
+data-amount="20000">
+
+₦20,000
+
+</button>
+
+<button
+class="quickBtn"
+data-amount="50000">
+
+₦50,000
+
+</button>
+
+</section>
+<!--==========================
+OPEN PAYMENT
+===========================-->
+
+<section class="payment-action">
+
+<button
+id="openPaymentBtn"
+class="payment-btn">
+
+<i class="ri-bank-card-line"></i>
+
+<span>Open Payment</span>
+
+</button>
+
+</section>
+
+<!--==========================
+RECENT TRANSACTIONS
+===========================-->
+
+<section class="wallet-section">
+
+<div class="section-header">
+
+<h3>
+
+Recent Transactions
+
 </h3>
 
-<div class="transactions-card">
-No transactions yet
+<a href="history.html">
+
+View All
+
+</a>
+
+</div>
+
+<div
+id="transactionList"
+class="transaction-list">
+
+<div class="empty-card">
+
+<i class="ri-exchange-funds-line"></i>
+
+<h4>
+
+No Transactions Yet
+
+</h4>
+
+<p>
+
+Your wallet funding history will appear here.
+
+</p>
+
 </div>
 
 </div>
 
-<script>
+</section>
 
-lucide.createIcons();
+<!--==========================
+PAYMENT MODAL
+===========================-->
 
-const transferBtn = document.getElementById("transferBtn");
-const accountBox = document.getElementById("accountBox");
-const mainButton = document.getElementById("mainButton");
+<div
+class="payment-modal"
+id="paymentModal">
 
-transferBtn.onclick = () => {
+<div class="payment-sheet">
 
-document.querySelector(".active")?.classList.remove("active");
+<div class="sheet-header">
 
-transferBtn.classList.add("active");
+<h3>
 
-accountBox.style.display = "block";
+Bank Transfer
 
-mainButton.innerText = "Send Receipt To WhatsApp";
+</h3>
 
-};
+<button
+id="closePayment">
 
-mainButton.onclick = () => {
+<i class="ri-close-line"></i>
 
-if(mainButton.innerText === "Coming Soon"){
+</button>
 
-alert("Flutterwave payment is coming soon");
+</div>
 
-return;
+<div class="payment-card">
 
-}
+<div class="payment-row">
 
-window.open(
-"https://wa.me/2349117412352",
-"_blank"
-);
+<span>
 
-};
+Amount
 
-function copyAccount(){
+</span>
 
-navigator.clipboard.writeText("9117412352");
+<strong
+id="paymentAmount">
 
-alert("Account number copied");
+₦0
 
-}
+</strong>
 
-</script>
+</div>
+
+<div class="payment-row">
+
+<span>
+
+Reference
+
+</span>
+
+<strong
+id="paymentReference">
+
+TS000000
+
+</strong>
+
+</div>
+
+<div class="payment-row">
+
+<span>
+
+Bank
+
+</span>
+
+<strong
+id="bankName">
+
+PalmPay
+
+</strong>
+
+</div>
+
+<div class="payment-row">
+
+<span>
+
+Account Name
+
+</span>
+
+<strong>
+
+Ogaga Blessing Idoghe
+
+</strong>
+
+</div>
+
+<div class="payment-row">
+
+<span>
+
+Account Number
+
+</span>
+
+<div class="copy-box">
+
+<strong
+id="accountNumber">
+
+9117412352
+
+</strong>
+
+<button
+id="copyAccount">
+
+Copy
+
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="payment-note">
+
+<p>
+
+Transfer the exact amount shown above to the account details provided. After completing the transfer, tap the button below and attach your payment receipt on WhatsApp.
+
+</p>
+
+</div>
+
+<button
+id="sendProofBtn"
+class="whatsapp-btn">
+
+<i class="ri-whatsapp-line"></i>
+
+Send Proof to WhatsApp
+
+</button>
+
+<button
+id="cancelPayment"
+class="cancel-btn">
+
+Cancel
+
+</button>
+
+</div>
+
+</div>
+<!--==========================
+PAYMENT OVERLAY
+===========================-->
+
+<div
+class="payment-overlay"
+id="paymentOverlay">
+
+</div>
+
+<!--==========================
+BOTTOM SPACING
+===========================-->
+
+<div class="bottom-space"></div>
+
+</div>
+
+<!--==========================
+SCRIPTS
+===========================-->
+
+<script type="module"
+src="firebase.js"></script>
+
+<script type="module"
+src="wallet.js"></script>
 
 </body>
+
 </html>
