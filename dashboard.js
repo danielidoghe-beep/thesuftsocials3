@@ -7,12 +7,19 @@ import {
 
 import {
     doc,
-    getDoc
+    getDoc,
+    collection,
+    query,
+    where,
+    orderBy,
+    limit,
+    getDocs,
+    onSnapshot
 } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
 
-/* ==========================
+/*==================================
 ELEMENTS
-========================== */
+==================================*/
 
 const loadingScreen = document.getElementById("loadingScreen");
 
@@ -24,102 +31,95 @@ const sidebarOverlay = document.getElementById("sidebarOverlay");
 
 const logoutBtn = document.getElementById("logoutBtn");
 
-/* ==========================
-SIDEBAR
-========================== */
+/*==================================
+HELPERS
+==================================*/
 
-menuBtn.addEventListener("click", () => {
+function showLoading(){
+
+    loadingScreen.classList.remove("hide");
+
+}
+
+function hideLoading(){
+
+    loadingScreen.classList.add("hide");
+
+    setTimeout(()=>{
+
+        loadingScreen.style.display="none";
+
+    },300);
+
+}
+
+function openSidebar(){
 
     sidebar.classList.add("active");
 
     sidebarOverlay.classList.add("active");
 
-});
+}
 
-sidebarOverlay.addEventListener("click", () => {
+function closeSidebar(){
 
     sidebar.classList.remove("active");
 
     sidebarOverlay.classList.remove("active");
 
+}
+
+/*==================================
+SIDEBAR
+==================================*/
+
+menuBtn.addEventListener("click",openSidebar);
+
+sidebarOverlay.addEventListener("click",closeSidebar);
+
+document.addEventListener("keydown",(e)=>{
+
+    if(e.key==="Escape"){
+
+        closeSidebar();
+
+    }
+
 });
 
-/* ==========================
-AUTH CHECK
-========================== */
+/*==================================
+AUTH
+==================================*/
 
-onAuthStateChanged(auth, async (user) => {
+onAuthStateChanged(auth,async(user)=>{
 
-    if (!user) {
+    if(!user){
 
-        window.location.href = "login.html";
+        window.location.replace("login.html");
 
         return;
 
     }
 
-    loadUser(user);
+    await loadDashboard(user);
 
 });
 
-/* ==========================
-LOAD USER
-========================== */
+/*==================================
+LOAD DASHBOARD
+==================================*/
 
-async function loadUser(user) {
+async function loadDashboard(user){
 
-    try {
+    try{
 
-        const userRef = doc(db, "users", user.uid);
-
-        const userSnap = await getDoc(userRef);
-
-        if (userSnap.exists()) {
-
-            const data = userSnap.data();
-
-            console.log(data);
-
-        }
-
-    } catch (error) {
-
-        console.error(error);
-
-    }
-await loadRecentOrders(user.uid);
-await loadRecentTransactions(user.uid);
-   loadNotifications(user.uid);
-    loadingScreen.classList.add("hide");
-
-}
-
-/* ==========================
-LOGOUT
-========================== */
-
-logoutBtn.addEventListener("click", async () => {
-
-    await signOut(auth);
-
-    window.location.href = "login.html";
-
-});
-/* ==========================
-LOAD USER DATA
-========================== */
-
-async function loadUser(user) {
-
-    try {
-
-        const userRef = doc(db, "users", user.uid);
+        const userRef = doc(db,"users",user.uid);
 
         const userSnap = await getDoc(userRef);
 
-        if (!userSnap.exists()) {
+        if(!userSnap.exists()){
 
-            loadingScreen.classList.add("hide");
+            hideLoading();
 
             return;
 
@@ -127,9 +127,9 @@ async function loadUser(user) {
 
         const data = userSnap.data();
 
-        /* =====================
+        /*==============================
         USER NAME
-        ===================== */
+        ==============================*/
 
         document.getElementById("userName").textContent =
             data.firstName || user.displayName || "User";
@@ -137,29 +137,29 @@ async function loadUser(user) {
         document.getElementById("sideUsername").textContent =
             data.firstName || user.displayName || "User";
 
-        /* =====================
+        /*==============================
         EMAIL
-        ===================== */
+        ==============================*/
 
         document.getElementById("sideEmail").textContent =
-            user.email;
+            user.email || "";
 
-        /* =====================
+        /*==============================
         WALLET
-        ===================== */
+        ==============================*/
 
-        const balance =
+        const wallet =
             Number(data.walletBalance || 0);
 
         document.getElementById("walletBalance").textContent =
-            "₦" + balance.toLocaleString();
+            "₦" + wallet.toLocaleString("en-NG");
 
         document.getElementById("headerBalance").textContent =
-            "₦" + balance.toLocaleString();
+            "₦" + wallet.toLocaleString("en-NG");
 
-        /* =====================
+        /*==============================
         SUMMARY
-        ===================== */
+        ==============================*/
 
         document.getElementById("purchaseCount").textContent =
             data.totalPurchases || 0;
@@ -167,77 +167,74 @@ async function loadUser(user) {
         document.getElementById("inventoryCount").textContent =
             data.inventory || 0;
 
-        /* =====================
-        PROFILE
-        ===================== */
+        /*==============================
+        PROFILE AVATAR
+        ==============================*/
 
-        const avatar =
-            document.querySelector(".profile-avatar");
+        const avatars = document.querySelectorAll(".profile-avatar");
 
-        const sidebarAvatar =
-            document.querySelector(".profile-avatar.large");
+        avatars.forEach((avatar)=>{
 
-        if (user.photoURL) {
+            if(user.photoURL){
 
-            avatar.innerHTML =
-                `<img src="${user.photoURL}" alt="">`;
+                avatar.innerHTML =
+                `<img src="${user.photoURL}" alt="Profile">`;
 
-            sidebarAvatar.innerHTML =
-                `<img src="${user.photoURL}" alt="">`;
+            }else{
 
-        } else {
-
-            const firstLetter =
-                (data.firstName || user.email)
+                avatar.textContent =
+                (data.firstName || user.email || "U")
                 .charAt(0)
                 .toUpperCase();
 
-            avatar.textContent = firstLetter;
+            }
 
-            sidebarAvatar.textContent = firstLetter;
+        });
 
-        }
+        /*==============================
+        LOAD OTHER DATA
+        ==============================*/
 
-    } catch (error) {
+        await loadRecentOrders(user.uid);
 
-        console.error(error);
+        await loadRecentTransactions(user.uid);
+
+        loadNotifications(user.uid);
+
+        watchUserData(user.uid);
+
+    }catch(error){
+
+        console.error("Dashboard Error:",error);
+
+    }finally{
+
+        hideLoading();
 
     }
 
-    loadingScreen.classList.add("hide");
-
 }
-import {
-    collection,
-    query,
-    where,
-    orderBy,
-    limit,
-    getDocs
-   onSnapshot
-} from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
+/*==================================
+RECENT ORDERS
+==================================*/
 
-/* ==========================
-LOAD RECENT ORDERS
-========================== */
-
-async function loadRecentOrders(userId) {
+async function loadRecentOrders(userId){
 
     const container =
         document.getElementById("recentOrders");
 
-    try {
+    try{
 
         const q = query(
-            collection(db, "orders"),
-            where("userId", "==", userId),
-            orderBy("createdAt", "desc"),
-            limit(3)
+            collection(db,"orders"),
+            where("userId","==",userId),
+            orderBy("createdAt","desc"),
+            limit(5)
         );
 
         const snapshot = await getDocs(q);
 
-        if (snapshot.empty) {
+        if(snapshot.empty){
 
             return;
 
@@ -245,13 +242,13 @@ async function loadRecentOrders(userId) {
 
         container.innerHTML = "";
 
-        snapshot.forEach((docSnap) => {
+        snapshot.forEach((doc)=>{
 
-            const order = docSnap.data();
+            const order = doc.data();
 
             container.innerHTML += `
 
-            <div class="order-card">
+            <div class="order-item">
 
                 <div class="order-left">
 
@@ -273,7 +270,7 @@ async function loadRecentOrders(userId) {
 
                 <div class="order-right">
 
-                    ₦${Number(order.amount).toLocaleString()}
+                    ₦${Number(order.amount || 0).toLocaleString("en-NG")}
 
                 </div>
 
@@ -283,35 +280,35 @@ async function loadRecentOrders(userId) {
 
         });
 
-    } catch (error) {
+    }catch(error){
 
-        console.error(error);
+        console.error("Orders Error:",error);
 
     }
 
 }
 
-/* ==========================
-LOAD RECENT TRANSACTIONS
-========================== */
+/*==================================
+RECENT TRANSACTIONS
+==================================*/
 
-async function loadRecentTransactions(userId) {
+async function loadRecentTransactions(userId){
 
     const container =
         document.getElementById("recentTransactions");
 
-    try {
+    try{
 
         const q = query(
-            collection(db, "transactions"),
-            where("userId", "==", userId),
-            orderBy("createdAt", "desc"),
-            limit(3)
+            collection(db,"transactions"),
+            where("userId","==",userId),
+            orderBy("createdAt","desc"),
+            limit(5)
         );
 
         const snapshot = await getDocs(q);
 
-        if (snapshot.empty) {
+        if(snapshot.empty){
 
             return;
 
@@ -319,19 +316,24 @@ async function loadRecentTransactions(userId) {
 
         container.innerHTML = "";
 
-        snapshot.forEach((docSnap) => {
+        snapshot.forEach((doc)=>{
 
-            const transaction = docSnap.data();
+            const transaction = doc.data();
+
+            const sign =
+                transaction.type === "Credit"
+                ? "+"
+                : "-";
 
             container.innerHTML += `
 
-            <div class="transaction-card">
+            <div class="transaction-item">
 
                 <div class="transaction-left">
 
                     <div class="transaction-icon">
 
-                        <i class="ri-wallet-3-line"></i>
+                        <i class="ri-exchange-funds-line"></i>
 
                     </div>
 
@@ -347,7 +349,7 @@ async function loadRecentTransactions(userId) {
 
                 <div class="transaction-right">
 
-                    ₦${Number(transaction.amount).toLocaleString()}
+                    ${sign}₦${Number(transaction.amount || 0).toLocaleString("en-NG")}
 
                 </div>
 
@@ -357,37 +359,36 @@ async function loadRecentTransactions(userId) {
 
         });
 
-    } catch (error) {
+    }catch(error){
 
-        console.error(error);
+        console.error("Transactions Error:",error);
 
     }
 
 }
-/* ==========================
-LOAD NOTIFICATIONS
-========================== */
+/*==================================
+REAL-TIME NOTIFICATIONS
+==================================*/
 
-function loadNotifications(userId) {
+function loadNotifications(userId){
 
     const badge =
         document.getElementById("notificationBadge");
 
-    const q = query(
-        collection(db, "notifications"),
-        where("userId", "==", userId),
-        orderBy("createdAt", "desc")
+    const notificationQuery = query(
+        collection(db,"notifications"),
+        where("userId","==",userId)
     );
 
-    onSnapshot(q, (snapshot) => {
+    onSnapshot(notificationQuery,(snapshot)=>{
 
         let unread = 0;
 
-        snapshot.forEach((doc) => {
+        snapshot.forEach((doc)=>{
 
             const notification = doc.data();
 
-            if (!notification.read) {
+            if(notification.read === false){
 
                 unread++;
 
@@ -397,45 +398,39 @@ function loadNotifications(userId) {
 
         badge.textContent = unread;
 
-        if (unread === 0) {
+        badge.style.display =
+            unread > 0 ? "flex" : "none";
 
-            badge.style.display = "none";
+    },(error)=>{
 
-        } else {
-
-            badge.style.display = "flex";
-
-        }
+        console.error("Notification Error:",error);
 
     });
 
 }
-/* ==========================
-REALTIME USER DATA
-========================== */
 
-function watchUserData(userId) {
+/*==================================
+REAL-TIME USER DATA
+==================================*/
 
-    const userRef = doc(db, "users", userId);
+function watchUserData(userId){
 
-    onSnapshot(userRef, (snapshot) => {
+    const userRef = doc(db,"users",userId);
 
-        if (!snapshot.exists()) {
+    onSnapshot(userRef,(snapshot)=>{
 
-            return;
-
-        }
+        if(!snapshot.exists()) return;
 
         const data = snapshot.data();
 
-        const balance =
+        const wallet =
             Number(data.walletBalance || 0);
 
         document.getElementById("walletBalance").textContent =
-            "₦" + balance.toLocaleString();
+            "₦" + wallet.toLocaleString("en-NG");
 
         document.getElementById("headerBalance").textContent =
-            "₦" + balance.toLocaleString();
+            "₦" + wallet.toLocaleString("en-NG");
 
         document.getElementById("purchaseCount").textContent =
             data.totalPurchases || 0;
@@ -443,91 +438,99 @@ function watchUserData(userId) {
         document.getElementById("inventoryCount").textContent =
             data.inventory || 0;
 
+    },(error)=>{
+
+        console.error("Realtime User Error:",error);
+
     });
 
 }
-/* ==========================
+/*==================================
 UTILITY FUNCTIONS
-========================== */
+==================================*/
 
-function closeSidebar() {
+window.addEventListener("online",()=>{
 
-    sidebar.classList.remove("active");
+    console.log("Internet Connected");
 
-    sidebarOverlay.classList.remove("active");
+});
 
-}
+window.addEventListener("offline",()=>{
 
-function hideLoading() {
+    console.log("Internet Disconnected");
 
-    if (!loadingScreen) return;
+});
 
-    loadingScreen.classList.add("hide");
+/*==================================
+GLOBAL ERRORS
+==================================*/
 
-    setTimeout(() => {
+window.addEventListener("error",(event)=>{
 
-        loadingScreen.style.display = "none";
+    console.error("JavaScript Error:",event.error);
 
-    }, 300);
+    hideLoading();
 
-}
+});
 
-/* ==========================
-ESC KEY
-========================== */
+window.addEventListener("unhandledrejection",(event)=>{
 
-document.addEventListener("keydown", (event) => {
+    console.error("Promise Error:",event.reason);
 
-    if (event.key === "Escape") {
+    hideLoading();
 
-        closeSidebar();
+});
+
+/*==================================
+WINDOW LOAD
+==================================*/
+
+window.addEventListener("load",()=>{
+
+    showLoading();
+
+});
+
+/*==================================
+PAGE VISIBILITY
+==================================*/
+
+document.addEventListener("visibilitychange",()=>{
+
+    if(document.hidden){
+
+        console.log("Dashboard Hidden");
+
+    }else{
+
+        console.log("Dashboard Visible");
 
     }
 
 });
 
-/* ==========================
-CLICK OUTSIDE
-========================== */
+/*==================================
+SAFE LOGOUT
+==================================*/
 
-sidebarOverlay.addEventListener("click", closeSidebar);
+logoutBtn.addEventListener("click",async()=>{
 
-/* ==========================
-WINDOW ERROR
-========================== */
+    try{
 
-window.addEventListener("error", (error) => {
+        showLoading();
 
-    console.error("Dashboard Error:", error);
+        await signOut(auth);
 
-    hideLoading();
+        window.location.replace("login.html");
 
-});
+    }catch(error){
 
-/* ==========================
-UNHANDLED PROMISES
-========================== */
+        console.error(error);
 
-window.addEventListener("unhandledrejection", (event) => {
+        hideLoading();
 
-    console.error("Promise Error:", event.reason);
+        alert("Unable to logout. Please try again.");
 
-    hideLoading();
-
-});
-
-/* ==========================
-ONLINE / OFFLINE
-========================== */
-
-window.addEventListener("offline", () => {
-
-    console.warn("No internet connection.");
-
-});
-
-window.addEventListener("online", () => {
-
-    console.log("Internet connection restored.");
+    }
 
 });
