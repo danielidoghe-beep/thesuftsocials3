@@ -1155,3 +1155,220 @@ MOBILE
     }
 
 }
+<!--==================================
+BALANCE CARD
+===================================-->
+
+<section class="balance-card">
+
+    <div class="balance-content">
+
+        <span class="balance-label">
+
+            Available balance
+
+        </span>
+
+        <h1
+        id="walletBalance"
+        class="balance-amount">
+
+            ₦0
+
+        </h1>
+
+        <p class="balance-note">
+
+            Funds never expire • Used instantly on all purchases
+
+        </p>
+
+    </div>
+
+</section>
+<!--==================================
+TOP UP CARD
+===================================-->
+
+<section class="topup-card">
+
+    <h2>
+
+        Top up wallet
+
+    </h2>
+
+    <p class="subtitle">
+
+        Pay via <strong>Bank Transfer</strong> — Transfer to the account provided.
+
+    </p>
+
+    <label class="amount-label">
+
+        Amount (₦)
+
+    </label>
+
+    <input
+    type="number"
+    id="amountInput"
+    class="amount-input"
+    placeholder="0">
+
+    <p class="minimum-text">
+
+        Minimum ₦1,000
+
+    </p>
+
+    <div class="amount-buttons">
+
+        <button class="amount-btn" data-amount="1000">
+
+            ₦1,000
+
+        </button>
+
+        <button class="amount-btn" data-amount="2000">
+
+            ₦2,000
+
+        </button>
+
+        <button class="amount-btn" data-amount="5000">
+
+            ₦5,000
+
+        </button>
+
+        <button
+        class="amount-btn full"
+        data-amount="10000">
+
+            ₦10,000
+
+        </button>
+
+    </div>
+
+    <button
+    id="openPaymentBtn"
+    class="open-payment">
+
+        OPEN PAYMENT
+
+    </button>
+
+    <p class="secure-text">
+
+        Secure Bank Transfer • Transfer directly to the account provided
+
+    </p>
+
+</section>
+<!--==================================
+RECENT TRANSACTIONS
+===================================-->
+
+<section class="transactions-section">
+
+    <div class="transactions-header">
+
+        <h2>
+
+            RECENT TRANSACTIONS
+
+        </h2>
+
+        <a href="history.html">
+
+            VIEW ALL
+
+        </a>
+
+    </div>
+
+    <div
+    id="transactionList">
+
+        <!-- Empty State -->
+
+        <div class="empty-transactions">
+
+            <i class="ri-exchange-funds-line"></i>
+
+            <h3>
+
+                No Transactions Yet
+
+            </h3>
+
+            <p>
+
+                Your wallet funding history will appear here.
+
+            </p>
+
+        </div>
+
+        <!-- Example Transaction
+        (wallet.js will replace this automatically) -->
+
+        <!--
+
+        <div class="transaction-card">
+
+            <div class="transaction-left">
+
+                <div class="transaction-icon">
+
+                    <i class="ri-bank-line"></i>
+
+                </div>
+
+                <div class="transaction-info">
+
+                    <h3>
+
+                        Wallet top-up via Bank Transfer
+
+                    </h3>
+
+                    <p>
+
+                        TS-1785323871926 •
+                        29/07/2026,
+                        12:17:53
+
+                    </p>
+
+                    <div class="transaction-bottom">
+
+                        <span class="transaction-amount">
+
+                            ₦1,000
+
+                        </span>
+
+                        <span class="status pending">
+
+                            <i class="ri-time-line"></i>
+
+                            Pending
+
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        -->
+
+    </div>
+
+</section>
