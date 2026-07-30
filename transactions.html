@@ -1,79 +1,135 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Transactions</title>
+<!-- ==========================================
+TRANSACTIONS PAGE
+========================================== -->
 
-<link rel="stylesheet" href="transactions.css">
-<script src="https://unpkg.com/lucide@latest"></script>
-</head>
-<body>
+<div class="transactions-page">
 
-<div class="topbar">
+    <!-- PAGE TITLE -->
 
-<a href="dashboard.html">
-<i data-lucide="panel-left"></i>
-</a>
+    <section class="transactions-title">
 
-<div class="topbar-right">
+        <h1>
+            Transactions
+        </h1>
 
-<div class="wallet-pill">₦0</div>
+        <p>
+            Your complete transaction history
+        </p>
 
-<i data-lucide="sun"></i>
+    </section>
 
-<a href="notifications.html">
-<i data-lucide="bell"></i>
-</a>
+    <!-- ==========================================
+SEARCH
+========================================== -->
 
-<div class="avatar">DD</div>
+    <section class="transaction-search">
+
+        <div class="search-box">
+
+            <i class="ri-search-line"></i>
+
+            <input
+                type="text"
+                id="searchTransaction"
+                placeholder="Search by reference, type, or description">
+
+        </div>
+
+    </section>
+
+    <!-- ==========================================
+TRANSACTIONS
+========================================== -->
+
+    <section class="transactions-wrapper">
+
+        <h2>
+            RECENT TRANSACTIONS
+        </h2>
+
+        <div
+            id="transactionsList">
+
+            <!-- ==========================================
+EMPTY STATE
+========================================== -->
+
+<div
+    id="emptyTransactions"
+    class="empty-transactions">
+
+    <i class="ri-file-list-3-line"></i>
+
+    <h3>
+        No transaction records
+    </h3>
+
+    <p>
+        Your wallet top-ups and purchases will appear here automatically.
+    </p>
 
 </div>
 
+<!-- ==========================================
+FIREBASE TRANSACTIONS LOAD HERE
+========================================== -->
+
+<!--
+
+<div class="transaction-card">
+
+    <div class="transaction-left">
+
+        <div class="transaction-icon plus">
+
+            <i class="ri-add-line"></i>
+
+        </div>
+
+        <div class="transaction-info">
+
+            <h3>
+
+                Wallet top-up via Bank Transfer
+
+            </h3>
+
+            <p>
+
+                TS-1785352007950-7694
+
+                •
+
+                29/07/2026, 20:06:50
+
+            </p>
+
+            <div class="transaction-bottom">
+
+                <span class="transaction-amount">
+
+                    ₦1,000
+
+                </span>
+
+                <span class="status pending">
+
+                    ⏳ Pending
+
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
 </div>
 
-<div class="page">
+-->
 
-<h1>Transactions</h1>
+        </div>
 
-<p class="subtitle">
-Your complete transaction history
-</p>
-
-<div class="search-box">
-
-<i data-lucide="search"></i>
-
-<input
-type="text"
-placeholder="Search by reference, type, or ID..."
->
+    </section>
 
 </div>
-
-<div id="emptyTransactions" class="empty-card">
-
-<div class="empty-content">
-
-<i data-lucide="arrow-up-right"></i>
-
-<h3>No transactions yet</h3>
-
-<p>Your transactions will appear here</p>
-
-</div>
-
-</div>
-
-<div id="transactionList"></div>
-
-</div>
-
-<script>
-lucide.createIcons();
-</script>
-
-<script src="transactions.js"></script>
-
-</body>
-</html>
