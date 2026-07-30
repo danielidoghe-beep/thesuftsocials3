@@ -194,7 +194,9 @@ function createLogCard(logId,log){
 
     card.className =
     "log-card";
+card.dataset.category =
 
+log.category || "Other";
     card.innerHTML = `
 
         <div class="log-header">
@@ -520,5 +522,143 @@ FILTER BUTTON
 filterBtn.addEventListener("click",()=>{
 
     alert("Filter options coming soon.");
+
+});
+/*==================================
+FILTER PANEL
+==================================*/
+
+const filterOverlay =
+document.getElementById("filterOverlay");
+
+const filterPanel =
+document.getElementById("filterPanel");
+
+const closeFilter =
+document.getElementById("closeFilter");
+
+const categorySearch =
+document.getElementById("categorySearch");
+
+const categoryList =
+document.getElementById("categoryList");
+
+/*==================================
+OPEN FILTER
+==================================*/
+
+filterBtn.addEventListener("click",()=>{
+
+    filterOverlay.classList.add("show");
+
+    filterPanel.classList.add("show");
+
+});
+
+/*==================================
+CLOSE FILTER
+==================================*/
+
+function closeFilterPanel(){
+
+    filterOverlay.classList.remove("show");
+
+    filterPanel.classList.remove("show");
+
+}
+
+closeFilter.addEventListener(
+"click",
+closeFilterPanel
+);
+
+filterOverlay.addEventListener(
+"click",
+closeFilterPanel
+);
+
+/*==================================
+CATEGORY SEARCH
+==================================*/
+
+categorySearch.addEventListener("input",()=>{
+
+    const value =
+    categorySearch.value
+    .toLowerCase()
+    .trim();
+
+    const items =
+    document.querySelectorAll(".category-item");
+
+    items.forEach(item=>{
+
+        const text =
+        item.innerText
+        .toLowerCase();
+
+        if(text.includes(value)){
+
+            item.style.display="flex";
+
+        }else{
+
+            item.style.display="none";
+
+        }
+
+    });
+
+});
+
+/*==================================
+CATEGORY FILTER
+==================================*/
+
+document.addEventListener("click",(e)=>{
+
+    const button =
+    e.target.closest(".category-item");
+
+    if(!button) return;
+
+    document
+    .querySelectorAll(".category-item")
+    .forEach(item=>{
+
+        item.classList.remove("active");
+
+    });
+
+    button.classList.add("active");
+
+    const category =
+    button.dataset.category;
+
+    document
+    .querySelectorAll(".log-card")
+    .forEach(card=>{
+
+        if(category==="all"){
+
+            card.style.display="block";
+
+            return;
+
+        }
+
+        if(card.dataset.category===category){
+
+            card.style.display="block";
+
+        }else{
+
+            card.style.display="none";
+
+        }
+
+    });
+
+    closeFilterPanel();
 
 });
