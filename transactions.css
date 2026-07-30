@@ -193,3 +193,22 @@ TRANSACTION CARD
     color:#D93025;
     border:2px solid #FFC4C4;
 }
+/*==================================
+PLUS / MINUS ICON
+==================================*/
+
+.transaction-icon.plus{
+    background:#EAF8EA;
+}
+
+.transaction-icon.plus i{
+    color:#1E8E3E;
+}
+
+.transaction-icon.minus{
+    background:#FFEAEA;
+}
+
+.transaction-icon.minus i{
+    color:#D93025;
+}
