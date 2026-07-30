@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>SMS Numbers</title>
+
+    <!-- Main CSS -->
+
+    <link rel="stylesheet" href="style.css">
+
+    <!-- SMS CSS -->
+
+    <link rel="stylesheet" href="sms.css">
+
+    <!-- Remix Icons -->
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/remixicon@4.6.0/fonts/remixicon.css"
+        rel="stylesheet">
+
+</head>
+
+<body>
+
+<!-- ==========================================
+SMS PAGE
+========================================== -->
+
+<div class="sms-page">
+
+    <!-- PAGE TITLE -->
+
+    <section class="sms-title">
+
+        <h1>
+
+            SMS Numbers
+
+        </h1>
+
+        <p>
+
+            Buy temporary verification numbers
+            for your favourite apps.
+
+        </p>
+
+    </section>
+
+    <!-- SEARCH -->
+
+    <section class="sms-search">
+
+        <div class="search-box">
+
+            <i class="ri-search-line"></i>
+
+            <input
+                id="searchInput"
+                type="text"
+                placeholder="Search country or app...">
+
+        </div>
+
+    </section>
+
+    <!-- COUNTRIES -->
+
+    <section class="country-section">
+
+        <h2>
+
+            Countries
+
+        </h2>
+
+        <div
+            id="countryList"
+            class="country-list">
+
+            <button
+                class="country-btn active"
+                data-country="all">
+
+                🌍
+
+                <span>
+
+                    All Countries
+
+                </span>
+
+            </button>
+
+            <button
+                class="country-btn"
+                data-country="United States">
+
+                🇺🇸
+
+                <span>
+
+                    United States
+
+                </span>
+
+            </button>
+
+            <button
+                class="country-btn"
+                data-country="United Kingdom">
+
+                🇬🇧
+
+                <span>
+
+                    United Kingdom
+
+                </span>
+
+            </button>
+
+            <button
+                class="country-btn"
+                data-country="Canada">
+
+                🇨🇦
+
+                <span>
+
+                    Canada
+
+                </span>
+
+            </button>
+
+            <button
+                class="country-btn"
+                data-country="Australia">
+
+                🇦🇺
+
+                <span>
+
+                    Australia
+
+                </span>
+
+            </button>
+
+            <button
+                class="country-btn"
+                data-country="Germany">
+
+                🇩🇪
+
+                <span>
+
+                    Germany
+
+                </span>
+
+            </button>
+
+            <button
+                class="country-btn"
+                data-country="France">
+
+                🇫🇷
+
+                <span>
+
+                    France
+
+                </span>
+
+            </button>
+
+            <button
+                class="country-btn"
+                data-country="Nigeria">
+
+                🇳🇬
+
+                <span>
+
+                    Nigeria
+
+                </span>
+
+            </button>
+
+            <button
+                class="country-btn"
+                data-country="India">
+
+                🇮🇳
+
+                <span>
+
+                    India
+
+                </span>
+
+            </button>
+
+            <button
+                class="country-btn"
+                data-country="Brazil">
+
+                🇧🇷
+
+                <span>
+
+                    Brazil
+
+                </span>
+
+            </button>
+
+            <button
+                class="country-btn"
+                data-country="Others">
+
+                🌍
+
+                <span>
+
+                    Other Countries
+
+                </span>
+
+            </button>
+
+        </div>
+
+    </section>
+        <!-- ==========================================
+    SERVICES
+    ========================================== -->
+
+    <section class="service-section">
+
+        <h2>
+
+            Services
+
+        </h2>
+
+        <div
+            id="serviceList"
+            class="service-list">
+
+            <button
+                class="service-btn active"
+                data-service="all">
+
+                <i class="ri-apps-2-fill"></i>
+
+                <span>
+
+                    All Apps
+
+                </span>
+
+            </button>
+
+            <button
+                class="service-btn"
+                data-service="WhatsApp">
+
+                <i class="ri-whatsapp-fill"></i>
+
+                <span>
+
+                    WhatsApp
+
+                </span>
+
+            </button>
+
+            <button
+                class="service-btn"
+                data-service="Telegram">
+
+                <i class="ri-telegram-2-fill"></i>
+
+                <span>
+
+                    Telegram
+
+                </span>
+
+            </button>
+
+            <button
+                class="service-btn"
+                data-service="Facebook">
+
+                <i class="ri-facebook-circle-fill"></i>
+
+                <span>
+
+                    Facebook
+
+                </span>
+
+            </button>
+
+            <button
+                class="service-btn"
+                data-service="Instagram">
+
+                <i class="ri-instagram-fill"></i>
+
+                <span>
+
+                    Instagram
+
+                </span>
+
+            </button>
+
+            <button
+                class="service-btn"
+                data-service="TikTok">
+
+                <i class="ri-tiktok-fill"></i>
+
+                <span>
+
+                    TikTok
+
+                </span>
+
+            </button>
+
+            <button
+                class="service-btn"
+                data-service="X">
+
+                <i class="ri-twitter-x-fill"></i>
+
+                <span>
+
+                    X
+
+                </span>
+
+            </button>
+
+            <button
+                class="service-btn"
+                data-service="Discord">
+
+                <i class="ri-discord-fill"></i>
+
+                <span>
+
+                    Discord
+
+                </span>
+
+            </button>
+
+            <button
+                class="service-btn"
+                data-service="Snapchat">
+
+                <i class="ri-snapchat-fill"></i>
+
+                <span>
+
+                    Snapchat
+
+                </span>
+
+            </button>
+
+            <button
+                class="service-btn"
+                data-service="Google">
+
+                <i class="ri-google-fill"></i>
+
+                <span>
+
+                    Gmail
+
+                </span>
+
+            </button>
+
+            <button
+                class="service-btn"
+                data-service="Signal">
+
+                <i class="ri-message-3-fill"></i>
+
+                <span>
+
+                    Signal
+
+                </span>
+
+            </button>
+
+            <button
+                class="service-btn"
+                data-service="Others">
+
+                <i class="ri-more-2-fill"></i>
+
+                <span>
+
+                    Other Apps
+
+                </span>
+
+            </button>
+
+        </div>
+
+    </section>
+
+    <!-- ==========================================
+    SMS NUMBERS
+    ========================================== -->
+
+    <section class="sms-container">
+
+        <div id="smsList">
+
+            <div
+                id="emptySms"
+                class="empty-sms">
+
+                <i class="ri-smartphone-line"></i>
+
+                <h3>
+
+                    No SMS numbers available
+
+                </h3>
+
+                <p>
+
+                    SMS verification numbers will appear here once they are added by the admin.
+
+                </p>
+
+            </div>
+
+            <!-- Firebase SMS cards will load here -->
+
+        </div>
+
+    </section>
+
+</div>
+
+<script type="module" src="sms.js"></script>
+
+</body>
+</html>
