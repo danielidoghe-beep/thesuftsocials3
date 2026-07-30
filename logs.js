@@ -156,17 +156,19 @@ function watchLogs(){
             listingCount.textContent =
             `${snapshot.size} accounts available`;
 
-            snapshot.forEach((document)=>{
+            loadCategories(snapshot);
 
-                createLogCard(
+snapshot.forEach((document)=>{
 
-                    document.id,
+    createLogCard(
 
-                    document.data()
+        document.id,
 
-                );
+        document.data()
 
-            });
+    );
+
+});
 
             hideLoading();
 
@@ -662,3 +664,81 @@ document.addEventListener("click",(e)=>{
     closeFilterPanel();
 
 });
+/*==================================
+LOAD CATEGORIES
+==================================*/
+
+function loadCategories(snapshot){
+
+    const allCount =
+    document.getElementById("allListingCount");
+
+    allCount.textContent =
+    snapshot.size;
+
+    const categories = {};
+
+    snapshot.forEach((document)=>{
+
+        const data =
+        document.data();
+
+        const category =
+        data.category || "Other";
+
+        if(!categories[category]){
+
+            categories[category] = 0;
+
+        }
+
+        categories[category]++;
+
+    });
+
+    document
+
+    .querySelectorAll(".firebase-category")
+
+    .forEach(item=>{
+
+        item.remove();
+
+    });
+
+    Object.keys(categories)
+
+    .sort()
+
+    .forEach(category=>{
+
+        const button =
+        document.createElement("button");
+
+        button.className =
+        "category-item firebase-category";
+
+        button.dataset.category =
+        category;
+
+        button.innerHTML = `
+
+            <span>
+
+                ${category}
+
+            </span>
+
+            <span class="category-count">
+
+                ${categories[category]}
+
+            </span>
+
+        `;
+
+        categoryList.appendChild(button);
+
+    });
+
+}
